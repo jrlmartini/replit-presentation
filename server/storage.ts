@@ -1,38 +1,46 @@
-import { type User, type InsertUser } from "@shared/schema";
-import { randomUUID } from "crypto";
+import { drizzle } from "drizzle-orm/node-postgres";
+import pg from "pg";
+import { eq, desc } from "drizzle-orm";
+import { decks, type Deck, type InsertDeck } from "@shared/schema";
 
-// modify the interface with any CRUD methods
-// you might need
+const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL! });
+const db = drizzle(pool);
 
 export interface IStorage {
-  getUser(id: string): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  createDeck(deck: InsertDeck): Promise<Deck>;
+  getDeck(id: string): Promise<Deck | undefined>;
+  getDeckMeta(id: string): Promise<{ id: string; title: string; isPasswordProtected: boolean } | undefined>;
+  listDecks(): Promise<Deck[]>;
+  updateDeck(id: string, updates: Partial<InsertDeck>): Promise<Deck | undefined>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<string, User>;
-
-  constructor() {
-    this.users = new Map();
+class DatabaseStorage implements IStorage {
+  async createDeck(insertDeck: InsertDeck): Promise<Deck> {
+    const [deck] = await db.insert(decks).values(insertDeck).returning();
+    return deck;
   }
 
-  async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
+  async getDeck(id: string): Promise<Deck | undefined> {
+    const [deck] = await db.select().from(decks).where(eq(decks.id, id));
+    return deck;
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+  async getDeckMeta(id: string): Promise<{ id: string; title: string; isPasswordProtected: boolean } | undefined> {
+    const [deck] = await db
+      .select({ id: decks.id, title: decks.title, isPasswordProtected: decks.isPasswordProtected })
+      .from(decks)
+      .where(eq(decks.id, id));
+    return deck ? { id: deck.id, title: deck.title, isPasswordProtected: deck.isPasswordProtected ?? true } : undefined;
   }
 
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
-    return user;
+  async listDecks(): Promise<Deck[]> {
+    return db.select().from(decks).orderBy(desc(decks.createdAt));
+  }
+
+  async updateDeck(id: string, updates: Partial<InsertDeck>): Promise<Deck | undefined> {
+    const [deck] = await db.update(decks).set(updates).where(eq(decks.id, id)).returning();
+    return deck;
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
