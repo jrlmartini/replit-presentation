@@ -35,8 +35,9 @@ export function AgendaSlide({ slide, variant }: AgendaSlideProps) {
         />
       )}
       <div className="relative z-10 flex flex-col h-full" style={{ padding: "3.5rem 5rem" }}>
-        <div className="flex items-center gap-4 mb-8">
+        <div className="flex items-center gap-4 mb-8 anim-fade-up anim-delay-1">
           <div
+            className="anim-line-grow anim-delay-1"
             style={{
               width: "2.5rem",
               height: "3px",
@@ -54,7 +55,7 @@ export function AgendaSlide({ slide, variant }: AgendaSlideProps) {
             {title}
           </h2>
         </div>
-        <div className="flex-1 flex items-center">
+        <div className="flex-1 flex items-center anim-fade-up anim-delay-3">
           <AgendaList items={items as string[]} variant={variant} />
         </div>
       </div>

@@ -27,11 +27,11 @@ export function CoverSlide({ slide }: CoverSlideProps) {
           opacity: 0.35,
         }}
       />
-      <div className="absolute bottom-0 left-0 right-0 h-1" style={{ background: "linear-gradient(90deg, #22a87e, #1a7a5c, #0d5c45)" }} />
+      <div className="absolute bottom-0 left-0 right-0 h-1 anim-line-grow anim-delay-6" style={{ background: "linear-gradient(90deg, #22a87e, #1a7a5c, #0d5c45)" }} />
       <div className="relative z-10 flex flex-col justify-center h-full" style={{ padding: "4rem 5rem" }}>
         {tag && (
           <div
-            className="mb-6"
+            className="mb-6 anim-fade-up anim-delay-1"
             style={{
               display: "inline-flex",
               alignSelf: "flex-start",
@@ -50,6 +50,7 @@ export function CoverSlide({ slide }: CoverSlideProps) {
           </div>
         )}
         <h1
+          className="anim-cover-title anim-delay-2"
           style={{
             fontFamily: "'Plus Jakarta Sans', sans-serif",
             fontSize: "3rem",
@@ -64,6 +65,7 @@ export function CoverSlide({ slide }: CoverSlideProps) {
         </h1>
         {subtitle && (
           <p
+            className="anim-fade-up anim-delay-4"
             style={{
               fontFamily: "'Inter', sans-serif",
               fontSize: "1.25rem",
@@ -77,10 +79,11 @@ export function CoverSlide({ slide }: CoverSlideProps) {
           </p>
         )}
         <div
-          className="mt-auto flex items-center gap-3"
+          className="mt-auto flex items-center gap-3 anim-fade-up anim-delay-5"
           style={{ color: "#6b9e8c", fontSize: "0.8125rem" }}
         >
           <div
+            className="anim-line-grow anim-delay-6"
             style={{
               width: "2rem",
               height: "2px",

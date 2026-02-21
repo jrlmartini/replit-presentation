@@ -33,6 +33,8 @@ export default function DeckView() {
   const [editedAst, setEditedAst] = useState<DeckAst | null>(null);
   const [hasChanges, setHasChanges] = useState(false);
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [slideDirection, setSlideDirection] = useState<"forward" | "backward">("forward");
+  const [slideKey, setSlideKey] = useState(0);
 
   const { data: meta } = useQuery<{ id: string; title: string; isPasswordProtected: boolean }>({
     queryKey: ["/api/deck", deckId, "meta"],
@@ -154,10 +156,12 @@ export default function DeckView() {
 
   const goToSlide = useCallback((index: number) => {
     if (index >= 0 && index < totalSlides) {
+      setSlideDirection(index >= currentSlide ? "forward" : "backward");
+      setSlideKey(prev => prev + 1);
       setCurrentSlide(index);
       setShowGrid(false);
     }
-  }, [totalSlides]);
+  }, [totalSlides, currentSlide]);
 
   const goNext = useCallback(() => goToSlide(currentSlide + 1), [currentSlide, goToSlide]);
   const goPrev = useCallback(() => goToSlide(currentSlide - 1), [currentSlide, goToSlide]);
@@ -327,7 +331,8 @@ export default function DeckView() {
       <div className="flex-1 flex" style={{ overflow: "hidden" }}>
         <div className="flex-1 flex items-center justify-center relative" style={{ overflow: "hidden" }}>
           <div
-            className="relative"
+            key={slideKey}
+            className={`relative ${slideDirection === "forward" ? "slide-transition-forward" : "slide-transition-backward"}`}
             style={{
               width: "100%",
               maxWidth: isEditing ? "calc((100vh - 4rem) * 16 / 9)" : "calc(100vh * 16 / 9)",

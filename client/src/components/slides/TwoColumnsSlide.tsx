@@ -61,12 +61,20 @@ export function TwoColumnsSlide({ slide, variant }: TwoColumnsSlideProps) {
       )}
       <div className="relative z-10 flex flex-col h-full" style={{ padding: "3rem 4.5rem" }}>
         <div className="mb-6">
-          {title && <TextBlock content={title} variant={variant} size="heading" />}
-          {subtitle && <TextBlock content={subtitle} variant={variant} size="subtitle" className="mt-2" />}
+          {title && (
+            <div className="anim-fade-up anim-delay-1">
+              <TextBlock content={title} variant={variant} size="heading" />
+            </div>
+          )}
+          {subtitle && (
+            <div className="anim-fade-up anim-delay-2">
+              <TextBlock content={subtitle} variant={variant} size="subtitle" className="mt-2" />
+            </div>
+          )}
         </div>
         <div className="flex-1 flex gap-8">
           <div
-            className="flex-1 flex flex-col gap-4"
+            className="flex-1 flex flex-col gap-4 anim-fade-up anim-delay-3"
             style={{
               padding: "1.5rem",
               borderRadius: "0.5rem",
@@ -77,7 +85,7 @@ export function TwoColumnsSlide({ slide, variant }: TwoColumnsSlideProps) {
             {renderComponents(leftComponents)}
           </div>
           <div
-            className="flex-1 flex flex-col gap-4"
+            className="flex-1 flex flex-col gap-4 anim-fade-up anim-delay-5"
             style={{
               padding: "1.5rem",
               borderRadius: "0.5rem",

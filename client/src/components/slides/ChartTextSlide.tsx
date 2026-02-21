@@ -46,11 +46,19 @@ export function ChartTextSlide({ slide, variant }: ChartTextSlideProps) {
       )}
       <div className="relative z-10 flex flex-col h-full" style={{ padding: "3rem 4.5rem" }}>
         <div className="mb-6">
-          {title && <TextBlock content={title} variant={variant} size="heading" />}
-          {subtitle && <TextBlock content={subtitle} variant={variant} size="subtitle" className="mt-2" />}
+          {title && (
+            <div className="anim-fade-up anim-delay-1">
+              <TextBlock content={title} variant={variant} size="heading" />
+            </div>
+          )}
+          {subtitle && (
+            <div className="anim-fade-up anim-delay-2">
+              <TextBlock content={subtitle} variant={variant} size="subtitle" className="mt-2" />
+            </div>
+          )}
         </div>
         <div className="flex-1 flex gap-8">
-          <div className="flex-1">
+          <div className="flex-1 anim-fade-in anim-delay-3">
             <ChartBlock
               data={Array.isArray(chartData) ? chartData : undefined}
               chartType={chartType}
@@ -61,10 +69,14 @@ export function ChartTextSlide({ slide, variant }: ChartTextSlideProps) {
           </div>
           <div className="flex-1 flex flex-col gap-4">
             {textComps.map((tc, i) => (
-              <TextBlock key={i} content={String(tc.content)} variant={variant} size="body" />
+              <div key={i} className={`anim-fade-up anim-delay-${Math.min(i + 4, 8)}`}>
+                <TextBlock content={String(tc.content)} variant={variant} size="body" />
+              </div>
             ))}
             {bulletComps.map((bl, i) => (
-              <BulletList key={i} items={Array.isArray(bl.content) ? bl.content : []} variant={variant} icon="check" />
+              <div key={i} className={`anim-fade-up anim-delay-${Math.min(i + 4 + textComps.length, 8)}`}>
+                <BulletList items={Array.isArray(bl.content) ? bl.content : []} variant={variant} icon="check" />
+              </div>
             ))}
           </div>
         </div>

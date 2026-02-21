@@ -55,7 +55,7 @@ export function ContentSlide({ slide, variant }: ContentSlideProps) {
       <div className="relative z-10 flex flex-col h-full" style={{ padding: "3rem 4.5rem" }}>
         <div className="mb-6">
           {tags.length > 0 && (
-            <div className="flex gap-2 mb-3">
+            <div className="flex gap-2 mb-3 anim-fade-up anim-delay-1">
               {tags.map((tag, i) => (
                 <span
                   key={i}
@@ -76,20 +76,32 @@ export function ContentSlide({ slide, variant }: ContentSlideProps) {
               ))}
             </div>
           )}
-          {title && <TextBlock content={title} variant={variant} size="heading" />}
-          {subtitle && <TextBlock content={subtitle} variant={variant} size="subtitle" className="mt-2" />}
+          {title && (
+            <div className="anim-fade-up anim-delay-1">
+              <TextBlock content={title} variant={variant} size="heading" />
+            </div>
+          )}
+          {subtitle && (
+            <div className="anim-fade-up anim-delay-2">
+              <TextBlock content={subtitle} variant={variant} size="subtitle" className="mt-2" />
+            </div>
+          )}
         </div>
         <div className="flex-1 flex gap-6">
           <div className="flex-1 flex flex-col gap-4">
             {textBlocks.map((tb, i) => (
-              <TextBlock key={i} content={String(tb.content)} variant={variant} size="body" />
+              <div key={i} className={`anim-fade-up anim-delay-${Math.min(i + 3, 8)}`}>
+                <TextBlock content={String(tb.content)} variant={variant} size="body" />
+              </div>
             ))}
             {bulletLists.map((bl, i) => (
-              <BulletList key={i} items={Array.isArray(bl.content) ? bl.content : []} variant={variant} />
+              <div key={i} className={`anim-fade-up anim-delay-${Math.min(i + 3 + textBlocks.length, 8)}`}>
+                <BulletList items={Array.isArray(bl.content) ? bl.content : []} variant={variant} />
+              </div>
             ))}
           </div>
           {imageBlocks.length > 0 && (
-            <div className="flex-shrink-0" style={{ width: "40%" }}>
+            <div className="flex-shrink-0 anim-fade-in anim-delay-3" style={{ width: "40%" }}>
               {imageBlocks.map((ib, i) => (
                 <ImageBlock key={i} src={String(ib.content?.src || ib.content)} alt={String(ib.content?.alt || "")} variant={variant} />
               ))}

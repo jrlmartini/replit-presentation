@@ -28,6 +28,7 @@ export function SectionDividerSlide({ slide }: SectionDividerSlideProps) {
       />
       <div className="relative z-10 flex flex-col justify-center h-full" style={{ padding: "4rem 5rem" }}>
         <div
+          className="anim-line-grow anim-delay-1"
           style={{
             width: "3rem",
             height: "3px",
@@ -36,6 +37,7 @@ export function SectionDividerSlide({ slide }: SectionDividerSlideProps) {
           }}
         />
         <h2
+          className="anim-cover-title anim-delay-2"
           style={{
             fontFamily: "'Plus Jakarta Sans', sans-serif",
             fontSize: "2.75rem",
@@ -49,6 +51,7 @@ export function SectionDividerSlide({ slide }: SectionDividerSlideProps) {
         </h2>
         {subtitle && (
           <p
+            className="anim-fade-up anim-delay-4"
             style={{
               fontSize: "1.125rem",
               color: "#a8cfc0",

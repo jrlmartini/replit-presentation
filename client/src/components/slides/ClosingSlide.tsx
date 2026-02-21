@@ -29,9 +29,10 @@ export function ClosingSlide({ slide }: ClosingSlideProps) {
           opacity: 0.3,
         }}
       />
-      <div className="absolute top-0 left-0 right-0 h-1" style={{ background: "linear-gradient(90deg, #22a87e, #1a7a5c, #0d5c45)" }} />
+      <div className="absolute top-0 left-0 right-0 h-1 anim-line-grow" style={{ background: "linear-gradient(90deg, #22a87e, #1a7a5c, #0d5c45)" }} />
       <div className="relative z-10 flex flex-col justify-center items-center h-full text-center" style={{ padding: "4rem 5rem" }}>
         <h1
+          className="anim-cover-title anim-delay-1"
           style={{
             fontFamily: "'Plus Jakarta Sans', sans-serif",
             fontSize: "3rem",
@@ -43,12 +44,12 @@ export function ClosingSlide({ slide }: ClosingSlideProps) {
           {title}
         </h1>
         {subtitle && (
-          <p style={{ fontSize: "1.125rem", color: "#a8cfc0", marginBottom: "2.5rem", maxWidth: "60%" }}>
+          <p className="anim-fade-up anim-delay-2" style={{ fontSize: "1.125rem", color: "#a8cfc0", marginBottom: "2.5rem", maxWidth: "60%" }}>
             {subtitle}
           </p>
         )}
         <div
-          className="mt-4"
+          className="mt-4 anim-line-grow anim-delay-3"
           style={{
             width: "4rem",
             height: "2px",
@@ -56,9 +57,13 @@ export function ClosingSlide({ slide }: ClosingSlideProps) {
             marginBottom: "2.5rem",
           }}
         />
-        {contactComp && <ContactBlock contact={contact} variant="dark" />}
+        {contactComp && (
+          <div className="anim-fade-up anim-delay-4">
+            <ContactBlock contact={contact} variant="dark" />
+          </div>
+        )}
         <div
-          className="mt-auto flex items-center gap-3"
+          className="mt-auto flex items-center gap-3 anim-fade-up anim-delay-5"
           style={{ color: "#6b9e8c", fontSize: "0.8125rem" }}
         >
           <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, letterSpacing: "0.04em" }}>
