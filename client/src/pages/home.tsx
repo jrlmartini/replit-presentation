@@ -31,7 +31,7 @@ export default function Home() {
             <div>
               <h1
                 style={{
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  fontFamily: "'Outfit', sans-serif",
                   fontSize: "1.25rem",
                   fontWeight: 700,
                   color: "#0f2a20",
@@ -57,7 +57,7 @@ export default function Home() {
         <div className="mb-10">
           <h2
             style={{
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontFamily: "'Outfit', sans-serif",
               fontSize: "1.75rem",
               fontWeight: 700,
               color: "#0f2a20",
@@ -106,7 +106,7 @@ export default function Home() {
             </div>
             <h3
               style={{
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontFamily: "'Outfit', sans-serif",
                 fontSize: "1.125rem",
                 fontWeight: 600,
                 color: "#0f2a20",
@@ -155,7 +155,7 @@ export default function Home() {
                     <div className="relative z-10 p-4 h-full flex flex-col justify-end">
                       <p
                         style={{
-                          fontFamily: "'Plus Jakarta Sans', sans-serif",
+                          fontFamily: "'Outfit', sans-serif",
                           fontSize: "1rem",
                           fontWeight: 700,
                           color: "#ffffff",

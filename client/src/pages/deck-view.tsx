@@ -267,7 +267,7 @@ export default function DeckView() {
     return (
       <div className="min-h-screen" style={{ background: "#0f1f1a" }}>
         <div className="flex items-center justify-between p-4" style={{ borderBottom: "1px solid #2a5a48" }}>
-          <h2 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: "#e8f5f0", fontWeight: 600 }}>
+          <h2 style={{ fontFamily: "'Outfit', sans-serif", color: "#e8f5f0", fontWeight: 600 }}>
             {deckAst.meta.title} — Visão Geral
           </h2>
           <div className="flex items-center gap-1">

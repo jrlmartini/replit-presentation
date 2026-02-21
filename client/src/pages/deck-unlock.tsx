@@ -77,7 +77,7 @@ export function DeckUnlock({ deckId, deckTitle, onUnlock }: DeckUnlockProps) {
           </div>
           <h2
             style={{
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontFamily: "'Outfit', sans-serif",
               fontSize: "1.375rem",
               fontWeight: 700,
               color: "#ffffff",

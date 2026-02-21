@@ -32,8 +32,8 @@ export const themeConatus = {
   },
 
   fonts: {
-    heading: "'Plus Jakarta Sans', sans-serif",
-    body: "'Inter', sans-serif",
+    heading: "'Outfit', sans-serif",
+    body: "'Outfit', sans-serif",
     mono: "'JetBrains Mono', monospace",
   },
 

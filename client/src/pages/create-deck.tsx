@@ -109,7 +109,7 @@ export default function CreateDeck() {
             </div>
             <h1
               style={{
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontFamily: "'Outfit', sans-serif",
                 fontSize: "1.125rem",
                 fontWeight: 700,
                 color: "#0f2a20",
@@ -129,7 +129,7 @@ export default function CreateDeck() {
           >
             <Loader2 size={40} className="animate-spin" style={{ color: "#22a87e" }} />
             <div className="text-center">
-              <p style={{ color: "#ffffff", fontSize: "1.25rem", fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              <p style={{ color: "#ffffff", fontSize: "1.25rem", fontWeight: 600, fontFamily: "'Outfit', sans-serif" }}>
                 Gerando apresentação...
               </p>
               <p style={{ color: "#a8cfc0", fontSize: "0.875rem", marginTop: "0.5rem" }}>
@@ -150,7 +150,7 @@ export default function CreateDeck() {
             >
               <div className="flex items-center gap-2 mb-6">
                 <Sparkles size={18} style={{ color: "#1a7a5c" }} />
-                <h2 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: "1.125rem", fontWeight: 700, color: "#0f2a20" }}>
+                <h2 style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1.125rem", fontWeight: 700, color: "#0f2a20" }}>
                   Briefing da Apresentação
                 </h2>
               </div>
@@ -294,7 +294,7 @@ export default function CreateDeck() {
                 border: "1px solid #c8e0d5",
               }}
             >
-              <h3 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: "1rem", fontWeight: 600, color: "#0f2a20", marginBottom: "1rem" }}>
+              <h3 style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1rem", fontWeight: 600, color: "#0f2a20", marginBottom: "1rem" }}>
                 Estrutura dos Slides
               </h3>
               <div className="grid grid-cols-2 gap-4">
@@ -331,7 +331,7 @@ export default function CreateDeck() {
                 border: "1px solid #c8e0d5",
               }}
             >
-              <h3 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: "1rem", fontWeight: 600, color: "#0f2a20", marginBottom: "1rem" }}>
+              <h3 style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1rem", fontWeight: 600, color: "#0f2a20", marginBottom: "1rem" }}>
                 Notas Livres para a IA
               </h3>
               <FormField
@@ -363,7 +363,7 @@ export default function CreateDeck() {
             >
               <div className="flex items-center gap-2 mb-4">
                 <Lock size={16} style={{ color: "#1a7a5c" }} />
-                <h3 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: "1rem", fontWeight: 600, color: "#0f2a20" }}>
+                <h3 style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1rem", fontWeight: 600, color: "#0f2a20" }}>
                   Proteção por Senha
                 </h3>
               </div>
