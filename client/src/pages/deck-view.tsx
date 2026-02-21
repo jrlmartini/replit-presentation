@@ -1,15 +1,20 @@
-import { useState, useEffect, useCallback } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { useRoute } from "wouter";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { useRoute, useLocation } from "wouter";
 import { DeckUnlock } from "./deck-unlock";
 import { SlideRenderer } from "@/components/slides/SlideRenderer";
-import { ChevronLeft, ChevronRight, Grid, X, Layers, Maximize2, Minimize2 } from "lucide-react";
+import { SlideEditor } from "@/components/slides/SlideEditor";
+import { ChevronLeft, ChevronRight, Grid, X, Layers, Maximize2, Minimize2, Home, Pencil, Save, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { queryClient } from "@/lib/queryClient";
 import type { Deck, DeckAst, Slide } from "@shared/schema";
 
 export default function DeckView() {
   const [, params] = useRoute("/deck/:id");
+  const [, navigate] = useLocation();
   const deckId = params?.id || "";
+  const { toast } = useToast();
   const [token, setToken] = useState<string | null>(() => {
     if (typeof window !== "undefined") {
       return localStorage.getItem(`deck-token-${params?.id || ""}`);
@@ -24,6 +29,10 @@ export default function DeckView() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showGrid, setShowGrid] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedAst, setEditedAst] = useState<DeckAst | null>(null);
+  const [hasChanges, setHasChanges] = useState(false);
+  const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const { data: meta } = useQuery<{ id: string; title: string; isPasswordProtected: boolean }>({
     queryKey: ["/api/deck", deckId, "meta"],
@@ -49,9 +58,99 @@ export default function DeckView() {
     },
   });
 
-  const deckAst = deck?.deckAst as DeckAst | null;
+  const saveMutation = useMutation({
+    mutationFn: async (ast: DeckAst) => {
+      const url = `/api/deck/${deckId}${token ? `?token=${token}` : ""}`;
+      const res = await fetch(url, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ deckAst: ast }),
+      });
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text);
+      }
+      return res.json();
+    },
+    onSuccess: () => {
+      setHasChanges(false);
+      queryClient.invalidateQueries({ queryKey: ["/api/deck", deckId] });
+      toast({ title: "Salvo", description: "Alterações salvas com sucesso." });
+    },
+    onError: (err: Error) => {
+      toast({ title: "Erro ao salvar", description: err.message, variant: "destructive" });
+    },
+  });
+
+  const generateImageMutation = useMutation({
+    mutationFn: async ({ prompt, slideIndex, componentIndex }: { prompt: string; slideIndex: number; componentIndex: number }) => {
+      const url = `/api/deck/${deckId}/generate-image${token ? `?token=${token}` : ""}`;
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt, slideIndex, componentIndex }),
+      });
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text);
+      }
+      return res.json();
+    },
+  });
+
+  const originalAst = deck?.deckAst as DeckAst | null;
+  const deckAst = editedAst || originalAst;
   const slides = deckAst?.slides || [];
   const totalSlides = slides.length;
+
+  useEffect(() => {
+    if (originalAst && !editedAst) {
+      setEditedAst(JSON.parse(JSON.stringify(originalAst)));
+    }
+  }, [originalAst]);
+
+  const handleAstUpdate = (newAst: DeckAst) => {
+    setEditedAst(newAst);
+    setHasChanges(true);
+
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+    saveTimeoutRef.current = setTimeout(() => {
+      saveMutation.mutate(newAst);
+    }, 2000);
+  };
+
+  const handleSaveNow = () => {
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+    if (editedAst) {
+      saveMutation.mutate(editedAst);
+    }
+  };
+
+  const handleGenerateImage = async (prompt: string, slideIndex: number, componentIndex: number): Promise<string | null> => {
+    try {
+      const result = await generateImageMutation.mutateAsync({ prompt, slideIndex, componentIndex });
+      if (result.dataUri && editedAst) {
+        const newAst = JSON.parse(JSON.stringify(editedAst));
+        if (newAst.slides?.[slideIndex]?.components?.[componentIndex]) {
+          newAst.slides[slideIndex].components[componentIndex].content = {
+            src: result.dataUri,
+            alt: prompt,
+          };
+          setEditedAst(newAst);
+          saveMutation.mutate(newAst);
+        }
+        return result.dataUri;
+      }
+      return null;
+    } catch (err: any) {
+      toast({ title: "Erro ao gerar imagem", description: err.message, variant: "destructive" });
+      return null;
+    }
+  };
 
   const goToSlide = useCallback((index: number) => {
     if (index >= 0 && index < totalSlides) {
@@ -73,8 +172,23 @@ export default function DeckView() {
     }
   }, []);
 
+  const toggleEditing = () => {
+    if (isEditing && hasChanges && editedAst) {
+      handleSaveNow();
+    }
+    setIsEditing(!isEditing);
+    if (isFullscreen) {
+      document.exitFullscreen();
+      setIsFullscreen(false);
+    }
+  };
+
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
+      if (isEditing) {
+        const target = e.target as HTMLElement;
+        if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") return;
+      }
       if (e.key === "ArrowRight" || e.key === " ") {
         e.preventDefault();
         goNext();
@@ -82,20 +196,23 @@ export default function DeckView() {
         e.preventDefault();
         goPrev();
       } else if (e.key === "Escape") {
-        if (showGrid) setShowGrid(false);
+        if (isEditing) setIsEditing(false);
+        else if (showGrid) setShowGrid(false);
         else if (document.fullscreenElement) {
           document.exitFullscreen();
           setIsFullscreen(false);
         }
-      } else if (e.key === "g") {
+      } else if (e.key === "g" && !isEditing) {
         setShowGrid(prev => !prev);
-      } else if (e.key === "f") {
+      } else if (e.key === "f" && !isEditing) {
         toggleFullscreen();
+      } else if (e.key === "e") {
+        toggleEditing();
       }
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [goNext, goPrev, showGrid, toggleFullscreen]);
+  }, [goNext, goPrev, showGrid, toggleFullscreen, isEditing]);
 
   useEffect(() => {
     const handler = () => setIsFullscreen(!!document.fullscreenElement);
@@ -128,6 +245,15 @@ export default function DeckView() {
           <p style={{ color: "#6b9e8c", fontSize: "0.875rem", marginTop: "0.5rem" }}>
             {error?.message || "Esta apresentação pode estar vazia."}
           </p>
+          <Button
+            variant="ghost"
+            onClick={() => navigate("/")}
+            className="mt-4"
+            style={{ color: "#22a87e" }}
+            data-testid="button-error-back-home"
+          >
+            <Home size={16} className="mr-2" /> Voltar ao menu
+          </Button>
         </div>
       </div>
     );
@@ -140,14 +266,25 @@ export default function DeckView() {
           <h2 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: "#e8f5f0", fontWeight: 600 }}>
             {deckAst.meta.title} — Visão Geral
           </h2>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setShowGrid(false)}
-            data-testid="button-close-grid"
-          >
-            <X size={18} style={{ color: "#a8cfc0" }} />
-          </Button>
+          <div className="flex items-center gap-1">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate("/")}
+              data-testid="button-grid-back-home"
+              title="Voltar ao menu"
+            >
+              <Home size={18} style={{ color: "#a8cfc0" }} />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setShowGrid(false)}
+              data-testid="button-close-grid"
+            >
+              <X size={18} style={{ color: "#a8cfc0" }} />
+            </Button>
+          </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-6">
           {slides.map((slide: Slide, i: number) => (
@@ -187,50 +324,69 @@ export default function DeckView() {
       className="h-screen flex flex-col"
       style={{ background: "#0a1612" }}
     >
-      <div className="flex-1 flex items-center justify-center relative" style={{ overflow: "hidden" }}>
-        <div
-          className="relative"
-          style={{
-            width: "100%",
-            maxWidth: "calc(100vh * 16 / 9)",
-            aspectRatio: "16/9",
-          }}
-        >
-          <SlideRenderer slide={slides[currentSlide]} />
+      <div className="flex-1 flex" style={{ overflow: "hidden" }}>
+        <div className="flex-1 flex items-center justify-center relative" style={{ overflow: "hidden" }}>
+          <div
+            className="relative"
+            style={{
+              width: "100%",
+              maxWidth: isEditing ? "calc((100vh - 4rem) * 16 / 9)" : "calc(100vh * 16 / 9)",
+              aspectRatio: "16/9",
+            }}
+          >
+            <SlideRenderer slide={slides[currentSlide]} />
+          </div>
+
+          {currentSlide > 0 && (
+            <button
+              data-testid="button-prev-slide"
+              onClick={goPrev}
+              className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center justify-center transition-opacity opacity-40 hover:opacity-100"
+              style={{
+                width: "2.5rem",
+                height: "2.5rem",
+                borderRadius: "50%",
+                backgroundColor: "rgba(0,0,0,0.5)",
+                backdropFilter: "blur(4px)",
+              }}
+            >
+              <ChevronLeft size={20} style={{ color: "#ffffff" }} />
+            </button>
+          )}
+
+          {currentSlide < totalSlides - 1 && (
+            <button
+              data-testid="button-next-slide"
+              onClick={goNext}
+              className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center justify-center transition-opacity opacity-40 hover:opacity-100"
+              style={{
+                width: "2.5rem",
+                height: "2.5rem",
+                borderRadius: "50%",
+                backgroundColor: "rgba(0,0,0,0.5)",
+                backdropFilter: "blur(4px)",
+              }}
+            >
+              <ChevronRight size={20} style={{ color: "#ffffff" }} />
+            </button>
+          )}
         </div>
 
-        {currentSlide > 0 && (
-          <button
-            data-testid="button-prev-slide"
-            onClick={goPrev}
-            className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center justify-center transition-opacity opacity-40 hover:opacity-100"
-            style={{
-              width: "2.5rem",
-              height: "2.5rem",
-              borderRadius: "50%",
-              backgroundColor: "rgba(0,0,0,0.5)",
-              backdropFilter: "blur(4px)",
+        {isEditing && deckAst && (
+          <SlideEditor
+            slide={slides[currentSlide]}
+            slideIndex={currentSlide}
+            deckAst={deckAst}
+            deckId={deckId}
+            token={token}
+            onUpdate={handleAstUpdate}
+            onClose={() => {
+              if (hasChanges && editedAst) handleSaveNow();
+              setIsEditing(false);
             }}
-          >
-            <ChevronLeft size={20} style={{ color: "#ffffff" }} />
-          </button>
-        )}
-
-        {currentSlide < totalSlides - 1 && (
-          <button
-            data-testid="button-next-slide"
-            onClick={goNext}
-            className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center justify-center transition-opacity opacity-40 hover:opacity-100"
-            style={{
-              width: "2.5rem",
-              height: "2.5rem",
-              borderRadius: "50%",
-              backgroundColor: "rgba(0,0,0,0.5)",
-              backdropFilter: "blur(4px)",
-            }}
-          >
-            <ChevronRight size={20} style={{ color: "#ffffff" }} />
-          </button>
+            onGenerateImage={handleGenerateImage}
+            isSaving={saveMutation.isPending}
+          />
         )}
       </div>
 
@@ -242,6 +398,16 @@ export default function DeckView() {
         }}
       >
         <div className="flex items-center gap-3">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate("/")}
+            data-testid="button-back-home"
+            title="Voltar ao menu"
+            style={{ color: "#6b9e8c" }}
+          >
+            <Home size={16} />
+          </Button>
           <Layers size={14} style={{ color: "#6b9e8c" }} />
           <span style={{ color: "#6b9e8c", fontSize: "0.75rem", fontWeight: 500 }}>
             {deckAst.meta.title}
@@ -266,6 +432,29 @@ export default function DeckView() {
         </div>
 
         <div className="flex items-center gap-1">
+          {hasChanges && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleSaveNow}
+              disabled={saveMutation.isPending}
+              data-testid="button-save"
+              title="Salvar agora"
+              style={{ color: "#22a87e" }}
+            >
+              <Save size={16} />
+            </Button>
+          )}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleEditing}
+            data-testid="button-edit-toggle"
+            title={isEditing ? "Fechar editor" : "Editar slide"}
+            style={{ color: isEditing ? "#22a87e" : "#6b9e8c" }}
+          >
+            {isEditing ? <Check size={16} /> : <Pencil size={16} />}
+          </Button>
           <Button
             variant="ghost"
             size="icon"

@@ -2,6 +2,7 @@ import OpenAI from "openai";
 import { z } from "zod";
 import type { Briefing, DeckAst, Slide, SlideType } from "@shared/schema";
 import { slideTypeRegistry } from "@shared/slide-types";
+import { generateImageBuffer } from "./replit_integrations/image/client";
 
 async function withRetry<T>(fn: () => Promise<T>, maxRetries = 3): Promise<T> {
   let lastError: Error | null = null;
@@ -229,6 +230,46 @@ Gere o deck_ast completo em JSON.`;
   return parsed as DeckAst;
 }
 
+async function generateSlideImages(ast: DeckAst, briefing: Briefing): Promise<DeckAst> {
+  const imagePrompts: Array<{ slideIndex: number; compIndex: number; prompt: string }> = [];
+
+  ast.slides.forEach((slide, si) => {
+    slide.components.forEach((comp, ci) => {
+      if (comp.componentType === "image_block") {
+        const content = comp.content as any;
+        const src = typeof content === "object" ? content?.src : content;
+        if (!src || src === "[INSERIR IMAGEM]") {
+          const context = `${briefing.title}. ${slide.title || ""}. ${typeof content === "object" && content?.alt ? content.alt : ""}`;
+          const prompt = `Infográfico profissional para apresentação corporativa de consultoria ambiental. Contexto: ${context}. Estilo: limpo, moderno, cores verdes naturais, fundo branco, sem texto, adequado para slide de apresentação. Alta qualidade, design flat.`;
+          imagePrompts.push({ slideIndex: si, compIndex: ci, prompt });
+        }
+      }
+    });
+  });
+
+  if (imagePrompts.length === 0) return ast;
+
+  console.log(`[LLM Pipeline] Gerando ${imagePrompts.length} imagens...`);
+
+  for (const { slideIndex, compIndex, prompt } of imagePrompts) {
+    try {
+      console.log(`[LLM Pipeline] Gerando imagem para slide ${slideIndex + 1}, componente ${compIndex + 1}...`);
+      const imageBuffer = await withRetry(() => generateImageBuffer(prompt, "512x512"), 2);
+      const base64 = imageBuffer.toString("base64");
+      const dataUri = `data:image/png;base64,${base64}`;
+      ast.slides[slideIndex].components[compIndex].content = {
+        src: dataUri,
+        alt: prompt.slice(0, 100),
+      };
+      console.log(`[LLM Pipeline] Imagem gerada para slide ${slideIndex + 1}`);
+    } catch (err: any) {
+      console.warn(`[LLM Pipeline] Falha ao gerar imagem para slide ${slideIndex + 1}: ${err.message}`);
+    }
+  }
+
+  return ast;
+}
+
 export async function generateDeck(briefing: Briefing): Promise<DeckAst> {
   console.log("[LLM Pipeline] Etapa 1: Planejamento...");
   const plan = await planDeck(briefing);
@@ -238,5 +279,9 @@ export async function generateDeck(briefing: Briefing): Promise<DeckAst> {
   const ast = await composeDeck(briefing, plan);
   console.log(`[LLM Pipeline] AST gerado: ${ast.slides.length} slides`);
 
-  return ast;
+  console.log("[LLM Pipeline] Etapa 3: Geração de imagens...");
+  const astWithImages = await generateSlideImages(ast, briefing);
+  console.log("[LLM Pipeline] Pipeline concluído.");
+
+  return astWithImages;
 }
