@@ -2,6 +2,9 @@ import type { Slide } from "@shared/schema";
 import { TextBlock } from "../blocks/TextBlock";
 import { BulletList } from "../blocks/BulletList";
 import { ChartBlock } from "../blocks/ChartBlock";
+import { themeConatus, getVariantColors } from "@shared/theme-conatus";
+
+const t = themeConatus;
 
 interface ChartTextSlideProps {
   slide: Slide;
@@ -10,6 +13,7 @@ interface ChartTextSlideProps {
 
 export function ChartTextSlide({ slide, variant }: ChartTextSlideProps) {
   const isDark = variant === "dark";
+  const vc = getVariantColors(variant);
   const title = slide.title || "";
   const subtitle = slide.subtitle || "";
 
@@ -27,9 +31,7 @@ export function ChartTextSlide({ slide, variant }: ChartTextSlideProps) {
       data-testid={`slide-${slide.id}`}
       className="relative w-full h-full flex flex-col"
       style={{
-        background: isDark
-          ? "linear-gradient(135deg, #0f1f1a 0%, #142b23 50%, #1a3a2e 100%)"
-          : "linear-gradient(135deg, #f5faf8 0%, #edf6f2 100%)",
+        background: vc.gradient,
         overflow: "hidden",
       }}
     >
@@ -37,14 +39,14 @@ export function ChartTextSlide({ slide, variant }: ChartTextSlideProps) {
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: "url(/images/bg-dark.png)",
+            backgroundImage: `url(${t.backgrounds.dark.image})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            opacity: 0.15,
+            opacity: t.backgrounds.dark.opacity,
           }}
         />
       )}
-      <div className="relative z-10 flex flex-col h-full" style={{ padding: "3rem 4.5rem" }}>
+      <div className="relative z-10 flex flex-col h-full" style={{ padding: t.spacing.slide.padding }}>
         <div className="mb-6">
           {title && (
             <div className="anim-fade-up anim-delay-1">

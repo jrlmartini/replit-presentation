@@ -1,4 +1,8 @@
 import type { Slide } from "@shared/schema";
+import { themeConatus } from "@shared/theme-conatus";
+
+const t = themeConatus;
+const layout = t.slideLayout.section;
 
 interface SectionDividerSlideProps {
   slide: Slide;
@@ -13,38 +17,38 @@ export function SectionDividerSlide({ slide }: SectionDividerSlideProps) {
       data-testid={`slide-${slide.id}`}
       className="relative w-full h-full flex flex-col"
       style={{
-        background: "linear-gradient(135deg, #0d2e22 0%, #145e47 50%, #1a7a5c 100%)",
+        background: t.gradients.sectionBg,
         overflow: "hidden",
       }}
     >
       <div
         className="absolute inset-0"
         style={{
-          backgroundImage: "url(/images/bg-section.png)",
+          backgroundImage: `url(${t.backgrounds.section.image})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          opacity: 0.25,
+          opacity: t.backgrounds.section.opacity,
         }}
       />
-      <div className="relative z-10 flex flex-col justify-center h-full" style={{ padding: "4rem 5rem" }}>
+      <div className="relative z-10 flex flex-col justify-center h-full" style={{ padding: t.spacing.slideLarge.padding }}>
         <div
           className="anim-line-grow anim-delay-1"
           style={{
-            width: "3rem",
-            height: "3px",
-            backgroundColor: "#22a87e",
+            width: layout.lineWidth,
+            height: layout.lineHeight,
+            backgroundColor: t.colors.primaryLight,
             marginBottom: "2rem",
           }}
         />
         <h2
           className="anim-cover-title anim-delay-2"
           style={{
-            fontFamily: "'Plus Jakarta Sans', sans-serif",
-            fontSize: "2.75rem",
-            fontWeight: 800,
+            fontFamily: t.fonts.heading,
+            fontSize: layout.titleSize,
+            fontWeight: layout.titleWeight,
             color: "#ffffff",
             lineHeight: 1.15,
-            maxWidth: "70%",
+            maxWidth: layout.titleMaxWidth,
           }}
         >
           {title}
@@ -53,10 +57,10 @@ export function SectionDividerSlide({ slide }: SectionDividerSlideProps) {
           <p
             className="anim-fade-up anim-delay-4"
             style={{
-              fontSize: "1.125rem",
-              color: "#a8cfc0",
+              fontSize: layout.subtitleSize,
+              color: t.colors.dark.textSecondary,
               marginTop: "1rem",
-              maxWidth: "55%",
+              maxWidth: layout.subtitleMaxWidth,
               lineHeight: 1.5,
             }}
           >

@@ -2,6 +2,9 @@ import type { Slide } from "@shared/schema";
 import { TextBlock } from "../blocks/TextBlock";
 import { BulletList } from "../blocks/BulletList";
 import { ImageBlock } from "../blocks/ImageBlock";
+import { themeConatus, getVariantColors } from "@shared/theme-conatus";
+
+const t = themeConatus;
 
 interface ContentSlideProps {
   slide: Slide;
@@ -10,6 +13,7 @@ interface ContentSlideProps {
 
 export function ContentSlide({ slide, variant }: ContentSlideProps) {
   const isDark = variant === "dark";
+  const vc = getVariantColors(variant);
   const title = slide.title || "";
   const subtitle = slide.subtitle || "";
 
@@ -23,9 +27,7 @@ export function ContentSlide({ slide, variant }: ContentSlideProps) {
       data-testid={`slide-${slide.id}`}
       className="relative w-full h-full flex flex-col"
       style={{
-        background: isDark
-          ? "linear-gradient(135deg, #0f1f1a 0%, #142b23 50%, #1a3a2e 100%)"
-          : "linear-gradient(135deg, #f5faf8 0%, #edf6f2 100%)",
+        background: vc.gradient,
         overflow: "hidden",
       }}
     >
@@ -33,10 +35,10 @@ export function ContentSlide({ slide, variant }: ContentSlideProps) {
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: "url(/images/bg-dark.png)",
+            backgroundImage: `url(${t.backgrounds.dark.image})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            opacity: 0.15,
+            opacity: t.backgrounds.dark.opacity,
           }}
         />
       )}
@@ -44,15 +46,15 @@ export function ContentSlide({ slide, variant }: ContentSlideProps) {
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: "url(/images/bg-light.png)",
+            backgroundImage: `url(${t.backgrounds.light.image})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            opacity: 0.1,
+            opacity: t.backgrounds.light.opacity,
           }}
         />
       )}
-      <div className="absolute left-0 top-0 bottom-0 w-1" style={{ backgroundColor: isDark ? "#22a87e" : "#1a7a5c" }} />
-      <div className="relative z-10 flex flex-col h-full" style={{ padding: "3rem 4.5rem" }}>
+      <div className="absolute left-0 top-0 bottom-0 w-1" style={{ backgroundColor: vc.accent }} />
+      <div className="relative z-10 flex flex-col h-full" style={{ padding: t.spacing.slide.padding }}>
         <div className="mb-6">
           {tags.length > 0 && (
             <div className="flex gap-2 mb-3 anim-fade-up anim-delay-1">
@@ -60,15 +62,15 @@ export function ContentSlide({ slide, variant }: ContentSlideProps) {
                 <span
                   key={i}
                   style={{
-                    padding: "0.25rem 0.75rem",
-                    borderRadius: "2rem",
-                    backgroundColor: isDark ? "rgba(34,168,126,0.15)" : "rgba(26,122,92,0.1)",
-                    border: `1px solid ${isDark ? "rgba(34,168,126,0.3)" : "rgba(26,122,92,0.2)"}`,
-                    color: isDark ? "#22a87e" : "#1a7a5c",
-                    fontSize: "0.6875rem",
-                    fontWeight: 600,
+                    padding: t.slideLayout.tag.paddingSm,
+                    borderRadius: t.radius.full,
+                    backgroundColor: vc.tagBg,
+                    border: `1px solid ${vc.tagBorder}`,
+                    color: vc.accent,
+                    fontSize: t.slideLayout.tag.fontSize,
+                    fontWeight: t.slideLayout.tag.fontWeight,
                     textTransform: "uppercase",
-                    letterSpacing: "0.05em",
+                    letterSpacing: t.slideLayout.tag.letterSpacing,
                   }}
                 >
                   {String(tag.content)}

@@ -1,4 +1,5 @@
 import { CheckCircle2, ChevronRight, Circle } from "lucide-react";
+import { themeConatus, getVariantColors } from "@shared/theme-conatus";
 
 interface BulletListProps {
   items: string[];
@@ -7,10 +8,10 @@ interface BulletListProps {
   className?: string;
 }
 
-export function BulletList({ items, variant = "light", icon = "chevron", className = "" }: BulletListProps) {
-  const isDark = variant === "dark";
-  const iconColor = isDark ? "#22a87e" : "#1a7a5c";
+const t = themeConatus;
 
+export function BulletList({ items, variant = "light", icon = "chevron", className = "" }: BulletListProps) {
+  const vc = getVariantColors(variant);
   const IconComponent = icon === "check" ? CheckCircle2 : icon === "chevron" ? ChevronRight : Circle;
 
   return (
@@ -20,16 +21,16 @@ export function BulletList({ items, variant = "light", icon = "chevron", classNa
           <IconComponent
             size={icon === "dot" ? 8 : 18}
             style={{
-              color: iconColor,
+              color: vc.accent,
               marginTop: icon === "dot" ? "0.5rem" : "0.15rem",
               flexShrink: 0,
             }}
           />
           <span
             style={{
-              fontSize: "1rem",
-              lineHeight: 1.6,
-              color: isDark ? "#e8f5f0" : "#0f2a20",
+              fontSize: t.typography.body.size,
+              lineHeight: t.typography.body.lineHeight,
+              color: vc.text,
             }}
           >
             {item}

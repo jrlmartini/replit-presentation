@@ -1,4 +1,5 @@
 import { Mail, Phone, Globe, MapPin } from "lucide-react";
+import { themeConatus, getVariantColors } from "@shared/theme-conatus";
 
 interface ContactInfo {
   name?: string;
@@ -15,11 +16,10 @@ interface ContactBlockProps {
   className?: string;
 }
 
+const t = themeConatus;
+
 export function ContactBlock({ contact, variant = "light", className = "" }: ContactBlockProps) {
-  const isDark = variant === "dark";
-  const iconColor = isDark ? "#22a87e" : "#1a7a5c";
-  const textColor = isDark ? "#e8f5f0" : "#0f2a20";
-  const mutedColor = isDark ? "#a8cfc0" : "#3a6b55";
+  const vc = getVariantColors(variant);
 
   const items = [
     { icon: Mail, value: contact.email },
@@ -32,11 +32,11 @@ export function ContactBlock({ contact, variant = "light", className = "" }: Con
     <div data-testid="contact-block" className={`flex flex-col gap-4 ${className}`}>
       {contact.name && (
         <div>
-          <p style={{ fontSize: "1.25rem", fontWeight: 600, color: textColor, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+          <p style={{ fontSize: t.typography.subtitle.size, fontWeight: 600, color: vc.text, fontFamily: t.fonts.heading }}>
             {contact.name}
           </p>
           {contact.role && (
-            <p style={{ fontSize: "0.875rem", color: mutedColor, marginTop: "0.25rem" }}>
+            <p style={{ fontSize: t.typography.caption.size, color: vc.textSecondary, marginTop: "0.25rem" }}>
               {contact.role}
             </p>
           )}
@@ -45,8 +45,8 @@ export function ContactBlock({ contact, variant = "light", className = "" }: Con
       <div className="flex flex-col gap-2">
         {items.map(({ icon: Icon, value }, i) => (
           <div key={i} className="flex items-center gap-2">
-            <Icon size={16} style={{ color: iconColor, flexShrink: 0 }} />
-            <span style={{ fontSize: "0.875rem", color: mutedColor }}>{value}</span>
+            <Icon size={16} style={{ color: vc.accent, flexShrink: 0 }} />
+            <span style={{ fontSize: t.typography.caption.size, color: vc.textSecondary }}>{value}</span>
           </div>
         ))}
       </div>

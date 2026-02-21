@@ -2,6 +2,9 @@ import type { Slide } from "@shared/schema";
 import { TextBlock } from "../blocks/TextBlock";
 import { BulletList } from "../blocks/BulletList";
 import { ImageBlock } from "../blocks/ImageBlock";
+import { themeConatus, getVariantColors } from "@shared/theme-conatus";
+
+const t = themeConatus;
 
 interface TwoColumnsSlideProps {
   slide: Slide;
@@ -10,6 +13,7 @@ interface TwoColumnsSlideProps {
 
 export function TwoColumnsSlide({ slide, variant }: TwoColumnsSlideProps) {
   const isDark = variant === "dark";
+  const vc = getVariantColors(variant);
   const title = slide.title || "";
   const subtitle = slide.subtitle || "";
 
@@ -42,9 +46,7 @@ export function TwoColumnsSlide({ slide, variant }: TwoColumnsSlideProps) {
       data-testid={`slide-${slide.id}`}
       className="relative w-full h-full flex flex-col"
       style={{
-        background: isDark
-          ? "linear-gradient(135deg, #0f1f1a 0%, #142b23 50%, #1a3a2e 100%)"
-          : "linear-gradient(135deg, #f5faf8 0%, #edf6f2 100%)",
+        background: vc.gradient,
         overflow: "hidden",
       }}
     >
@@ -52,14 +54,14 @@ export function TwoColumnsSlide({ slide, variant }: TwoColumnsSlideProps) {
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: "url(/images/bg-dark.png)",
+            backgroundImage: `url(${t.backgrounds.dark.image})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            opacity: 0.15,
+            opacity: t.backgrounds.dark.opacity,
           }}
         />
       )}
-      <div className="relative z-10 flex flex-col h-full" style={{ padding: "3rem 4.5rem" }}>
+      <div className="relative z-10 flex flex-col h-full" style={{ padding: t.spacing.slide.padding }}>
         <div className="mb-6">
           {title && (
             <div className="anim-fade-up anim-delay-1">
@@ -76,10 +78,10 @@ export function TwoColumnsSlide({ slide, variant }: TwoColumnsSlideProps) {
           <div
             className="flex-1 flex flex-col gap-4 anim-fade-up anim-delay-3"
             style={{
-              padding: "1.5rem",
-              borderRadius: "0.5rem",
-              backgroundColor: isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)",
-              border: `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}`,
+              padding: t.spacing.content.gap,
+              borderRadius: t.radius.md,
+              backgroundColor: vc.surfaceOverlay,
+              border: `1px solid ${vc.surfaceBorder}`,
             }}
           >
             {renderComponents(leftComponents)}
@@ -87,10 +89,10 @@ export function TwoColumnsSlide({ slide, variant }: TwoColumnsSlideProps) {
           <div
             className="flex-1 flex flex-col gap-4 anim-fade-up anim-delay-5"
             style={{
-              padding: "1.5rem",
-              borderRadius: "0.5rem",
-              backgroundColor: isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)",
-              border: `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}`,
+              padding: t.spacing.content.gap,
+              borderRadius: t.radius.md,
+              backgroundColor: vc.surfaceOverlay,
+              border: `1px solid ${vc.surfaceBorder}`,
             }}
           >
             {renderComponents(rightComponents)}

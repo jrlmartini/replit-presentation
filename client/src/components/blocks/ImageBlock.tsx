@@ -1,4 +1,5 @@
 import { ImageIcon } from "lucide-react";
+import { themeConatus, getVariantColors } from "@shared/theme-conatus";
 
 interface ImageBlockProps {
   src?: string;
@@ -8,8 +9,10 @@ interface ImageBlockProps {
   className?: string;
 }
 
+const t = themeConatus;
+
 export function ImageBlock({ src, alt = "", placeholder, variant = "light", className = "" }: ImageBlockProps) {
-  const isDark = variant === "dark";
+  const vc = getVariantColors(variant);
 
   if (!src || src === "[INSERIR IMAGEM]") {
     return (
@@ -17,14 +20,14 @@ export function ImageBlock({ src, alt = "", placeholder, variant = "light", clas
         data-testid="image-block-placeholder"
         className={`flex flex-col items-center justify-center gap-3 rounded-md ${className}`}
         style={{
-          backgroundColor: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)",
-          border: `2px dashed ${isDark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.12)"}`,
+          backgroundColor: vc.placeholderBg,
+          border: `2px dashed ${vc.placeholderBorder}`,
           padding: "2rem",
           minHeight: "12rem",
         }}
       >
-        <ImageIcon size={32} style={{ opacity: 0.4, color: isDark ? "#a8cfc0" : "#6b9e8c" }} />
-        <span style={{ fontSize: "0.875rem", opacity: 0.5, color: isDark ? "#a8cfc0" : "#6b9e8c" }}>
+        <ImageIcon size={32} style={{ opacity: 0.4, color: vc.textSecondary }} />
+        <span style={{ fontSize: t.typography.caption.size, opacity: 0.5, color: vc.textSecondary }}>
           {placeholder || "[INSERIR IMAGEM]"}
         </span>
       </div>

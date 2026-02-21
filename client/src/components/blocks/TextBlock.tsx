@@ -1,3 +1,5 @@
+import { themeConatus, getVariantColors } from "@shared/theme-conatus";
+
 interface TextBlockProps {
   content: string;
   variant?: "light" | "dark";
@@ -5,23 +7,25 @@ interface TextBlockProps {
   className?: string;
 }
 
+const t = themeConatus;
+
 const sizeStyles: Record<string, React.CSSProperties> = {
-  title: { fontSize: "2.5rem", fontWeight: 700, lineHeight: 1.2, fontFamily: "'Plus Jakarta Sans', sans-serif" },
-  subtitle: { fontSize: "1.25rem", fontWeight: 400, lineHeight: 1.4, opacity: 0.85 },
-  heading: { fontSize: "1.75rem", fontWeight: 600, lineHeight: 1.3, fontFamily: "'Plus Jakarta Sans', sans-serif" },
-  body: { fontSize: "1rem", fontWeight: 400, lineHeight: 1.6 },
-  caption: { fontSize: "0.875rem", fontWeight: 400, lineHeight: 1.4, opacity: 0.7 },
+  title: { fontSize: t.typography.title.size, fontWeight: t.typography.title.weight, lineHeight: t.typography.title.lineHeight, fontFamily: t.fonts.heading },
+  subtitle: { fontSize: t.typography.subtitle.size, fontWeight: t.typography.subtitle.weight, lineHeight: t.typography.subtitle.lineHeight, opacity: 0.85 },
+  heading: { fontSize: t.typography.heading.size, fontWeight: t.typography.heading.weight, lineHeight: t.typography.heading.lineHeight, fontFamily: t.fonts.heading },
+  body: { fontSize: t.typography.body.size, fontWeight: t.typography.body.weight, lineHeight: t.typography.body.lineHeight },
+  caption: { fontSize: t.typography.caption.size, fontWeight: t.typography.caption.weight, lineHeight: t.typography.caption.lineHeight, opacity: 0.7 },
 };
 
 export function TextBlock({ content, variant = "light", size = "body", className = "" }: TextBlockProps) {
-  const isDark = variant === "dark";
+  const vc = getVariantColors(variant);
   return (
     <div
       data-testid="text-block"
       className={className}
       style={{
         ...sizeStyles[size],
-        color: isDark ? "#e8f5f0" : "#0f2a20",
+        color: vc.text,
       }}
     >
       {content}

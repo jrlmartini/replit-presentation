@@ -1,5 +1,9 @@
 # Design System — Conatus Ambiental
 
+Este documento é um guia explicativo do sistema de design. Todos os valores concretos (cores, tamanhos, espaçamentos) estão definidos exclusivamente em `shared/theme-conatus.ts`. Aqui descrevemos o propósito e uso de cada token.
+
+---
+
 ## Identidade Visual
 
 **Tema**: `conatus-v1`
@@ -12,110 +16,175 @@
 ## Paleta de Cores
 
 ### Cores Primárias
-| Token            | Hex       | Uso                                     |
-|------------------|-----------|------------------------------------------|
-| `primary`        | `#1a7a5c` | Cor principal, botões, destaques         |
-| `primaryDark`    | `#145e47` | Hover, bordas ativas                     |
-| `primaryLight`   | `#22a87e` | Acentos, ícones, indicadores de progresso|
-| `accent`         | `#0d3b2e` | Backgrounds profundos, badges            |
-| `accentLight`    | `#1a5c47` | Superfícies de destaque                  |
+Definidas em `themeConatus.colors`:
 
-### Modo Escuro (Slides dark)
-| Token            | Hex       | Uso                                      |
-|------------------|-----------|-------------------------------------------|
-| `dark.bg`        | `#0f1f1a` | Fundo principal                           |
-| `dark.bgAlt`     | `#142b23` | Fundo alternativo (gradiente)             |
-| `dark.surface`   | `#1a3a2e` | Cards, superfícies elevadas               |
-| `dark.text`      | `#e8f5f0` | Texto principal                           |
-| `dark.textSecondary` | `#a8cfc0` | Texto secundário, subtítulos          |
-| `dark.textMuted` | `#6b9e8c` | Texto muted, captions                    |
-| `dark.border`    | `#2a5a48` | Bordas, divisores                         |
+| Token          | Propósito                                           |
+|----------------|------------------------------------------------------|
+| `primary`      | Cor principal da marca. Usada em botões, destaques, linhas decorativas em slides claros |
+| `primaryDark`  | Variação mais escura. Usada em hover, bordas ativas  |
+| `primaryLight` | Variação mais clara. Usada em acentos, ícones, indicadores e linhas em slides escuros |
+| `accent`       | Tom profundo da marca. Usada em backgrounds profundos, badges |
+| `accentLight`  | Tom intermediário. Usada em superfícies de destaque   |
 
-### Modo Claro (Slides light)
-| Token            | Hex       | Uso                                      |
-|------------------|-----------|-------------------------------------------|
-| `light.bg`       | `#f5faf8` | Fundo principal                           |
-| `light.bgAlt`    | `#edf6f2` | Fundo alternativo (gradiente)             |
-| `light.surface`  | `#ffffff` | Cards, superfícies                        |
-| `light.text`     | `#0f2a20` | Texto principal                           |
-| `light.textSecondary` | `#3a6b55` | Texto secundário                     |
-| `light.textMuted`| `#6b9e8c` | Texto muted                              |
-| `light.border`   | `#c8e0d5` | Bordas                                   |
+### Modo Escuro (`colors.dark`)
+Usado em slides dark (dark_title_text_or_image, dark_two_columns, dark_chart_text, cover, closing, section_divider):
 
-### Cores para Gráficos
-| Índice | Hex       |
-|--------|-----------|
-| 0      | `#1a7a5c` |
-| 1      | `#2aa88e` |
-| 2      | `#0d5c45` |
-| 3      | `#45c9a8` |
-| 4      | `#0a3d2e` |
+| Token           | Propósito                                    |
+|-----------------|-----------------------------------------------|
+| `bg`            | Fundo principal dos slides escuros            |
+| `bgAlt`         | Fundo alternativo, usado em gradientes        |
+| `surface`       | Superfícies elevadas (cards, painéis internos)|
+| `text`          | Texto principal (alta legibilidade)           |
+| `textSecondary` | Subtítulos, texto de apoio                    |
+| `textMuted`     | Captions, labels, texto de baixa ênfase       |
+| `border`        | Bordas e divisores                            |
+
+### Modo Claro (`colors.light`)
+Usado em slides light (light_title_text_or_image, light_two_columns, light_chart_text, agenda_light):
+
+| Token           | Propósito                                    |
+|-----------------|-----------------------------------------------|
+| `bg`            | Fundo principal dos slides claros             |
+| `bgAlt`         | Fundo alternativo para gradientes             |
+| `surface`       | Cards, superfícies (geralmente branco)        |
+| `text`          | Texto principal                               |
+| `textSecondary` | Texto de apoio                                |
+| `textMuted`     | Captions, labels                              |
+| `border`        | Bordas                                        |
+
+### Cores para Gráficos (`colors.chart`)
+Array de 5 cores progressivas usadas para barras, linhas e fatias de gráficos. A primeira é a cor primária; as demais são variações complementares.
 
 ---
 
 ## Tipografia
 
-| Token     | Família                             | Uso                        |
-|-----------|-------------------------------------|----------------------------|
-| `heading` | Plus Jakarta Sans                   | Títulos, headings          |
-| `body`    | Inter                               | Corpo de texto, parágrafos |
-| `mono`    | JetBrains Mono                      | Código, contadores         |
+### Famílias (`fonts`)
 
-### Escalas Tipográficas
-| Token      | Tamanho   | Peso | Line-Height | Uso                    |
-|------------|-----------|------|-------------|------------------------|
-| `title`    | 2.5rem    | 700  | 1.2         | Título do slide        |
-| `subtitle` | 1.25rem   | 400  | 1.4         | Subtítulo              |
-| `heading`  | 1.75rem   | 600  | 1.3         | Headings de seção      |
-| `body`     | 1rem      | 400  | 1.6         | Texto corrido          |
-| `caption`  | 0.875rem  | 400  | 1.4         | Legendas, notas        |
-| `small`    | 0.75rem   | 400  | 1.4         | Labels, badges, footer |
+| Token     | Propósito                                     |
+|-----------|------------------------------------------------|
+| `heading` | Títulos, headings, nomes. Tipografia display   |
+| `body`    | Corpo de texto, parágrafos, listas. Legibilidade|
+| `mono`    | Código, contadores, dados tabulares            |
 
----
+### Escalas (`typography`)
 
-## Espaçamento
+| Token      | Propósito                                      |
+|------------|--------------------------------------------------|
+| `title`    | Título principal do slide                        |
+| `subtitle` | Subtítulo abaixo do título                       |
+| `heading`  | Heading de seção dentro do slide                 |
+| `body`     | Texto corrido, parágrafos normais                |
+| `caption`  | Legendas, notas de rodapé                        |
+| `small`    | Labels, badges, texto muito pequeno              |
 
-| Token             | Valor          | Uso                           |
-|-------------------|----------------|-------------------------------|
-| `slide.padding`   | 3rem 4rem      | Padding interno dos slides    |
-| `section.gap`     | 2rem           | Gap entre seções              |
-| `content.gap`     | 1.5rem         | Gap entre componentes         |
-| `bullet.gap`      | 0.75rem        | Gap entre itens de lista      |
+Cada escala define `size` (rem), `weight` e `lineHeight`.
 
 ---
 
-## Border Radius
+## Espaçamento (`spacing`)
 
-| Token | Valor     | Uso                     |
-|-------|-----------|-------------------------|
-| `sm`  | 0.375rem  | Badges, tags pequenas   |
-| `md`  | 0.5rem    | Botões, inputs          |
-| `lg`  | 0.75rem   | Cards, painéis          |
-| `xl`  | 1rem      | Modais, containers      |
-
----
-
-## Gradientes
-
-### Fundo Escuro (slides dark)
-```css
-background: linear-gradient(135deg, #0f1f1a 0%, #142b23 50%, #1a3a2e 100%);
-```
-
-### Fundo Claro (slides light)
-```css
-background: linear-gradient(135deg, #f5faf8 0%, #edf6f2 50%, #ffffff 100%);
-```
-
-### Barra de Progresso
-```css
-background: linear-gradient(90deg, #1a7a5c, #22a87e);
-```
+| Token           | Propósito                                      |
+|-----------------|--------------------------------------------------|
+| `slide.padding` | Padding padrão interno dos slides de conteúdo    |
+| `slideLarge.padding` | Padding maior para slides especiais (cover, section, closing, agenda) |
+| `section.gap`   | Espaço entre seções dentro do slide              |
+| `content.gap`   | Espaço entre componentes de conteúdo             |
+| `bullet.gap`    | Espaço entre itens de lista                      |
 
 ---
 
-## Efeitos
+## Border Radius (`radius`)
 
-- **Backdrop blur**: `blur(4px)` — botões de navegação sobre slides
-- **Overlay escuro**: `rgba(0,0,0,0.5)` — botões flutuantes
-- **Background image opacity**: `0.3` (dark) / `0.15` (light) — texturas de fundo
+| Token  | Propósito                              |
+|--------|----------------------------------------|
+| `sm`   | Badges, tags pequenas                  |
+| `md`   | Botões, inputs, cards de conteúdo      |
+| `lg`   | Painéis, containers                    |
+| `xl`   | Modais, containers grandes             |
+| `full` | Tags arredondadas, pills               |
+
+---
+
+## Gradientes (`gradients`)
+
+| Token              | Propósito                                    |
+|--------------------|-----------------------------------------------|
+| `darkBg`           | Fundo padrão de slides escuros               |
+| `lightBg`          | Fundo padrão de slides claros                |
+| `coverBg`          | Fundo específico do slide de capa            |
+| `sectionBg`        | Fundo do slide divisor de seção              |
+| `closingBg`        | Fundo do slide de encerramento              |
+| `progressBar`      | Barra decorativa superior/inferior (3 tons)  |
+| `progressBarSimple`| Barra de progresso simplificada (2 tons)     |
+
+---
+
+## Backgrounds (`backgrounds`)
+
+Cada slide type tem uma textura de fundo com opacidade controlada:
+
+| Token       | Propósito                                  |
+|-------------|---------------------------------------------|
+| `cover`     | Textura do slide de capa                    |
+| `dark`      | Textura padrão para slides escuros          |
+| `darkStrong`| Textura escura com opacidade maior (agenda) |
+| `light`     | Textura para slides claros                  |
+| `section`   | Textura do slide divisor de seção           |
+| `closing`   | Textura do slide de encerramento            |
+
+---
+
+## Overlays (`overlay`)
+
+Valores de transparência para camadas sobrepostas:
+
+| Token                  | Propósito                                    |
+|------------------------|-----------------------------------------------|
+| `darkPlaceholder`      | Fundo de placeholders em slides escuros       |
+| `lightPlaceholder`     | Fundo de placeholders em slides claros        |
+| `darkSurface`          | Fundo de painéis em two-columns dark          |
+| `lightSurface`         | Fundo de painéis em two-columns light         |
+| `darkTagBg/Border`     | Background e borda de tags em slides escuros  |
+| `lightTagBg/Border`    | Background e borda de tags em slides claros   |
+| `darkAgendaBg`         | Fundo dos círculos numerados da agenda dark   |
+| `lightAgendaBg`        | Fundo dos círculos numerados da agenda light  |
+| `darkGrid/lightGrid`   | Linhas de grade dos gráficos                  |
+
+---
+
+## Layout dos Slides (`slideLayout`)
+
+Configurações específicas de cada tipo de slide:
+
+### Cover
+Slide de capa — título grande com subtítulo e barra de marca inferior.
+
+### Section
+Divisor de seção — título impactante com linha decorativa.
+
+### Closing
+Encerramento — título centralizado com contato e marca.
+
+### Agenda
+Lista numerada — título com linha decorativa e itens em círculos.
+
+### Tag
+Badges/labels — usados em vários tipos de slide como identificador de contexto.
+
+---
+
+## Helper: `getVariantColors(variant)`
+
+Função utilitária exportada de `theme-conatus.ts` que retorna todas as cores contextuais baseadas no variant ("light" | "dark"). Use nos componentes para evitar repetição de lógica `isDark ? ... : ...`.
+
+Retorna: `text`, `textSecondary`, `textMuted`, `accent`, `gradient`, `bgImage`, `placeholderBg`, `placeholderBorder`, `surfaceOverlay`, `surfaceBorder`, `tagBg`, `tagBorder`, `agendaBg`, `gridColor`.
+
+---
+
+## Como usar
+
+1. Importe o tema: `import { themeConatus, getVariantColors } from "@shared/theme-conatus"`
+2. Use `getVariantColors(variant)` para cores contextuais light/dark
+3. Acesse tokens diretamente: `themeConatus.fonts.heading`, `themeConatus.spacing.slide.padding`
+4. Nunca use valores HEX hardcoded nos componentes de slide

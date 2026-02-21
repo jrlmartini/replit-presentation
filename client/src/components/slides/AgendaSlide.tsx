@@ -1,5 +1,9 @@
 import type { Slide } from "@shared/schema";
 import { AgendaList } from "../blocks/AgendaList";
+import { themeConatus, getVariantColors } from "@shared/theme-conatus";
+
+const t = themeConatus;
+const layout = t.slideLayout.agenda;
 
 interface AgendaSlideProps {
   slide: Slide;
@@ -8,6 +12,7 @@ interface AgendaSlideProps {
 
 export function AgendaSlide({ slide, variant }: AgendaSlideProps) {
   const isDark = variant === "dark";
+  const vc = getVariantColors(variant);
   const title = slide.title || "Agenda";
   const agendaComp = slide.components?.find(c => c.componentType === "agenda_list");
   const items = Array.isArray(agendaComp?.content) ? agendaComp.content : [];
@@ -17,9 +22,7 @@ export function AgendaSlide({ slide, variant }: AgendaSlideProps) {
       data-testid={`slide-${slide.id}`}
       className="relative w-full h-full flex flex-col"
       style={{
-        background: isDark
-          ? "linear-gradient(135deg, #0f1f1a 0%, #142b23 50%, #1a3a2e 100%)"
-          : "linear-gradient(135deg, #f5faf8 0%, #edf6f2 100%)",
+        background: vc.gradient,
         overflow: "hidden",
       }}
     >
@@ -27,10 +30,10 @@ export function AgendaSlide({ slide, variant }: AgendaSlideProps) {
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: "url(/images/bg-dark.png)",
+            backgroundImage: `url(${t.backgrounds.darkStrong.image})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            opacity: 0.2,
+            opacity: t.backgrounds.darkStrong.opacity,
           }}
         />
       )}
@@ -39,17 +42,17 @@ export function AgendaSlide({ slide, variant }: AgendaSlideProps) {
           <div
             className="anim-line-grow anim-delay-1"
             style={{
-              width: "2.5rem",
-              height: "3px",
-              backgroundColor: isDark ? "#22a87e" : "#1a7a5c",
+              width: layout.lineWidth,
+              height: layout.lineHeight,
+              backgroundColor: vc.accent,
             }}
           />
           <h2
             style={{
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontSize: "2rem",
-              fontWeight: 700,
-              color: isDark ? "#ffffff" : "#0f2a20",
+              fontFamily: t.fonts.heading,
+              fontSize: layout.titleSize,
+              fontWeight: layout.titleWeight,
+              color: vc.text,
             }}
           >
             {title}
