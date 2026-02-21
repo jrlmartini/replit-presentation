@@ -341,7 +341,7 @@ export default function DeckView() {
             <button
               data-testid="button-prev-slide"
               onClick={goPrev}
-              className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center justify-center transition-opacity opacity-40 hover:opacity-100"
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center transition-opacity opacity-40 hover:opacity-100"
               style={{
                 width: "2.5rem",
                 height: "2.5rem",
@@ -358,7 +358,7 @@ export default function DeckView() {
             <button
               data-testid="button-next-slide"
               onClick={goNext}
-              className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center justify-center transition-opacity opacity-40 hover:opacity-100"
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center transition-opacity opacity-40 hover:opacity-100"
               style={{
                 width: "2.5rem",
                 height: "2.5rem",
