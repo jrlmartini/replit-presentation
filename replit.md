@@ -20,26 +20,36 @@ Sistema gerador de apresentações (slides) em português-BR para a Conatus Ambi
 
 ## Project Structure
 ```
+config/
+  README.md              - Índice da base de configuração
+  docs/
+    design-system.md     - Paleta de cores, tipografia, espaçamento, gradientes
+    slide-types.md       - 11 tipos de slide, componentes, regras de composição
+    llm-pipeline.md      - Pipeline de geração (planner → composer → images)
+    backgrounds.md       - Backgrounds dos slides, como substituir/adicionar
+    api-reference.md     - Referência completa da API REST
+  assets/                - Assets fonte (PSDs, SVGs, logos)
+
 shared/
-  schema.ts          - DB tables (decks), Zod schemas, types
-  slide-types.ts     - Slide type registry (11 types)
-  theme-conatus.ts   - Theme tokens (colors, fonts, spacing)
+  schema.ts              - DB tables (decks), Zod schemas, types
+  slide-types.ts         - Slide type registry (11 types)
+  theme-conatus.ts       - Theme tokens (colors, fonts, spacing)
 
 server/
-  routes.ts          - API routes (generate, deck CRUD, image generation)
-  storage.ts         - Database CRUD via Drizzle ORM
-  llm-pipeline.ts    - LLM planner + composer + image generation pipeline
+  routes.ts              - API routes (generate, deck CRUD, image generation)
+  storage.ts             - Database CRUD via Drizzle ORM
+  llm-pipeline.ts        - LLM planner + composer + image generation pipeline
   replit_integrations/
-    image/           - OpenAI gpt-image-1 integration (client.ts, routes.ts)
-    batch/           - Batch processing utilities
-    chat/            - Chat integration (not used directly)
+    image/               - OpenAI gpt-image-1 integration (client.ts, routes.ts)
+    batch/               - Batch processing utilities
+    chat/                - Chat integration (not used directly)
 
 client/src/
   pages/
-    home.tsx         - Dashboard listing all decks
-    create-deck.tsx  - Briefing form for new presentations
-    deck-view.tsx    - Slide viewer with navigation + editor integration
-    deck-unlock.tsx  - Password unlock screen
+    home.tsx             - Dashboard listing all decks
+    create-deck.tsx      - Briefing form for new presentations
+    deck-view.tsx        - Slide viewer with navigation + editor integration
+    deck-unlock.tsx      - Password unlock screen
   components/
     slides/
       SlideRenderer.tsx  - Routes slide type to template component
@@ -47,7 +57,7 @@ client/src/
       CoverSlide.tsx, ClosingSlide.tsx, SectionDividerSlide.tsx,
       AgendaSlide.tsx, ContentSlide.tsx, TwoColumnsSlide.tsx,
       ChartTextSlide.tsx, SlideWrapper.tsx
-    blocks/          - 8 component blocks (TextBlock, BulletList, ImageBlock, etc.)
+    blocks/              - 8 component blocks (TextBlock, BulletList, ImageBlock, etc.)
   
 client/public/images/
   bg-cover.png, bg-light.png, bg-dark.png, bg-section.png, bg-closing.png
