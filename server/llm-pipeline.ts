@@ -1,8 +1,40 @@
 import OpenAI from "openai";
 import { z } from "zod";
 import type { Briefing, DeckAst, Slide, SlideType } from "@shared/schema";
-import { slideTypeRegistry } from "@shared/slide-types";
+import { slideTypeRegistry, SLIDE_TYPES } from "@shared/slide-types";
 import { generateImageBuffer } from "./replit_integrations/image/client";
+
+const SLIDE_TYPE_ALIASES: Record<string, SlideType> = {
+  agenda: "agenda_light",
+  agenda_slide: "agenda_light",
+  content: "light_title_text_or_image",
+  content_light: "light_title_text_or_image",
+  content_dark: "dark_title_text_or_image",
+  title_text: "light_title_text_or_image",
+  title_text_or_image: "light_title_text_or_image",
+  two_columns: "light_two_columns",
+  chart_text: "light_chart_text",
+  divider: "section_divider",
+  section: "section_divider",
+  close: "closing",
+  end: "closing",
+};
+
+function normalizeSlideType(raw: string): SlideType {
+  if (SLIDE_TYPES.includes(raw as SlideType)) {
+    return raw as SlideType;
+  }
+  const normalized = raw.toLowerCase().trim();
+  if (SLIDE_TYPES.includes(normalized as SlideType)) {
+    return normalized as SlideType;
+  }
+  if (SLIDE_TYPE_ALIASES[normalized]) {
+    console.warn(`[LLM Pipeline] Tipo de slide normalizado: "${raw}" → "${SLIDE_TYPE_ALIASES[normalized]}"`);
+    return SLIDE_TYPE_ALIASES[normalized];
+  }
+  console.warn(`[LLM Pipeline] Tipo de slide desconhecido: "${raw}", usando fallback "light_title_text_or_image"`);
+  return "light_title_text_or_image";
+}
 
 async function withRetry<T>(fn: () => Promise<T>, maxRetries = 3): Promise<T> {
   let lastError: Error | null = null;
@@ -358,7 +390,7 @@ Gere o deck_ast completo em JSON.`;
 
   parsed.slides = (parsed.slides || []).map((slide: any, i: number) => ({
     id: slide.id || `slide-${i + 1}`,
-    type: slide.type || "light_title_text_or_image",
+    type: normalizeSlideType(slide.type || "light_title_text_or_image"),
     title: slide.title || "",
     subtitle: slide.subtitle || "",
     notes: slide.notes || "",
