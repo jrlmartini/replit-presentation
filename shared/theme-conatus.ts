@@ -82,24 +82,24 @@ export const themeConatus = {
   },
 
   overlay: {
-    darkPlaceholder: "#FFFFFF0D",
-    lightPlaceholder: "#0000000A",
-    darkPlaceholderBorder: "#FFFFFF26",
-    lightPlaceholderBorder: "#0000001F",
-    darkSurface: "#FFFFFF08",
-    lightSurface: "#00000005",
-    darkSurfaceBorder: "#FFFFFF0F",
-    lightSurfaceBorder: "#0000000F",
-    darkTagBg: "#22A87E26",
-    lightTagBg: "#1A7A5C1A",
-    darkTagBorder: "#22A87E4D",
-    lightTagBorder: "#1A7A5C33",
-    darkAgendaBg: "#22A87E33",
-    lightAgendaBg: "#1A7A5C1A",
-    darkGrid: "#FFFFFF14",
-    lightGrid: "#00000014",
-    darkDashedBorder: "#FFFFFF26",
-    lightDashedBorder: "#0000001F",
+    darkPlaceholder: "#FFFFFF0D",       // rgba(255,255,255,0.05)
+    lightPlaceholder: "#0000000A",      // rgba(0,0,0,0.04)
+    darkPlaceholderBorder: "#FFFFFF26", // rgba(255,255,255,0.15)
+    lightPlaceholderBorder: "#0000001F",// rgba(0,0,0,0.12)
+    darkSurface: "#FFFFFF08",           // rgba(255,255,255,0.03)
+    lightSurface: "#00000005",          // rgba(0,0,0,0.02)
+    darkSurfaceBorder: "#FFFFFF0F",     // rgba(255,255,255,0.06)
+    lightSurfaceBorder: "#0000000F",    // rgba(0,0,0,0.06)
+    darkTagBg: "#214059",             // rgba(34,168,126,0.15)
+    lightTagBg: "#c1cdd9",            // rgba(26,122,92,0.1)
+    darkTagBorder: "#3b5e73",         // rgba(34,168,126,0.3)
+    lightTagBorder: "#3b5e73",        // rgba(26,122,92,0.2)
+    darkAgendaBg: "#22A87E33",          // rgba(34, 168, 126, 0.2)
+    lightAgendaBg: "#1A7A5C1A",         // rgba(26, 122, 92, 0.1)
+    darkGrid: "#FFFFFF14",              // rgba(255,255,255,0.08)
+    lightGrid: "#00000014",             // rgba(0,0,0,0.08)
+    darkDashedBorder: "#FFFFFF26",      // rgba(255,255,255,0.15)
+    lightDashedBorder: "#0000001F",     // rgba(0,0,0,0.12)
   },
 
   columnProportions: {
