@@ -38,9 +38,9 @@ export function IconFeaturesSlide({ slide, variant, layoutVariant }: IconFeature
         }}
       >
         <div className="relative z-10 flex flex-col h-full" style={{ padding: t.spacing.slide.padding }}>
-          <div className="mb-6">
+          <div style={{ marginBottom: "1.9cqw" }}>
             {tags.length > 0 && (
-              <div className="flex gap-2 mb-3 anim-fade-up anim-delay-1">
+              <div className="flex anim-fade-up anim-delay-1" style={{ gap: "0.6cqw", marginBottom: "0.95cqw" }}>
                 {tags.map((tag, i) => (
                   <span
                     key={i}
@@ -62,9 +62,9 @@ export function IconFeaturesSlide({ slide, variant, layoutVariant }: IconFeature
               </div>
             )}
             {title && <div className="anim-fade-up anim-delay-1"><TextBlock content={title} variant={variant} size="heading" /></div>}
-            {subtitle && <div className="anim-fade-up anim-delay-2"><TextBlock content={subtitle} variant={variant} size="subtitle" className="mt-2" /></div>}
+            {subtitle && <div className="anim-fade-up anim-delay-2" style={{ marginTop: "0.6cqw" }}><TextBlock content={subtitle} variant={variant} size="subtitle" /></div>}
           </div>
-          <div className="flex-1 flex gap-8">
+          <div className="flex-1 flex" style={{ gap: "2.5cqw" }}>
             <div
               className="flex-1 flex items-center anim-fade-up anim-delay-3"
               style={{
@@ -91,12 +91,12 @@ export function IconFeaturesSlide({ slide, variant, layoutVariant }: IconFeature
                 <TextBlock content="[INSERIR FRASE DE DESTAQUE]" variant={variant} size="heading" />
               )}
             </div>
-            <div className="flex-1 flex flex-col gap-6 justify-center">
+            <div className="flex-1 flex flex-col justify-center" style={{ gap: "1.9cqw" }}>
               {iconItems.map((item, i) => {
                 const content = item.content as any;
                 return (
                   <div key={i} className={`anim-fade-up anim-delay-${Math.min(i + 4, 8)}`}>
-                    <div className="flex items-start gap-4">
+                    <div className="flex items-start" style={{ gap: "1.25cqw" }}>
                       <IconFeatureItem
                         iconName={content?.iconName}
                         iconSrc={content?.iconSrc}
@@ -130,9 +130,9 @@ export function IconFeaturesSlide({ slide, variant, layoutVariant }: IconFeature
       }}
     >
       <div className="relative z-10 flex flex-col h-full" style={{ padding: t.spacing.slide.padding }}>
-        <div className="mb-8">
+        <div style={{ marginBottom: "2.5cqw" }}>
           {tags.length > 0 && (
-            <div className="flex gap-2 mb-3 anim-fade-up anim-delay-1">
+            <div className="flex anim-fade-up anim-delay-1" style={{ gap: "0.6cqw", marginBottom: "0.95cqw" }}>
               {tags.map((tag, i) => (
                 <span
                   key={i}
@@ -154,7 +154,7 @@ export function IconFeaturesSlide({ slide, variant, layoutVariant }: IconFeature
             </div>
           )}
           {title && <div className="anim-fade-up anim-delay-1"><TextBlock content={title} variant={variant} size="heading" /></div>}
-          {subtitle && <div className="anim-fade-up anim-delay-2"><TextBlock content={subtitle} variant={variant} size="subtitle" className="mt-2" /></div>}
+          {subtitle && <div className="anim-fade-up anim-delay-2" style={{ marginTop: "0.6cqw" }}><TextBlock content={subtitle} variant={variant} size="subtitle" /></div>}
         </div>
         <div
           className="flex-1 flex items-center justify-center"

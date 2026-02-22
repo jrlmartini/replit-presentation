@@ -45,7 +45,7 @@ export function ClosingSlide({ slide }: ClosingSlideProps) {
       <div className="relative z-10 flex flex-col justify-center items-center h-full text-center" style={{ padding: t.spacing.slideLarge.padding }}>
         {headerTag && (
           <div
-            className="mb-4 anim-fade-up anim-delay-0"
+            className="anim-fade-up anim-delay-0"
             style={{
               display: "inline-flex",
               padding: t.slideLayout.tag.paddingMd,
@@ -57,6 +57,7 @@ export function ClosingSlide({ slide }: ClosingSlideProps) {
               fontWeight: t.slideLayout.tag.fontWeight,
               letterSpacing: t.slideLayout.tag.letterSpacing,
               textTransform: "uppercase",
+              marginBottom: "1.25cqw",
             }}
           >
             {String(headerTag.content)}
@@ -69,18 +70,18 @@ export function ClosingSlide({ slide }: ClosingSlideProps) {
             fontSize: layout.titleSize,
             fontWeight: layout.titleWeight,
             color: "#ffffff",
-            marginBottom: "0.75rem",
+            marginBottom: "0.95cqw",
           }}
         >
           {title}
         </h1>
         {subtitle && (
-          <p className="anim-fade-up anim-delay-2" style={{ fontSize: layout.subtitleSize, color: vc.textSecondary, marginBottom: "2.5rem", maxWidth: layout.subtitleMaxWidth }}>
+          <p className="anim-fade-up anim-delay-2" style={{ fontSize: layout.subtitleSize, color: vc.textSecondary, marginBottom: "3.1cqw", maxWidth: layout.subtitleMaxWidth }}>
             {subtitle}
           </p>
         )}
         {mainComps.length > 0 && (
-          <div className="mb-4 anim-fade-up anim-delay-2 space-y-2">
+          <div className="anim-fade-up anim-delay-2" style={{ marginBottom: "1.25cqw", display: "flex", flexDirection: "column", gap: "0.6cqw" }}>
             {mainComps.map((comp) => {
               if (comp.componentType === "text_block") {
                 return (
@@ -91,19 +92,20 @@ export function ClosingSlide({ slide }: ClosingSlideProps) {
               }
               if (comp.componentType === "image_block") {
                 const imgContent = typeof comp.content === "object" ? comp.content as { src?: string; alt?: string } : {};
-                return <div key={comp.id} style={{ maxWidth: "200px" }}><ImageBlock src={imgContent.src} alt={imgContent.alt} variant="dark" /></div>;
+                return <div key={comp.id} style={{ maxWidth: "15.6cqw" }}><ImageBlock src={imgContent.src} alt={imgContent.alt} variant="dark" /></div>;
               }
               return null;
             })}
           </div>
         )}
         <div
-          className="mt-4 anim-line-grow anim-delay-3"
+          className="anim-line-grow anim-delay-3"
           style={{
             width: layout.dividerWidth,
             height: layout.dividerHeight,
             backgroundColor: t.colors.primaryLight,
-            marginBottom: "2.5rem",
+            marginTop: "1.25cqw",
+            marginBottom: "3.1cqw",
           }}
         />
         {contactComp && (
@@ -112,8 +114,8 @@ export function ClosingSlide({ slide }: ClosingSlideProps) {
           </div>
         )}
         <div
-          className="mt-auto flex items-center gap-3 anim-fade-up anim-delay-5"
-          style={{ color: vc.textMuted, fontSize: t.slideLayout.cover.brandSize }}
+          className="mt-auto flex items-center anim-fade-up anim-delay-5"
+          style={{ color: vc.textMuted, fontSize: t.slideLayout.cover.brandSize, gap: "0.95cqw" }}
         >
           <span style={{ fontFamily: t.fonts.heading, fontWeight: 600, letterSpacing: "0.04em" }}>
             CONATUS AMBIENTAL

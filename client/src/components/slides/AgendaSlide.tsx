@@ -44,10 +44,10 @@ export function AgendaSlide({ slide, variant }: AgendaSlideProps) {
         overflow: "hidden",
       }}
     >
-      <div className="relative z-10 flex flex-col h-full" style={{ padding: "3.5rem 5rem" }}>
+      <div className="relative z-10 flex flex-col h-full" style={{ padding: t.spacing.slideLarge.padding }}>
         {headerTag && (
           <div
-            className="mb-4 anim-fade-up anim-delay-0"
+            className="anim-fade-up anim-delay-0"
             style={{
               display: "inline-flex",
               alignSelf: "flex-start",
@@ -60,12 +60,13 @@ export function AgendaSlide({ slide, variant }: AgendaSlideProps) {
               fontWeight: t.slideLayout.tag.fontWeight,
               letterSpacing: t.slideLayout.tag.letterSpacing,
               textTransform: "uppercase",
+              marginBottom: "1.25cqw",
             }}
           >
             {String(headerTag.content)}
           </div>
         )}
-        <div className="flex items-center gap-4 mb-8 anim-fade-up anim-delay-1">
+        <div className="flex items-center anim-fade-up anim-delay-1" style={{ gap: "1.25cqw", marginBottom: "2.5cqw" }}>
           <div
             className="anim-line-grow anim-delay-1"
             style={{

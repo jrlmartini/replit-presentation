@@ -9,6 +9,7 @@ Sistema gerador de apresentações (slides) em português-BR para a Conatus Ambi
 - **LLM**: OpenAI via Replit AI Integrations (gpt-5-mini para texto, gpt-image-1 para imagens)
 - **Auth**: Senha por deck (bcryptjs), token de acesso temporário (1h)
 - **Format**: 16:9 fixo, idioma pt-BR
+- **Responsive Scaling**: Container queries (cqw units) — all slide typography/spacing scales proportionally with container width. Reference: 1280px = 1cqw = 12.8px. SlideRenderer wraps content in container-type: inline-size.
 
 ## Key Concepts
 - **Briefing**: Formulário estruturado para definir a apresentação

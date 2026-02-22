@@ -46,7 +46,7 @@ export function CoverSlide({ slide }: CoverSlideProps) {
       <div className="relative z-10 flex flex-col justify-center h-full" style={{ padding: t.spacing.slideLarge.padding }}>
         {tag && (
           <div
-            className="mb-6 anim-fade-up anim-delay-1"
+            className="anim-fade-up anim-delay-1"
             style={{
               display: "inline-flex",
               alignSelf: "flex-start",
@@ -59,6 +59,7 @@ export function CoverSlide({ slide }: CoverSlideProps) {
               fontWeight: t.slideLayout.tag.fontWeight,
               letterSpacing: t.slideLayout.tag.letterSpacing,
               textTransform: "uppercase",
+              marginBottom: "1.9cqw",
             }}
           >
             {String(tag.content)}
@@ -73,7 +74,7 @@ export function CoverSlide({ slide }: CoverSlideProps) {
             lineHeight: 1.15,
             color: "#ffffff",
             maxWidth: layout.titleMaxWidth,
-            marginBottom: "1.25rem",
+            marginBottom: "1.55cqw",
           }}
         >
           {title}
@@ -96,14 +97,14 @@ export function CoverSlide({ slide }: CoverSlideProps) {
         {heroImage && (() => {
           const imgContent = typeof heroImage.content === "object" ? heroImage.content as { src?: string; alt?: string } : {};
           return (
-            <div className="mt-4 anim-fade-up anim-delay-3" style={{ maxWidth: "300px" }}>
+            <div className="anim-fade-up anim-delay-3" style={{ marginTop: "1.25cqw", maxWidth: "23cqw" }}>
               <ImageBlock src={imgContent.src} alt={imgContent.alt} variant="dark" />
             </div>
           );
         })()}
         <div
-          className="mt-auto flex items-center gap-3 anim-fade-up anim-delay-5"
-          style={{ color: vc.textMuted, fontSize: layout.brandSize }}
+          className="mt-auto flex items-center anim-fade-up anim-delay-5"
+          style={{ color: vc.textMuted, fontSize: layout.brandSize, gap: "0.95cqw" }}
         >
           <div
             className="anim-line-grow anim-delay-6"

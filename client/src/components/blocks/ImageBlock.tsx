@@ -18,12 +18,13 @@ export function ImageBlock({ src, alt = "", placeholder, variant = "light", clas
     return (
       <div
         data-testid="image-block-placeholder"
-        className={`flex flex-col items-center justify-center gap-3 rounded-md ${className}`}
+        className={`flex flex-col items-center justify-center rounded-md ${className}`}
         style={{
           backgroundColor: vc.placeholderBg,
           border: `2px dashed ${vc.placeholderBorder}`,
-          padding: "2rem",
-          minHeight: "12rem",
+          padding: "2.5cqw",
+          minHeight: "15cqw",
+          gap: "0.95cqw",
         }}
       >
         <ImageIcon size={32} style={{ opacity: 0.4, color: vc.textSecondary }} />
@@ -40,7 +41,7 @@ export function ImageBlock({ src, alt = "", placeholder, variant = "light", clas
         src={src}
         alt={alt}
         className="w-full h-full object-cover rounded-md"
-        style={{ maxHeight: "20rem" }}
+        style={{ maxHeight: "25cqw" }}
       />
     </div>
   );

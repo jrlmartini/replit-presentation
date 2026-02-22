@@ -97,9 +97,9 @@ export function ContentSlide({ slide, variant, layoutVariant }: ContentSlideProp
     >
       <div className="absolute left-0 top-0 bottom-0 w-1" style={{ backgroundColor: vc.accent }} />
       <div className="relative z-10 flex flex-col h-full" style={{ padding: t.spacing.slide.padding }}>
-        <div className="mb-6">
+        <div style={{ marginBottom: "1.9cqw" }}>
           {tags.length > 0 && (
-            <div className="flex gap-2 mb-3 anim-fade-up anim-delay-1">
+            <div className="flex anim-fade-up anim-delay-1" style={{ gap: "0.6cqw", marginBottom: "0.95cqw" }}>
               {tags.map((tag, i) => (
                 <span
                   key={i}
@@ -121,7 +121,7 @@ export function ContentSlide({ slide, variant, layoutVariant }: ContentSlideProp
             </div>
           )}
           {title && <div className="anim-fade-up anim-delay-1"><TextBlock content={title} variant={variant} size="heading" /></div>}
-          {subtitle && <div className="anim-fade-up anim-delay-2"><TextBlock content={subtitle} variant={variant} size="subtitle" className="mt-2" /></div>}
+          {subtitle && <div className="anim-fade-up anim-delay-2" style={{ marginTop: "0.6cqw" }}><TextBlock content={subtitle} variant={variant} size="subtitle" /></div>}
         </div>
 
         {isMultiCol ? (
@@ -130,12 +130,13 @@ export function ContentSlide({ slide, variant, layoutVariant }: ContentSlideProp
             style={{
               display: "grid",
               gridTemplateColumns: getColumnProportions(resolvedLayout),
-              gap: "2rem",
+              gap: "2.5cqw",
             }}
           >
             <div
-              className="flex flex-col gap-4 anim-fade-up anim-delay-3"
+              className="flex flex-col anim-fade-up anim-delay-3"
               style={{
+                gap: "1.25cqw",
                 padding: t.spacing.content.gap,
                 borderRadius: t.radius.md,
                 backgroundColor: vc.surfaceOverlay,
@@ -145,8 +146,9 @@ export function ContentSlide({ slide, variant, layoutVariant }: ContentSlideProp
               {renderSlotComponents(col1Comps, variant, 3)}
             </div>
             <div
-              className="flex flex-col gap-4 anim-fade-up anim-delay-5"
+              className="flex flex-col anim-fade-up anim-delay-5"
               style={{
+                gap: "1.25cqw",
                 padding: t.spacing.content.gap,
                 borderRadius: t.radius.md,
                 backgroundColor: vc.surfaceOverlay,
@@ -157,8 +159,9 @@ export function ContentSlide({ slide, variant, layoutVariant }: ContentSlideProp
             </div>
             {isThreeCol && (
               <div
-                className="flex flex-col gap-4 anim-fade-up anim-delay-6"
+                className="flex flex-col anim-fade-up anim-delay-6"
                 style={{
+                  gap: "1.25cqw",
                   padding: t.spacing.content.gap,
                   borderRadius: t.radius.md,
                   backgroundColor: vc.surfaceOverlay,
@@ -170,8 +173,8 @@ export function ContentSlide({ slide, variant, layoutVariant }: ContentSlideProp
             )}
           </div>
         ) : (
-          <div className="flex-1 flex gap-6">
-            <div className="flex-1 flex flex-col gap-4">
+          <div className="flex-1 flex" style={{ gap: "1.9cqw" }}>
+            <div className="flex-1 flex flex-col" style={{ gap: "1.25cqw" }}>
               {mainComps.filter(c => c.componentType !== "image_block").map((comp, i) => {
                 const delay = Math.min(i + 3, 8);
                 if (comp.componentType === "text_block") {

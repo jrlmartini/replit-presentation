@@ -53,22 +53,23 @@ export function TwoColumnsSlide({ slide, variant }: TwoColumnsSlideProps) {
       }}
     >
       <div className="relative z-10 flex flex-col h-full" style={{ padding: t.spacing.slide.padding }}>
-        <div className="mb-6">
+        <div style={{ marginBottom: "1.9cqw" }}>
           {title && (
             <div className="anim-fade-up anim-delay-1">
               <TextBlock content={title} variant={variant} size="heading" />
             </div>
           )}
           {subtitle && (
-            <div className="anim-fade-up anim-delay-2">
-              <TextBlock content={subtitle} variant={variant} size="subtitle" className="mt-2" />
+            <div className="anim-fade-up anim-delay-2" style={{ marginTop: "0.6cqw" }}>
+              <TextBlock content={subtitle} variant={variant} size="subtitle" />
             </div>
           )}
         </div>
-        <div className="flex-1 flex gap-8">
+        <div className="flex-1 flex" style={{ gap: "2.5cqw" }}>
           <div
-            className="flex-1 flex flex-col gap-4 anim-fade-up anim-delay-3"
+            className="flex-1 flex flex-col anim-fade-up anim-delay-3"
             style={{
+              gap: "1.25cqw",
               padding: t.spacing.content.gap,
               borderRadius: t.radius.md,
               backgroundColor: vc.surfaceOverlay,
@@ -78,8 +79,9 @@ export function TwoColumnsSlide({ slide, variant }: TwoColumnsSlideProps) {
             {renderComponents(leftComponents)}
           </div>
           <div
-            className="flex-1 flex flex-col gap-4 anim-fade-up anim-delay-5"
+            className="flex-1 flex flex-col anim-fade-up anim-delay-5"
             style={{
+              gap: "1.25cqw",
               padding: t.spacing.content.gap,
               borderRadius: t.radius.md,
               backgroundColor: vc.surfaceOverlay,

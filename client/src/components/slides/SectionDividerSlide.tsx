@@ -46,12 +46,12 @@ export function SectionDividerSlide({ slide }: SectionDividerSlideProps) {
             width: layout.lineWidth,
             height: layout.lineHeight,
             backgroundColor: t.colors.primaryLight,
-            marginBottom: "2rem",
+            marginBottom: "2.5cqw",
           }}
         />
         {subtextTag && (
           <div
-            className="mb-4 anim-fade-up anim-delay-1"
+            className="anim-fade-up anim-delay-1"
             style={{
               display: "inline-flex",
               alignSelf: "flex-start",
@@ -64,6 +64,7 @@ export function SectionDividerSlide({ slide }: SectionDividerSlideProps) {
               fontWeight: t.slideLayout.tag.fontWeight,
               letterSpacing: t.slideLayout.tag.letterSpacing,
               textTransform: "uppercase",
+              marginBottom: "1.25cqw",
             }}
           >
             {String(subtextTag.content)}
@@ -88,7 +89,7 @@ export function SectionDividerSlide({ slide }: SectionDividerSlideProps) {
             style={{
               fontSize: layout.subtitleSize,
               color: t.colors.dark.textSecondary,
-              marginTop: "1rem",
+              marginTop: "1.25cqw",
               maxWidth: layout.subtitleMaxWidth,
               lineHeight: 1.5,
             }}

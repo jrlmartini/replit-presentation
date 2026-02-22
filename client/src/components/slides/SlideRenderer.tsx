@@ -49,6 +49,14 @@ function renderByFallback(slide: Slide, fallback: { component: string; variant: 
 }
 
 export function SlideRenderer({ slide }: SlideRendererProps) {
+  return (
+    <div style={{ containerType: "inline-size", width: "100%", height: "100%" }}>
+      {renderSlide(slide)}
+    </div>
+  );
+}
+
+function renderSlide(slide: Slide) {
   switch (slide.type) {
     case "cover":
       return <CoverSlide slide={slide} />;

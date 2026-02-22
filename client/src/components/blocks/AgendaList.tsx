@@ -13,9 +13,9 @@ export function AgendaList({ items, variant = "light", className = "" }: AgendaL
   const vc = getVariantColors(variant);
 
   return (
-    <ol data-testid="agenda-list" className={`flex flex-col gap-4 ${className}`}>
+    <ol data-testid="agenda-list" className={`flex flex-col ${className}`} style={{ gap: "1.25cqw" }}>
       {items.map((item, i) => (
-        <li key={i} className="flex items-center gap-4">
+        <li key={i} className="flex items-center" style={{ gap: "1.25cqw" }}>
           <div
             className="flex items-center justify-center flex-shrink-0"
             style={{

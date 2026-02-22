@@ -29,22 +29,22 @@ export function ContactBlock({ contact, variant = "light", className = "" }: Con
   ].filter(item => item.value);
 
   return (
-    <div data-testid="contact-block" className={`flex flex-col gap-4 ${className}`}>
+    <div data-testid="contact-block" className={`flex flex-col ${className}`} style={{ gap: "1.25cqw" }}>
       {contact.name && (
         <div>
           <p style={{ fontSize: t.typography.subtitle.size, fontWeight: 600, color: vc.text, fontFamily: t.fonts.heading }}>
             {contact.name}
           </p>
           {contact.role && (
-            <p style={{ fontSize: t.typography.caption.size, color: vc.textSecondary, marginTop: "0.25rem" }}>
+            <p style={{ fontSize: t.typography.caption.size, color: vc.textSecondary, marginTop: "0.3cqw" }}>
               {contact.role}
             </p>
           )}
         </div>
       )}
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col" style={{ gap: "0.6cqw" }}>
         {items.map(({ icon: Icon, value }, i) => (
-          <div key={i} className="flex items-center gap-2">
+          <div key={i} className="flex items-center" style={{ gap: "0.6cqw" }}>
             <Icon size={16} style={{ color: vc.accent, flexShrink: 0 }} />
             <span style={{ fontSize: t.typography.caption.size, color: vc.textSecondary }}>{value}</span>
           </div>

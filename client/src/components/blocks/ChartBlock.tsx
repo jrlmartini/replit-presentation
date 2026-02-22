@@ -26,12 +26,13 @@ export function ChartBlock({ data, chartType = "bar", title, unit, variant = "li
     return (
       <div
         data-testid="chart-block-placeholder"
-        className={`flex flex-col items-center justify-center gap-3 rounded-md ${className}`}
+        className={`flex flex-col items-center justify-center rounded-md ${className}`}
         style={{
           backgroundColor: vc.placeholderBg,
           border: `2px dashed ${vc.placeholderBorder}`,
-          padding: "2rem",
-          minHeight: "14rem",
+          padding: "2.5cqw",
+          minHeight: "17.5cqw",
+          gap: "0.95cqw",
         }}
       >
         <BarChart3 size={32} style={{ opacity: 0.4, color: vc.textSecondary }} />
@@ -45,11 +46,11 @@ export function ChartBlock({ data, chartType = "bar", title, unit, variant = "li
   return (
     <div data-testid="chart-block" className={className}>
       {title && (
-        <p style={{ fontSize: t.typography.caption.size, fontWeight: 600, color: vc.textSecondary, marginBottom: "0.75rem" }}>
+        <p style={{ fontSize: t.typography.caption.size, fontWeight: 600, color: vc.textSecondary, marginBottom: "0.95cqw" }}>
           {title} {unit && <span style={{ fontWeight: 400 }}>({unit})</span>}
         </p>
       )}
-      <ResponsiveContainer width="100%" height={220}>
+      <ResponsiveContainer width="100%" height="100%" minHeight={120}>
         {chartType === "line" ? (
           <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" stroke={vc.gridColor} />
