@@ -512,6 +512,16 @@ export function SlideEditor({
           <div className="space-y-3">
             {slide.components.map((comp, i) => (
               <div key={comp.id} className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.03)", border: "1px solid rgba(42,90,72,0.2)" }}>
+                {comp.slot && (
+                  <div className="mb-1">
+                    <span
+                      className="text-[9px] px-1.5 py-0.5 rounded"
+                      style={{ backgroundColor: "rgba(34,168,126,0.15)", color: "#6b9e8c", border: "1px solid rgba(34,168,126,0.2)" }}
+                    >
+                      slot: {comp.slot}
+                    </span>
+                  </div>
+                )}
                 {renderComponentEditor(comp, i)}
               </div>
             ))}

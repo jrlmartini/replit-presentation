@@ -13,8 +13,24 @@ interface AgendaSlideProps {
 export function AgendaSlide({ slide, variant }: AgendaSlideProps) {
   const isDark = variant === "dark";
   const vc = getVariantColors(variant);
-  const title = slide.title || "Agenda";
-  const agendaComp = slide.components?.find(c => c.componentType === "agenda_list");
+
+  const headerComps = slide.components?.filter(c => c.slot === "header") || [];
+  const agendaItemsComps = slide.components?.filter(c => c.slot === "agenda_items") || [];
+
+  const hasSlots = headerComps.length > 0 || agendaItemsComps.length > 0;
+
+  const title = hasSlots
+    ? (headerComps.find(c => c.componentType === "text_block")?.content as string || slide.title || "Agenda")
+    : (slide.title || "Agenda");
+
+  const headerTag = hasSlots
+    ? headerComps.find(c => c.componentType === "tag")
+    : slide.components?.find(c => c.componentType === "tag");
+
+  const agendaComp = hasSlots
+    ? agendaItemsComps.find(c => c.componentType === "agenda_list")
+    : slide.components?.find(c => c.componentType === "agenda_list");
+
   const items = Array.isArray(agendaComp?.content) ? agendaComp.content : [];
 
   return (
@@ -38,6 +54,26 @@ export function AgendaSlide({ slide, variant }: AgendaSlideProps) {
         />
       )}
       <div className="relative z-10 flex flex-col h-full" style={{ padding: "3.5rem 5rem" }}>
+        {headerTag && (
+          <div
+            className="mb-4 anim-fade-up anim-delay-0"
+            style={{
+              display: "inline-flex",
+              alignSelf: "flex-start",
+              padding: t.slideLayout.tag.paddingSm,
+              borderRadius: t.radius.full,
+              backgroundColor: isDark ? t.overlay.darkTagBg : t.overlay.lightTagBg,
+              border: `1px solid ${isDark ? t.overlay.darkTagBorder : t.overlay.lightTagBorder}`,
+              color: isDark ? t.colors.primaryLight : t.colors.primary,
+              fontSize: t.slideLayout.tag.fontSize,
+              fontWeight: t.slideLayout.tag.fontWeight,
+              letterSpacing: t.slideLayout.tag.letterSpacing,
+              textTransform: "uppercase",
+            }}
+          >
+            {String(headerTag.content)}
+          </div>
+        )}
         <div className="flex items-center gap-4 mb-8 anim-fade-up anim-delay-1">
           <div
             className="anim-line-grow anim-delay-1"

@@ -1,5 +1,6 @@
 import type { Slide } from "@shared/schema";
 import { themeConatus, getVariantColors } from "@shared/theme-conatus";
+import { ImageBlock } from "../blocks/ImageBlock";
 
 const t = themeConatus;
 const layout = t.slideLayout.cover;
@@ -10,9 +11,25 @@ interface CoverSlideProps {
 }
 
 export function CoverSlide({ slide }: CoverSlideProps) {
+  const headerComps = slide.components?.filter(c => c.slot === "header") || [];
+  const heroMediaComps = slide.components?.filter(c => c.slot === "hero_media") || [];
+  const metaComps = slide.components?.filter(c => c.slot === "meta") || [];
+
+  const hasSlots = headerComps.length > 0 || heroMediaComps.length > 0 || metaComps.length > 0;
+
+  const tag = hasSlots
+    ? headerComps.find(c => c.componentType === "tag")
+    : slide.components?.find(c => c.componentType === "tag");
+
   const title = slide.title || "[TÍTULO DA APRESENTAÇÃO]";
   const subtitle = slide.subtitle || "";
-  const tag = slide.components?.find(c => c.componentType === "tag");
+
+  const heroImage = hasSlots
+    ? heroMediaComps.find(c => c.componentType === "image_block")
+    : slide.components?.find(c => c.componentType === "image_block");
+
+  const metaText = metaComps.find(c => c.componentType === "text_block");
+  const metaTag = metaComps.find(c => c.componentType === "tag");
 
   return (
     <div
@@ -83,6 +100,14 @@ export function CoverSlide({ slide }: CoverSlideProps) {
             {subtitle}
           </p>
         )}
+        {heroImage && (() => {
+          const imgContent = typeof heroImage.content === "object" ? heroImage.content as { src?: string; alt?: string } : {};
+          return (
+            <div className="mt-4 anim-fade-up anim-delay-3" style={{ maxWidth: "300px" }}>
+              <ImageBlock src={imgContent.src} alt={imgContent.alt} variant="dark" />
+            </div>
+          );
+        })()}
         <div
           className="mt-auto flex items-center gap-3 anim-fade-up anim-delay-5"
           style={{ color: vc.textMuted, fontSize: layout.brandSize }}
@@ -95,6 +120,28 @@ export function CoverSlide({ slide }: CoverSlideProps) {
               backgroundColor: t.colors.primaryLight,
             }}
           />
+          {metaTag && (
+            <span
+              style={{
+                padding: t.slideLayout.tag.paddingSm,
+                borderRadius: t.radius.full,
+                backgroundColor: t.overlay.darkTagBg,
+                border: `1px solid ${t.overlay.darkTagBorder}`,
+                color: t.colors.primaryLight,
+                fontSize: t.slideLayout.tag.fontSize,
+                fontWeight: t.slideLayout.tag.fontWeight,
+                letterSpacing: t.slideLayout.tag.letterSpacing,
+                textTransform: "uppercase",
+              }}
+            >
+              {String(metaTag.content)}
+            </span>
+          )}
+          {metaText && (
+            <span style={{ fontFamily: t.fonts.body, color: vc.textMuted, fontSize: layout.brandSize }}>
+              {String(metaText.content)}
+            </span>
+          )}
           <span style={{ fontFamily: t.fonts.heading, fontWeight: 600, letterSpacing: "0.04em" }}>
             CONATUS AMBIENTAL
           </span>

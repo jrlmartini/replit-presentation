@@ -22,8 +22,11 @@ Sistema gerador de apresentações (slides) em português-BR para a Conatus Ambi
 - **Backward Compatibility**: Tipos legados (light_title_text_or_image, light_two_columns, etc.) mapeados automaticamente para novos tipos semânticos via LEGACY_TYPE_MAP e resolveSlideRendering()
 
 ## Slide Type System
-### Base types (sem layout variant):
-- cover, closing, section_divider, agenda_light, agenda_dark
+### Base types (com layout variant dedicado):
+- cover → cover_standard (slots: header, hero_media, meta)
+- closing → closing_standard (slots: header, main, contact_area)
+- section_divider → section_divider_standard (slots: divider, subtext)
+- agenda_light / agenda_dark → agenda_standard (slots: header, agenda_items)
 
 ### Content types (com layout variant):
 - light_content_layout / dark_content_layout → single_col, two_cols_*, three_cols_*

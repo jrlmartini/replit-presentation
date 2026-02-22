@@ -1,5 +1,6 @@
 import type { Slide } from "@shared/schema";
 import { ContactBlock } from "../blocks/ContactBlock";
+import { ImageBlock } from "../blocks/ImageBlock";
 import { themeConatus, getVariantColors } from "@shared/theme-conatus";
 
 const t = themeConatus;
@@ -11,9 +12,22 @@ interface ClosingSlideProps {
 }
 
 export function ClosingSlide({ slide }: ClosingSlideProps) {
+  const headerComps = slide.components?.filter(c => c.slot === "header") || [];
+  const mainComps = slide.components?.filter(c => c.slot === "main") || [];
+  const contactAreaComps = slide.components?.filter(c => c.slot === "contact_area") || [];
+
+  const hasSlots = headerComps.length > 0 || mainComps.length > 0 || contactAreaComps.length > 0;
+
+  const headerTag = hasSlots
+    ? headerComps.find(c => c.componentType === "tag")
+    : slide.components?.find(c => c.componentType === "tag");
+
   const title = slide.title || "Obrigado";
   const subtitle = slide.subtitle || "";
-  const contactComp = slide.components?.find(c => c.componentType === "contact_block");
+
+  const contactComp = hasSlots
+    ? contactAreaComps.find(c => c.componentType === "contact_block")
+    : slide.components?.find(c => c.componentType === "contact_block");
   const contact = contactComp?.content || {};
 
   return (
@@ -36,6 +50,25 @@ export function ClosingSlide({ slide }: ClosingSlideProps) {
       />
       <div className="absolute top-0 left-0 right-0 h-1 anim-line-grow" style={{ background: t.gradients.progressBar }} />
       <div className="relative z-10 flex flex-col justify-center items-center h-full text-center" style={{ padding: t.spacing.slideLarge.padding }}>
+        {headerTag && (
+          <div
+            className="mb-4 anim-fade-up anim-delay-0"
+            style={{
+              display: "inline-flex",
+              padding: t.slideLayout.tag.paddingMd,
+              borderRadius: t.radius.full,
+              backgroundColor: t.overlay.darkTagBg,
+              border: `1px solid ${t.overlay.darkTagBorder}`,
+              color: t.colors.primaryLight,
+              fontSize: t.slideLayout.tag.fontSizeMd,
+              fontWeight: t.slideLayout.tag.fontWeight,
+              letterSpacing: t.slideLayout.tag.letterSpacing,
+              textTransform: "uppercase",
+            }}
+          >
+            {String(headerTag.content)}
+          </div>
+        )}
         <h1
           className="anim-cover-title anim-delay-1"
           style={{
@@ -52,6 +85,24 @@ export function ClosingSlide({ slide }: ClosingSlideProps) {
           <p className="anim-fade-up anim-delay-2" style={{ fontSize: layout.subtitleSize, color: vc.textSecondary, marginBottom: "2.5rem", maxWidth: layout.subtitleMaxWidth }}>
             {subtitle}
           </p>
+        )}
+        {mainComps.length > 0 && (
+          <div className="mb-4 anim-fade-up anim-delay-2 space-y-2">
+            {mainComps.map((comp) => {
+              if (comp.componentType === "text_block") {
+                return (
+                  <p key={comp.id} style={{ fontSize: layout.subtitleSize, color: vc.textSecondary }}>
+                    {String(comp.content)}
+                  </p>
+                );
+              }
+              if (comp.componentType === "image_block") {
+                const imgContent = typeof comp.content === "object" ? comp.content as { src?: string; alt?: string } : {};
+                return <div key={comp.id} style={{ maxWidth: "200px" }}><ImageBlock src={imgContent.src} alt={imgContent.alt} variant="dark" /></div>;
+              }
+              return null;
+            })}
+          </div>
         )}
         <div
           className="mt-4 anim-line-grow anim-delay-3"

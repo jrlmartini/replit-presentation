@@ -148,11 +148,11 @@ Se houver conflito entre "ficar bonito" e "ficar claro", priorizar clareza.
 
 ## SISTEMA DE TIPOS DE SLIDE
 
-### Tipos base (sem layout variant):
-- cover: Capa da apresentação
-- closing: Slide de encerramento com contato
-- section_divider: Separador de seção
-- agenda_light / agenda_dark: Índice da apresentação
+### Tipos base (com layout variant dedicado):
+- cover: Capa da apresentação (layout: cover_standard)
+- closing: Slide de encerramento com contato (layout: closing_standard)
+- section_divider: Separador de seção (layout: section_divider_standard)
+- agenda_light / agenda_dark: Índice da apresentação (layout: agenda_standard)
 
 ### Tipos de conteúdo com layout variant:
 - light_content_layout / dark_content_layout: Layout flexível de conteúdo
@@ -175,6 +175,18 @@ Se houver conflito entre "ficar bonito" e "ficar claro", priorizar clareza.
   Variants possíveis:
   - chart_left_text_right: gráfico à esquerda, texto à direita
   - text_left_chart_right: texto à esquerda, gráfico à direita
+
+## TABELA DE RECOMENDAÇÃO DE SLIDE POR SITUAÇÃO
+| Situação | SlideType recomendado | LayoutVariant |
+| Uma ideia principal com texto ou imagem | light_content_layout / dark_content_layout | single_col |
+| Comparação de 2 frentes (problema x solução) | light_content_layout / dark_content_layout | two_cols_50_50 |
+| Conteúdo com ênfase em uma coluna | light_content_layout / dark_content_layout | two_cols_60_40 ou two_cols_40_60 |
+| Três blocos equivalentes | light_content_layout / dark_content_layout | three_cols_equal |
+| Três blocos com destaque em um lado | light_content_layout / dark_content_layout | three_cols_emphasis_left ou three_cols_emphasis_center |
+| Três pilares / capacidades / benefícios | light_icon_features / dark_icon_features | icons_3_horizontal |
+| Quatro pilares / capacidades / benefícios | light_icon_features / dark_icon_features | icons_4_horizontal |
+| Frase de efeito + 3 pontos com ícones | light_icon_features / dark_icon_features | icons_3_vertical_with_quote |
+| Dados + interpretação textual | light_chart_text / dark_chart_text | chart_left_text_right ou text_left_chart_right |
 
 ## GUIA DE SELEÇÃO DE SLIDES
 Antes de escolher cada slide, pergunte: "Qual é a função deste slide na narrativa?"
@@ -229,13 +241,22 @@ Responda APENAS com JSON válido no formato:
   "slides": [
     {
       "slideType": "tipo_do_slide",
-      "layoutVariant": "variant (opcional, apenas para tipos com layout)",
+      "layoutVariant": "variant (obrigatório para todos os tipos)",
       "title": "título do slide",
       "intent": "propósito em 1 frase",
       "keyPoints": ["ponto 1", "ponto 2"]
     }
   ]
-}`;
+}
+
+Exemplos de layoutVariant por tipo:
+- cover → "cover_standard"
+- closing → "closing_standard"
+- section_divider → "section_divider_standard"
+- agenda_light / agenda_dark → "agenda_standard"
+- light_content_layout / dark_content_layout → "single_col", "two_cols_50_50", etc.
+- light_icon_features / dark_icon_features → "icons_3_horizontal", "icons_4_horizontal", etc.
+- light_chart_text / dark_chart_text → "chart_left_text_right", "text_left_chart_right"`;
 
   const userPrompt = `Briefing:
 - Título: ${briefing.title}
@@ -374,22 +395,78 @@ Se exceder: (1) resumir, (2) dividir em bullets, (3) dividir em dois slides.
 - icon_feature_item: { content: { iconName: "nome-do-icone-lucide", title: "Título do Feature", text: "Descrição breve" } }
 
 ## SISTEMA DE LAYOUT E SLOTS
+O campo "layout" é obrigatório para TODOS os slides (incluindo tipos base).
+
+### Para slides base:
+- cover → layout: { variant: "cover_standard" } → slots: "header" (text_block, tag), "hero_media" (image_block), "meta" (text_block, tag)
+- closing → layout: { variant: "closing_standard" } → slots: "header" (text_block, tag), "main" (text_block, image_block), "contact_area" (contact_block, text_block)
+- section_divider → layout: { variant: "section_divider_standard" } → slots: "divider" (divider_label, text_block), "subtext" (text_block, tag)
+- agenda_light / agenda_dark → layout: { variant: "agenda_standard" } → slots: "header" (text_block, tag), "agenda_items" (agenda_list)
 
 ### Para slides *_content_layout:
-O campo "layout" é obrigatório e define a disposição dos componentes.
 Layout variants e seus slots:
-- single_col → slots: "header" (tag opcional), "main" (text_block, bullet_list, image_block)
+- single_col → slots: "header" (text_block, tag), "main" (text_block, bullet_list, image_block, tag)
 - two_cols_50_50 / two_cols_60_40 / two_cols_40_60 → slots: "header", "col_1", "col_2"
 - three_cols_equal / three_cols_emphasis_left / three_cols_emphasis_center → slots: "header", "col_1", "col_2", "col_3"
 
 ### Para slides *_icon_features:
-- icons_3_horizontal / icons_4_horizontal → slots: "header" (tag opcional), "icon_items" (icon_feature_item)
+- icons_3_horizontal / icons_4_horizontal → slots: "header" (text_block, tag), "icon_items" (icon_feature_item)
 - icons_3_vertical_with_quote → slots: "header", "left_emphasis" (text_block), "right_icon_items" (icon_feature_item)
 
 ### Para slides *_chart_text:
-- chart_left_text_right / text_left_chart_right → slots: "header", "chart_area" (chart_block), "text_area" (text_block, bullet_list)
+- chart_left_text_right / text_left_chart_right → slots: "header" (text_block, tag), "chart_area" (chart_block), "text_area" (text_block, bullet_list)
 
 ## EXEMPLOS DE ESTRUTURA
+
+### Exemplo: cover com cover_standard
+{
+  "id": "slide-1",
+  "type": "cover",
+  "layout": { "variant": "cover_standard" },
+  "title": "Plano de Gestão Ambiental",
+  "subtitle": "Diagnóstico, planejamento e implementação",
+  "components": [
+    { "id": "comp-1-1", "componentType": "tag", "slot": "header", "content": "CONATUS AMBIENTAL" },
+    { "id": "comp-1-2", "componentType": "text_block", "slot": "meta", "content": "2025" }
+  ]
+}
+
+### Exemplo: closing com closing_standard
+{
+  "id": "slide-10",
+  "type": "closing",
+  "layout": { "variant": "closing_standard" },
+  "title": "Obrigado",
+  "subtitle": "Estamos à disposição",
+  "components": [
+    { "id": "comp-10-1", "componentType": "text_block", "slot": "header", "content": "Obrigado" },
+    { "id": "comp-10-2", "componentType": "contact_block", "slot": "contact_area", "content": { "name": "Conatus Ambiental", "email": "[INSERIR EMAIL]", "phone": "[INSERIR TELEFONE]", "website": "[INSERIR SITE]" } }
+  ]
+}
+
+### Exemplo: section_divider com section_divider_standard
+{
+  "id": "slide-4",
+  "type": "section_divider",
+  "layout": { "variant": "section_divider_standard" },
+  "title": "Diagnóstico Ambiental",
+  "components": [
+    { "id": "comp-4-1", "componentType": "divider_label", "slot": "divider", "content": "Diagnóstico Ambiental" },
+    { "id": "comp-4-2", "componentType": "text_block", "slot": "subtext", "content": "Análise das condições ambientais atuais" }
+  ]
+}
+
+### Exemplo: agenda_light com agenda_standard
+{
+  "id": "slide-2",
+  "type": "agenda_light",
+  "layout": { "variant": "agenda_standard" },
+  "title": "Agenda",
+  "components": [
+    { "id": "comp-2-1", "componentType": "text_block", "slot": "header", "content": "Agenda" },
+    { "id": "comp-2-2", "componentType": "agenda_list", "slot": "agenda_items", "content": ["Contexto", "Diagnóstico", "Proposta", "Cronograma", "Encerramento"] }
+  ]
+}
 
 ### Exemplo: light_content_layout com two_cols_60_40
 {

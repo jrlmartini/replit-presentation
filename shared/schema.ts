@@ -50,6 +50,10 @@ export const slideTypeEnum = z.enum([
 export type SlideType = z.infer<typeof slideTypeEnum>;
 
 export const layoutVariantEnum = z.enum([
+  "cover_standard",
+  "closing_standard",
+  "section_divider_standard",
+  "agenda_standard",
   "single_col",
   "two_cols_50_50",
   "two_cols_60_40",
@@ -69,6 +73,12 @@ export type LayoutVariant = z.infer<typeof layoutVariantEnum>;
 export const slotEnum = z.enum([
   "header",
   "main",
+  "hero_media",
+  "meta",
+  "contact_area",
+  "divider",
+  "subtext",
+  "agenda_items",
   "col_1",
   "col_2",
   "col_3",

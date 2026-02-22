@@ -9,8 +9,24 @@ interface SectionDividerSlideProps {
 }
 
 export function SectionDividerSlide({ slide }: SectionDividerSlideProps) {
-  const title = slide.title || "[TÍTULO DA SEÇÃO]";
-  const subtitle = slide.subtitle || "";
+  const dividerComps = slide.components?.filter(c => c.slot === "divider") || [];
+  const subtextComps = slide.components?.filter(c => c.slot === "subtext") || [];
+
+  const hasSlots = dividerComps.length > 0 || subtextComps.length > 0;
+
+  const title = hasSlots
+    ? (dividerComps.find(c => c.componentType === "divider_label")?.content as string
+      || dividerComps.find(c => c.componentType === "text_block")?.content as string
+      || slide.title || "[TÍTULO DA SEÇÃO]")
+    : (slide.title || "[TÍTULO DA SEÇÃO]");
+
+  const subtitle = hasSlots
+    ? (subtextComps.find(c => c.componentType === "text_block")?.content as string || slide.subtitle || "")
+    : (slide.subtitle || "");
+
+  const subtextTag = hasSlots
+    ? subtextComps.find(c => c.componentType === "tag")
+    : null;
 
   return (
     <div
@@ -40,6 +56,26 @@ export function SectionDividerSlide({ slide }: SectionDividerSlideProps) {
             marginBottom: "2rem",
           }}
         />
+        {subtextTag && (
+          <div
+            className="mb-4 anim-fade-up anim-delay-1"
+            style={{
+              display: "inline-flex",
+              alignSelf: "flex-start",
+              padding: t.slideLayout.tag.paddingSm,
+              borderRadius: t.radius.full,
+              backgroundColor: t.overlay.darkTagBg,
+              border: `1px solid ${t.overlay.darkTagBorder}`,
+              color: t.colors.primaryLight,
+              fontSize: t.slideLayout.tag.fontSize,
+              fontWeight: t.slideLayout.tag.fontWeight,
+              letterSpacing: t.slideLayout.tag.letterSpacing,
+              textTransform: "uppercase",
+            }}
+          >
+            {String(subtextTag.content)}
+          </div>
+        )}
         <h2
           className="anim-cover-title anim-delay-2"
           style={{
