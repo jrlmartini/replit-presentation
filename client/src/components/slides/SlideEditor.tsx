@@ -112,7 +112,7 @@ export function SlideEditor({
         return (
           <div key={comp.id} className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label className="text-xs" style={{ color: "#8fa8b8" }}>Texto</Label>
+              <Label className="text-xs" style={{ color: "#7a9eb5" }}>Texto</Label>
               <Button variant="ghost" size="icon" onClick={() => removeComponent(compIndex)} className="h-6 w-6">
                 <Trash2 size={12} style={{ color: "#ef4444" }} />
               </Button>
@@ -122,7 +122,7 @@ export function SlideEditor({
               value={typeof comp.content === "string" ? comp.content : ""}
               onChange={(e) => updateComponent(compIndex, e.target.value)}
               className="min-h-[80px] text-sm"
-              style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "#2a445966" }}
+              style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "rgba(255,255,255,0.06)" }}
             />
           </div>
         );
@@ -133,7 +133,7 @@ export function SlideEditor({
         return (
           <div key={comp.id} className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label className="text-xs" style={{ color: "#8fa8b8" }}>
+              <Label className="text-xs" style={{ color: "#7a9eb5" }}>
                 {comp.componentType === "bullet_list" ? "Lista" : "Agenda"}
               </Label>
               <Button variant="ghost" size="icon" onClick={() => removeComponent(compIndex)} className="h-6 w-6">
@@ -142,7 +142,7 @@ export function SlideEditor({
             </div>
             {items.map((item: string, i: number) => (
               <div key={i} className="flex items-center gap-1">
-                <span className="text-xs w-5 text-center" style={{ color: "#6889a0" }}>{i + 1}</span>
+                <span className="text-xs w-5 text-center" style={{ color: "#7a9eb5" }}>{i + 1}</span>
                 <Input
                   data-testid={`editor-list-item-${compIndex}-${i}`}
                   value={item}
@@ -152,7 +152,7 @@ export function SlideEditor({
                     updateComponent(compIndex, newItems);
                   }}
                   className="text-sm h-8"
-                  style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "#2a445966" }}
+                  style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "rgba(255,255,255,0.06)" }}
                 />
                 <Button
                   variant="ghost" size="icon" className="h-6 w-6 flex-shrink-0"
@@ -169,7 +169,7 @@ export function SlideEditor({
               variant="ghost" size="sm"
               onClick={() => updateComponent(compIndex, [...items, "Novo item"])}
               className="w-full h-7 text-xs"
-              style={{ color: "#3b5e73", borderColor: "#3b5e734D", border: "1px dashed" }}
+              style={{ color: "#2b93ac", borderColor: "#2b93ac4D", border: "1px dashed" }}
             >
               <Plus size={12} className="mr-1" /> Adicionar item
             </Button>
@@ -185,13 +185,13 @@ export function SlideEditor({
         return (
           <div key={comp.id} className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label className="text-xs" style={{ color: "#8fa8b8" }}>Imagem</Label>
+              <Label className="text-xs" style={{ color: "#7a9eb5" }}>Imagem</Label>
               <Button variant="ghost" size="icon" onClick={() => removeComponent(compIndex)} className="h-6 w-6">
                 <Trash2 size={12} style={{ color: "#ef4444" }} />
               </Button>
             </div>
             {hasImage && (
-              <div className="rounded overflow-hidden" style={{ border: "1px solid #2a44594D" }}>
+              <div className="rounded overflow-hidden" style={{ border: "1px solid rgba(255,255,255,0.05)" }}>
                 <img src={imgContent.src} alt={imgContent.alt} className="w-full h-24 object-cover" />
               </div>
             )}
@@ -201,7 +201,7 @@ export function SlideEditor({
               onChange={(e) => updateComponent(compIndex, { ...imgContent, alt: e.target.value })}
               placeholder="Descrição da imagem"
               className="text-sm h-8"
-              style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "#2a445966" }}
+              style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "rgba(255,255,255,0.06)" }}
             />
             <Input
               data-testid={`editor-image-url-${compIndex}`}
@@ -209,7 +209,7 @@ export function SlideEditor({
               onChange={(e) => updateComponent(compIndex, { ...imgContent, src: e.target.value || "[INSERIR IMAGEM]" })}
               placeholder="URL da imagem (ou use IA/upload)"
               className="text-sm h-8"
-              style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "#2a445966" }}
+              style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "rgba(255,255,255,0.06)" }}
             />
             <div className="flex gap-1">
               <label className="flex-1">
@@ -224,7 +224,7 @@ export function SlideEditor({
                 />
                 <div
                   className="flex items-center justify-center gap-1 h-8 rounded cursor-pointer text-xs transition-colors hover:opacity-80"
-                  style={{ backgroundColor: "#2a44594D", color: "#8fa8b8", border: "1px solid #2a445966" }}
+                  style={{ backgroundColor: "rgba(255,255,255,0.05)", color: "#7a9eb5", border: "1px solid rgba(255,255,255,0.06)" }}
                   data-testid={`editor-image-upload-${compIndex}`}
                 >
                   <Upload size={12} /> Upload
@@ -233,7 +233,7 @@ export function SlideEditor({
               <Button
                 variant="ghost" size="sm"
                 className="flex-1 h-8 text-xs"
-                style={{ backgroundColor: "#3b5e7326", color: "#3b5e73", border: "1px solid #3b5e734D" }}
+                style={{ backgroundColor: "#2b93ac26", color: "#2b93ac", border: "1px solid #2b93ac4D" }}
                 onClick={() => {
                   setShowImagePrompt(compIndex);
                   setImagePrompt(imgContent.alt || slide.title || "");
@@ -244,19 +244,19 @@ export function SlideEditor({
               </Button>
             </div>
             {showImagePrompt === compIndex && (
-              <div className="space-y-2 p-2 rounded" style={{ backgroundColor: "#3b5e731A", border: "1px solid #3b5e7333" }}>
+              <div className="space-y-2 p-2 rounded" style={{ backgroundColor: "#2b93ac1A", border: "1px solid #2b93ac33" }}>
                 <Textarea
                   data-testid={`editor-image-prompt-${compIndex}`}
                   value={imagePrompt}
                   onChange={(e) => setImagePrompt(e.target.value)}
                   placeholder="Descreva a imagem que deseja gerar..."
                   className="min-h-[60px] text-sm"
-                  style={{ backgroundColor: "#00000033", color: "#f2f2f2", borderColor: "#3b5e734D" }}
+                  style={{ backgroundColor: "#00000033", color: "#f2f2f2", borderColor: "#2b93ac4D" }}
                 />
                 <div className="flex gap-1">
                   <Button
                     size="sm" className="flex-1 h-7 text-xs"
-                    style={{ backgroundColor: "#3b5e73", color: "#fff" }}
+                    style={{ backgroundColor: "#2b93ac", color: "#fff" }}
                     onClick={() => handleGenerateImage(compIndex)}
                     disabled={generatingImage !== null}
                     data-testid={`editor-image-generate-${compIndex}`}
@@ -270,7 +270,7 @@ export function SlideEditor({
                   <Button
                     variant="ghost" size="sm" className="h-7 text-xs"
                     onClick={() => { setShowImagePrompt(null); setImagePrompt(""); }}
-                    style={{ color: "#6889a0" }}
+                    style={{ color: "#7a9eb5" }}
                   >
                     Cancelar
                   </Button>
@@ -294,20 +294,20 @@ export function SlideEditor({
         return (
           <div key={comp.id} className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label className="text-xs" style={{ color: "#8fa8b8" }}>Contato</Label>
+              <Label className="text-xs" style={{ color: "#7a9eb5" }}>Contato</Label>
               <Button variant="ghost" size="icon" onClick={() => removeComponent(compIndex)} className="h-6 w-6">
                 <Trash2 size={12} style={{ color: "#ef4444" }} />
               </Button>
             </div>
             {fields.map(({ key, label }) => (
               <div key={key}>
-                <Label className="text-[10px]" style={{ color: "#6889a0" }}>{label}</Label>
+                <Label className="text-[10px]" style={{ color: "#7a9eb5" }}>{label}</Label>
                 <Input
                   data-testid={`editor-contact-${key}-${compIndex}`}
                   value={contact[key] || ""}
                   onChange={(e) => updateComponent(compIndex, { ...contact, [key]: e.target.value })}
                   className="text-sm h-7"
-                  style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "#2a445966" }}
+                  style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "rgba(255,255,255,0.06)" }}
                 />
               </div>
             ))}
@@ -322,7 +322,7 @@ export function SlideEditor({
         return (
           <div key={comp.id} className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label className="text-xs" style={{ color: "#8fa8b8" }}>Gráfico</Label>
+              <Label className="text-xs" style={{ color: "#7a9eb5" }}>Gráfico</Label>
               <Button variant="ghost" size="icon" onClick={() => removeComponent(compIndex)} className="h-6 w-6">
                 <Trash2 size={12} style={{ color: "#ef4444" }} />
               </Button>
@@ -333,7 +333,7 @@ export function SlideEditor({
               onChange={(e) => updateComponent(compIndex, { ...chartData, title: e.target.value })}
               placeholder="Título do gráfico"
               className="text-sm h-8"
-              style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "#2a445966" }}
+              style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "rgba(255,255,255,0.06)" }}
             />
             {(chartData.data || []).map((item, i) => (
               <div key={i} className="flex items-center gap-1">
@@ -346,7 +346,7 @@ export function SlideEditor({
                   }}
                   className="text-sm h-7 flex-1"
                   placeholder="Rótulo"
-                  style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "#2a445966" }}
+                  style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "rgba(255,255,255,0.06)" }}
                 />
                 <Input
                   type="number"
@@ -358,7 +358,7 @@ export function SlideEditor({
                   }}
                   className="text-sm h-7 w-20"
                   placeholder="Valor"
-                  style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "#2a445966" }}
+                  style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "rgba(255,255,255,0.06)" }}
                 />
                 <Button variant="ghost" size="icon" className="h-6 w-6"
                   onClick={() => {
@@ -374,7 +374,7 @@ export function SlideEditor({
               variant="ghost" size="sm"
               onClick={() => updateComponent(compIndex, { ...chartData, data: [...(chartData.data || []), { name: "Novo", value: 0 }] })}
               className="w-full h-7 text-xs"
-              style={{ color: "#3b5e73", borderColor: "#3b5e734D", border: "1px dashed" }}
+              style={{ color: "#2b93ac", borderColor: "#2b93ac4D", border: "1px dashed" }}
             >
               <Plus size={12} className="mr-1" /> Adicionar dado
             </Button>
@@ -389,7 +389,7 @@ export function SlideEditor({
         return (
           <div key={comp.id} className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label className="text-xs" style={{ color: "#8fa8b8" }}>Feature com Ícone</Label>
+              <Label className="text-xs" style={{ color: "#7a9eb5" }}>Feature com Ícone</Label>
               <Button variant="ghost" size="icon" onClick={() => removeComponent(compIndex)} className="h-6 w-6">
                 <Trash2 size={12} style={{ color: "#ef4444" }} />
               </Button>
@@ -400,7 +400,7 @@ export function SlideEditor({
               onChange={(e) => updateComponent(compIndex, { ...iconContent, iconName: e.target.value })}
               placeholder="Nome do ícone (ex: shield-check, leaf)"
               className="text-sm h-8"
-              style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "#2a445966" }}
+              style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "rgba(255,255,255,0.06)" }}
             />
             <Input
               data-testid={`editor-icon-title-${compIndex}`}
@@ -408,7 +408,7 @@ export function SlideEditor({
               onChange={(e) => updateComponent(compIndex, { ...iconContent, title: e.target.value })}
               placeholder="Título do feature"
               className="text-sm h-8"
-              style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "#2a445966" }}
+              style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "rgba(255,255,255,0.06)" }}
             />
             <Textarea
               data-testid={`editor-icon-text-${compIndex}`}
@@ -416,7 +416,7 @@ export function SlideEditor({
               onChange={(e) => updateComponent(compIndex, { ...iconContent, text: e.target.value })}
               placeholder="Descrição do feature"
               className="min-h-[50px] text-sm"
-              style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "#2a445966" }}
+              style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "rgba(255,255,255,0.06)" }}
             />
           </div>
         );
@@ -427,7 +427,7 @@ export function SlideEditor({
         return (
           <div key={comp.id} className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label className="text-xs" style={{ color: "#8fa8b8" }}>
+              <Label className="text-xs" style={{ color: "#7a9eb5" }}>
                 {comp.componentType === "tag" ? "Tag" : "Rótulo"}
               </Label>
               <Button variant="ghost" size="icon" onClick={() => removeComponent(compIndex)} className="h-6 w-6">
@@ -439,7 +439,7 @@ export function SlideEditor({
               value={typeof comp.content === "string" ? comp.content : ""}
               onChange={(e) => updateComponent(compIndex, e.target.value)}
               className="text-sm h-8"
-              style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "#2a445966" }}
+              style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "rgba(255,255,255,0.06)" }}
             />
           </div>
         );
@@ -465,58 +465,58 @@ export function SlideEditor({
       className="flex flex-col h-full"
       style={{
         backgroundColor: "#03131e",
-        borderLeft: "1px solid #2a445966",
+        borderLeft: "1px solid rgba(255,255,255,0.06)",
         width: "360px",
         minWidth: "360px",
       }}
     >
-      <div className="flex items-center justify-between p-3" style={{ borderBottom: "1px solid #2a44594D" }}>
+      <div className="flex items-center justify-between p-3" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
         <h3 style={{ color: "#f2f2f2", fontSize: "0.875rem", fontWeight: 600 }}>
           Editar Slide {slideIndex + 1}
         </h3>
         <div className="flex items-center gap-1">
-          {isSaving && <Loader2 size={14} className="animate-spin" style={{ color: "#3b5e73" }} />}
+          {isSaving && <Loader2 size={14} className="animate-spin" style={{ color: "#2b93ac" }} />}
           <Button variant="ghost" size="icon" onClick={onClose} className="h-7 w-7" data-testid="button-close-editor">
-            <X size={16} style={{ color: "#8fa8b8" }} />
+            <X size={16} style={{ color: "#7a9eb5" }} />
           </Button>
         </div>
       </div>
 
       <div className="flex-1 overflow-y-auto p-3 space-y-4">
         <div className="space-y-2">
-          <Label className="text-xs" style={{ color: "#8fa8b8" }}>Título do Slide</Label>
+          <Label className="text-xs" style={{ color: "#7a9eb5" }}>Título do Slide</Label>
           <Input
             data-testid="editor-slide-title"
             value={slide.title || ""}
             onChange={(e) => updateSlideField("title", e.target.value)}
             className="text-sm"
-            style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "#2a445966" }}
+            style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "rgba(255,255,255,0.06)" }}
           />
         </div>
 
         <div className="space-y-2">
-          <Label className="text-xs" style={{ color: "#8fa8b8" }}>Subtítulo</Label>
+          <Label className="text-xs" style={{ color: "#7a9eb5" }}>Subtítulo</Label>
           <Input
             data-testid="editor-slide-subtitle"
             value={slide.subtitle || ""}
             onChange={(e) => updateSlideField("subtitle", e.target.value)}
             className="text-sm"
-            style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "#2a445966" }}
+            style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "rgba(255,255,255,0.06)" }}
           />
         </div>
 
-        <div style={{ borderTop: "1px solid #2a445933", paddingTop: "0.75rem" }}>
-          <Label className="text-xs" style={{ color: "#8fa8b8", marginBottom: "0.5rem", display: "block" }}>
+        <div style={{ borderTop: "1px solid rgba(255,255,255,0.04)", paddingTop: "0.75rem" }}>
+          <Label className="text-xs" style={{ color: "#7a9eb5", marginBottom: "0.5rem", display: "block" }}>
             Componentes ({slide.components.length})
           </Label>
           <div className="space-y-3">
             {slide.components.map((comp, i) => (
-              <div key={comp.id} className="p-2 rounded" style={{ backgroundColor: "#FFFFFF08", border: "1px solid #2a445933" }}>
+              <div key={comp.id} className="p-2 rounded" style={{ backgroundColor: "#FFFFFF08", border: "1px solid rgba(255,255,255,0.04)" }}>
                 {comp.slot && (
                   <div className="mb-1">
                     <span
                       className="text-[9px] px-1.5 py-0.5 rounded"
-                      style={{ backgroundColor: "#3b5e7326", color: "#6889a0", border: "1px solid #3b5e7333" }}
+                      style={{ backgroundColor: "#2b93ac26", color: "#7a9eb5", border: "1px solid #2b93ac33" }}
                     >
                       slot: {comp.slot}
                     </span>
@@ -528,8 +528,8 @@ export function SlideEditor({
           </div>
         </div>
 
-        <div style={{ borderTop: "1px solid #2a445933", paddingTop: "0.75rem" }}>
-          <Label className="text-xs" style={{ color: "#6889a0", marginBottom: "0.5rem", display: "block" }}>
+        <div style={{ borderTop: "1px solid rgba(255,255,255,0.04)", paddingTop: "0.75rem" }}>
+          <Label className="text-xs" style={{ color: "#7a9eb5", marginBottom: "0.5rem", display: "block" }}>
             Adicionar Componente
           </Label>
           <div className="flex flex-wrap gap-1">
@@ -539,7 +539,7 @@ export function SlideEditor({
                 variant="ghost" size="sm"
                 onClick={() => addComponent(type)}
                 className="h-7 text-xs"
-                style={{ color: "#3b5e73", border: "1px solid #3b5e7333" }}
+                style={{ color: "#2b93ac", border: "1px solid #2b93ac33" }}
                 data-testid={`editor-add-${type}`}
               >
                 <Plus size={10} className="mr-1" /> {label}
@@ -549,14 +549,14 @@ export function SlideEditor({
         </div>
 
         <div className="space-y-2">
-          <Label className="text-xs" style={{ color: "#8fa8b8" }}>Notas do Slide</Label>
+          <Label className="text-xs" style={{ color: "#7a9eb5" }}>Notas do Slide</Label>
           <Textarea
             data-testid="editor-slide-notes"
             value={slide.notes || ""}
             onChange={(e) => updateSlideField("notes", e.target.value)}
             placeholder="Notas de apresentação (não visíveis no slide)"
             className="min-h-[60px] text-sm"
-            style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "#2a445966" }}
+            style={{ backgroundColor: "#FFFFFF0D", color: "#f2f2f2", borderColor: "rgba(255,255,255,0.06)" }}
           />
         </div>
       </div>

@@ -41,31 +41,38 @@ export function DeckUnlock({ deckId, deckTitle, onUnlock }: DeckUnlockProps) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
+    <div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden">
       <div
-        className="absolute inset-0 opacity-15"
+        className="absolute inset-0"
+        style={{
+          background: "radial-gradient(ellipse at 50% 0%, hsl(199 60% 15% / 0.4) 0%, transparent 60%)",
+        }}
+      />
+      <div
+        className="absolute inset-0 opacity-10"
         style={{
           backgroundImage: "url(/images/bg-cover.png)",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       />
-      <div className="relative z-10 w-full max-w-md p-8 rounded-lg bg-card/80 border border-border backdrop-blur-md">
+
+      <div className="relative z-10 w-full max-w-md p-8 rounded-2xl bg-card/80 border border-white/[0.08] backdrop-blur-xl shadow-2xl shadow-black/40">
         <div className="flex flex-col items-center mb-8">
           <div
-            className="flex items-center justify-center mb-4 rounded-full bg-primary/15 border-2 border-primary/30"
+            className="flex items-center justify-center mb-5 rounded-2xl bg-primary/15 border border-primary/25 shadow-lg shadow-primary/10"
             style={{ width: "3.5rem", height: "3.5rem" }}
           >
             <Lock size={22} className="text-primary" />
           </div>
           <h2
-            className="text-foreground"
-            style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1.375rem", fontWeight: 700, marginBottom: "0.375rem" }}
+            className="text-foreground font-bold"
+            style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1.375rem", marginBottom: "0.375rem" }}
           >
             Apresentação Protegida
           </h2>
           {deckTitle && (
-            <p className="text-muted-foreground" style={{ fontSize: "0.875rem", textAlign: "center" }}>
+            <p className="text-muted-foreground text-sm text-center">
               {deckTitle}
             </p>
           )}
@@ -79,21 +86,21 @@ export function DeckUnlock({ deckId, deckTitle, onUnlock }: DeckUnlockProps) {
               placeholder="Digite a senha"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="bg-secondary/50 border-border text-foreground"
+              className="h-11"
             />
             <button
               type="button"
-              className="absolute right-3 top-1/2 -translate-y-1/2"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
               onClick={() => setShowPassword(!showPassword)}
             >
-              {showPassword ? <EyeOff size={16} className="text-muted-foreground" /> : <Eye size={16} className="text-muted-foreground" />}
+              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
             </button>
           </div>
           <Button
             type="submit"
             data-testid="button-unlock"
             disabled={unlockMutation.isPending || password.length < 4}
-            className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+            className="w-full h-11 bg-primary text-primary-foreground hover:bg-primary/90 shadow-md shadow-primary/25 rounded-xl font-semibold"
           >
             {unlockMutation.isPending ? (
               <Loader2 size={16} className="mr-2 animate-spin" />
