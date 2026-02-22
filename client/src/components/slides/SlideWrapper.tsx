@@ -23,21 +23,13 @@ export function SlideWrapper({ slide, variant, backgroundImage, children, classN
         aspectRatio: "16/9",
         fontFamily: t.fonts.body,
         color: vc.text,
-        background: vc.gradient,
+        backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        background: backgroundImage ? undefined : vc.gradient,
         overflow: "hidden",
       }}
     >
-      {backgroundImage && (
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url(${backgroundImage})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            opacity: isDark ? t.backgrounds.closing.opacity : t.backgrounds.light.opacity,
-          }}
-        />
-      )}
       <div className="relative z-10 flex flex-col h-full" style={{ padding: t.spacing.slide.padding }}>
         {children}
       </div>

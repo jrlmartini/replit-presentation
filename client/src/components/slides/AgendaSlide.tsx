@@ -38,21 +38,12 @@ export function AgendaSlide({ slide, variant }: AgendaSlideProps) {
       data-testid={`slide-${slide.id}`}
       className="relative w-full h-full flex flex-col"
       style={{
-        background: vc.gradient,
+        backgroundImage: `url(${isDark ? t.backgrounds.dark.image : t.backgrounds.light.image})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         overflow: "hidden",
       }}
     >
-      {isDark && (
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url(${t.backgrounds.darkStrong.image})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            opacity: t.backgrounds.darkStrong.opacity,
-          }}
-        />
-      )}
       <div className="relative z-10 flex flex-col h-full" style={{ padding: "3.5rem 5rem" }}>
         {headerTag && (
           <div

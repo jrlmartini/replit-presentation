@@ -36,19 +36,12 @@ export function CoverSlide({ slide }: CoverSlideProps) {
       data-testid={`slide-${slide.id}`}
       className="relative w-full h-full flex flex-col"
       style={{
-        background: t.gradients.coverBg,
+        backgroundImage: `url(${t.backgrounds.cover.image})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         overflow: "hidden",
       }}
     >
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: `url(${t.backgrounds.cover.image})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          opacity: t.backgrounds.cover.opacity,
-        }}
-      />
       <div className="absolute bottom-0 left-0 right-0 h-1 anim-line-grow anim-delay-6" style={{ background: t.gradients.progressBar }} />
       <div className="relative z-10 flex flex-col justify-center h-full" style={{ padding: t.spacing.slideLarge.padding }}>
         {tag && (

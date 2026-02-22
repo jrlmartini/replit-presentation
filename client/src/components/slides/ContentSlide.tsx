@@ -88,30 +88,13 @@ export function ContentSlide({ slide, variant, layoutVariant }: ContentSlideProp
     <div
       data-testid={`slide-${slide.id}`}
       className="relative w-full h-full flex flex-col"
-      style={{ background: vc.gradient, overflow: "hidden" }}
+      style={{
+        backgroundImage: `url(${isDark ? t.backgrounds.dark.image : t.backgrounds.light.image})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        overflow: "hidden",
+      }}
     >
-      {isDark && (
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url(${t.backgrounds.dark.image})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            opacity: t.backgrounds.dark.opacity,
-          }}
-        />
-      )}
-      {!isDark && (
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url(${t.backgrounds.light.image})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            opacity: t.backgrounds.light.opacity,
-          }}
-        />
-      )}
       <div className="absolute left-0 top-0 bottom-0 w-1" style={{ backgroundColor: vc.accent }} />
       <div className="relative z-10 flex flex-col h-full" style={{ padding: t.spacing.slide.padding }}>
         <div className="mb-6">

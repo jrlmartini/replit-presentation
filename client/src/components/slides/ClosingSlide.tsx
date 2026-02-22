@@ -35,19 +35,12 @@ export function ClosingSlide({ slide }: ClosingSlideProps) {
       data-testid={`slide-${slide.id}`}
       className="relative w-full h-full flex flex-col"
       style={{
-        background: t.gradients.closingBg,
+        backgroundImage: `url(${t.backgrounds.closing.image})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         overflow: "hidden",
       }}
     >
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: `url(${t.backgrounds.closing.image})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          opacity: t.backgrounds.closing.opacity,
-        }}
-      />
       <div className="absolute top-0 left-0 right-0 h-1 anim-line-grow" style={{ background: t.gradients.progressBar }} />
       <div className="relative z-10 flex flex-col justify-center items-center h-full text-center" style={{ padding: t.spacing.slideLarge.padding }}>
         {headerTag && (

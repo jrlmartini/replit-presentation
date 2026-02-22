@@ -33,19 +33,12 @@ export function SectionDividerSlide({ slide }: SectionDividerSlideProps) {
       data-testid={`slide-${slide.id}`}
       className="relative w-full h-full flex flex-col"
       style={{
-        background: t.gradients.sectionBg,
+        backgroundImage: `url(${t.backgrounds.section.image})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         overflow: "hidden",
       }}
     >
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: `url(${t.backgrounds.section.image})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          opacity: t.backgrounds.section.opacity,
-        }}
-      />
       <div className="relative z-10 flex flex-col justify-center h-full" style={{ padding: t.spacing.slideLarge.padding }}>
         <div
           className="anim-line-grow anim-delay-1"

@@ -46,21 +46,12 @@ export function TwoColumnsSlide({ slide, variant }: TwoColumnsSlideProps) {
       data-testid={`slide-${slide.id}`}
       className="relative w-full h-full flex flex-col"
       style={{
-        background: vc.gradient,
+        backgroundImage: `url(${isDark ? t.backgrounds.dark.image : t.backgrounds.light.image})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         overflow: "hidden",
       }}
     >
-      {isDark && (
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url(${t.backgrounds.dark.image})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            opacity: t.backgrounds.dark.opacity,
-          }}
-        />
-      )}
       <div className="relative z-10 flex flex-col h-full" style={{ padding: t.spacing.slide.padding }}>
         <div className="mb-6">
           {title && (
