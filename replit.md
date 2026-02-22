@@ -7,6 +7,7 @@ Sistema gerador de apresentações (slides) em português-BR para a Conatus Ambi
 - **Frontend**: React + Vite + TanStack Query + Wouter + Tailwind CSS + shadcn/ui
 - **Backend**: Express.js + Drizzle ORM + PostgreSQL (pg driver)
 - **LLM**: OpenAI via Replit AI Integrations (gpt-5-mini para texto, gpt-image-1 para imagens)
+- **Integrações ativas**: apenas `server/replit_integrations/image` no backend atual
 - **Auth**: Senha por deck (bcryptjs), token de acesso temporário (1h)
 - **Format**: 16:9 fixo, idioma pt-BR
 - **Responsive Scaling**: Container queries (cqw units) — all slide typography/spacing scales proportionally with container width. Reference: 1280px = 1cqw = 12.8px. SlideRenderer wraps content in container-type: inline-size.
@@ -63,8 +64,6 @@ server/
   llm-pipeline.ts        - LLM planner + composer + image generation pipeline (with layout variant support)
   replit_integrations/
     image/               - OpenAI gpt-image-1 integration (client.ts, routes.ts)
-    batch/               - Batch processing utilities
-    chat/                - Chat integration (not used directly)
 
 client/src/
   pages/

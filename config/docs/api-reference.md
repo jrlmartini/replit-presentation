@@ -107,3 +107,10 @@ Gera um novo deck completo a partir de um briefing. Executa o pipeline LLM (plan
 - Token gerado via `POST /api/deck/:id/unlock`
 - Token expira em 1 hora
 - Token armazenado no `localStorage` do navegador como `deck-token-<id>`
+
+
+---
+
+## Endpoints desativados
+
+As integrações de chat (`/api/conversations*`) e áudio/voz não fazem parte da arquitetura ativa e foram removidas do backend.
