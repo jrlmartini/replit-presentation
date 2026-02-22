@@ -95,7 +95,7 @@ export default function Home() {
                 >
                   <div
                     className="h-32 relative"
-                    style={{ background: "linear-gradient(135deg, #0a1f17, #143d2e, #1a5040)" }}
+                    style={{ background: "linear-gradient(135deg, #0a1520, #132a3d, #1a3a50)" }}
                   >
                     <div
                       className="absolute inset-0"
