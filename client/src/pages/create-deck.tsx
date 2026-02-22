@@ -84,11 +84,8 @@ export default function CreateDeck() {
   };
 
   return (
-    <div className="min-h-screen" style={{ background: "linear-gradient(135deg, #f5faf8 0%, #edf6f2 100%)" }}>
-      <header
-        className="border-b"
-        style={{ borderColor: "#c8e0d5", backgroundColor: "rgba(255,255,255,0.8)", backdropFilter: "blur(10px)" }}
-      >
+    <div className="min-h-screen bg-background">
+      <header className="border-b border-border bg-card/80 backdrop-blur-md">
         <div className="max-w-3xl mx-auto px-6 py-4 flex items-center gap-4">
           <Link href="/">
             <Button variant="ghost" size="icon" data-testid="button-back">
@@ -97,24 +94,12 @@ export default function CreateDeck() {
           </Link>
           <div className="flex items-center gap-3">
             <div
-              className="flex items-center justify-center"
-              style={{
-                width: "2rem",
-                height: "2rem",
-                borderRadius: "0.375rem",
-                background: "linear-gradient(135deg, #1a7a5c, #22a87e)",
-              }}
+              className="flex items-center justify-center rounded-md bg-primary"
+              style={{ width: "2rem", height: "2rem" }}
             >
-              <Layers size={14} style={{ color: "#fff" }} />
+              <Layers size={14} className="text-primary-foreground" />
             </div>
-            <h1
-              style={{
-                fontFamily: "'Outfit', sans-serif",
-                fontSize: "1.125rem",
-                fontWeight: 700,
-                color: "#0f2a20",
-              }}
-            >
+            <h1 className="text-foreground" style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1.125rem", fontWeight: 700 }}>
               Nova Apresentação
             </h1>
           </div>
@@ -123,16 +108,13 @@ export default function CreateDeck() {
 
       <main className="max-w-3xl mx-auto px-6 py-8">
         {generateMutation.isPending && (
-          <div
-            className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4"
-            style={{ backgroundColor: "rgba(15, 31, 26, 0.92)" }}
-          >
-            <Loader2 size={40} className="animate-spin" style={{ color: "#22a87e" }} />
+          <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-background/92">
+            <Loader2 size={40} className="animate-spin text-primary" />
             <div className="text-center">
-              <p style={{ color: "#ffffff", fontSize: "1.25rem", fontWeight: 600, fontFamily: "'Outfit', sans-serif" }}>
+              <p className="text-foreground" style={{ fontSize: "1.25rem", fontWeight: 600, fontFamily: "'Outfit', sans-serif" }}>
                 Gerando apresentação...
               </p>
-              <p style={{ color: "#a8cfc0", fontSize: "0.875rem", marginTop: "0.5rem" }}>
+              <p className="text-muted-foreground" style={{ fontSize: "0.875rem", marginTop: "0.5rem" }}>
                 O LLM está construindo seus slides. Isso pode levar até 30 segundos.
               </p>
             </div>
@@ -141,16 +123,10 @@ export default function CreateDeck() {
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <section
-              className="rounded-md p-6"
-              style={{
-                backgroundColor: "rgba(255,255,255,0.7)",
-                border: "1px solid #c8e0d5",
-              }}
-            >
+            <section className="rounded-md p-6 bg-card border border-border">
               <div className="flex items-center gap-2 mb-6">
-                <Sparkles size={18} style={{ color: "#1a7a5c" }} />
-                <h2 style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1.125rem", fontWeight: 700, color: "#0f2a20" }}>
+                <Sparkles size={18} className="text-primary" />
+                <h2 className="text-foreground" style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1.125rem", fontWeight: 700 }}>
                   Briefing da Apresentação
                 </h2>
               </div>
@@ -287,14 +263,8 @@ export default function CreateDeck() {
               </div>
             </section>
 
-            <section
-              className="rounded-md p-6"
-              style={{
-                backgroundColor: "rgba(255,255,255,0.7)",
-                border: "1px solid #c8e0d5",
-              }}
-            >
-              <h3 style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1rem", fontWeight: 600, color: "#0f2a20", marginBottom: "1rem" }}>
+            <section className="rounded-md p-6 bg-card border border-border">
+              <h3 className="text-foreground" style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1rem", fontWeight: 600, marginBottom: "1rem" }}>
                 Estrutura dos Slides
               </h3>
               <div className="grid grid-cols-2 gap-4">
@@ -311,7 +281,7 @@ export default function CreateDeck() {
                       control={form.control}
                       name={`structure.${key}`}
                       render={({ field }) => (
-                        <FormItem className="flex items-center justify-between p-3 rounded" style={{ border: "1px solid #e0ede6" }}>
+                        <FormItem className="flex items-center justify-between p-3 rounded border border-border">
                           <FormLabel className="cursor-pointer">{labels[key]}</FormLabel>
                           <FormControl>
                             <Switch checked={field.value} onCheckedChange={field.onChange} />
@@ -324,14 +294,8 @@ export default function CreateDeck() {
               </div>
             </section>
 
-            <section
-              className="rounded-md p-6"
-              style={{
-                backgroundColor: "rgba(255,255,255,0.7)",
-                border: "1px solid #c8e0d5",
-              }}
-            >
-              <h3 style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1rem", fontWeight: 600, color: "#0f2a20", marginBottom: "1rem" }}>
+            <section className="rounded-md p-6 bg-card border border-border">
+              <h3 className="text-foreground" style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1rem", fontWeight: 600, marginBottom: "1rem" }}>
                 Notas Livres para a IA
               </h3>
               <FormField
@@ -354,16 +318,10 @@ export default function CreateDeck() {
               />
             </section>
 
-            <section
-              className="rounded-md p-6"
-              style={{
-                backgroundColor: "rgba(255,255,255,0.7)",
-                border: "1px solid #c8e0d5",
-              }}
-            >
+            <section className="rounded-md p-6 bg-card border border-border">
               <div className="flex items-center gap-2 mb-4">
-                <Lock size={16} style={{ color: "#1a7a5c" }} />
-                <h3 style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1rem", fontWeight: 600, color: "#0f2a20" }}>
+                <Lock size={16} className="text-primary" />
+                <h3 className="text-foreground" style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1rem", fontWeight: 600 }}>
                   Proteção por Senha
                 </h3>
               </div>
@@ -387,7 +345,7 @@ export default function CreateDeck() {
                           onClick={() => setShowPassword(!showPassword)}
                           data-testid="button-toggle-password"
                         >
-                          {showPassword ? <EyeOff size={16} style={{ color: "#6b9e8c" }} /> : <Eye size={16} style={{ color: "#6b9e8c" }} />}
+                          {showPassword ? <EyeOff size={16} className="text-muted-foreground" /> : <Eye size={16} className="text-muted-foreground" />}
                         </button>
                       </div>
                     </FormControl>
@@ -402,8 +360,7 @@ export default function CreateDeck() {
               type="submit"
               data-testid="button-submit-generate"
               disabled={generateMutation.isPending}
-              className="w-full h-12 text-base font-semibold"
-              style={{ backgroundColor: "#1a7a5c", color: "#fff" }}
+              className="w-full h-12 text-base font-semibold bg-primary text-primary-foreground hover:bg-primary/90"
             >
               {generateMutation.isPending ? (
                 <>
