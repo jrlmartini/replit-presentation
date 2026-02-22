@@ -126,7 +126,7 @@ function getAudienceGuidance(audience?: string, deckType?: string): string {
 async function planDeck(briefing: Briefing): Promise<DeckPlan> {
   const audienceGuide = getAudienceGuidance(briefing.audience, briefing.deckType);
 
-  const systemPrompt = `Você é o Planner de apresentações profissionais da Conatus Ambiental (consultoria ambiental brasileira).
+  const systemPrompt = `Você é o Planner de apresentações profissionais da Conatus Ambiental (empresa brasileira com foco em soluções ambientais em química verde, economia circular e digitalização).
 Dado um briefing, gere um plano estruturado de deck (deck_plan) com a sequência de slides.
 
 ## PRINCÍPIOS DE DECISÃO (ordem de prioridade)
@@ -158,10 +158,10 @@ Se houver conflito entre "ficar bonito" e "ficar claro", priorizar clareza.
 - light_content_layout / dark_content_layout: Layout flexível de conteúdo
   Variants possíveis:
   - single_col: coluna única com texto/bullets/imagem
-  - two_cols_50_50: duas colunas iguais
-  - two_cols_60_40: ênfase na esquerda
-  - two_cols_40_60: ênfase na direita
-  - three_cols_equal: três colunas iguais
+  - two_cols_50_50: duas colunas iguais (50/50)
+  - two_cols_60_40: ênfase na esquerda (60/40)
+  - two_cols_40_60: ênfase na direita (40/60)
+  - three_cols_equal: três colunas iguais (33/33/33)
   - three_cols_emphasis_left: ênfase na primeira coluna (50/25/25)
   - three_cols_emphasis_center: ênfase na central (25/50/25)
 
@@ -321,13 +321,14 @@ ${audienceGuide}
 
 ### Títulos
 - Devem ser claros, específicos e informativos — antecipam o conteúdo do slide
+- Devem conter poucas palavras que resumam o conteúdo do slide, 2 ou 3 palavras.
 - PREFERIR: "Objetivos e escopo do projeto", "Resultados preliminares do piloto"
 - EVITAR: "Introdução", "Visão geral" (genéricos), "Informações", "Dados"
-- Estilo: sentence case. Máximo 90 caracteres
+- Estilo: sentence case. Máximo 40 caracteres
 - Evitar duas ideias diferentes no mesmo título
 
 ### Subtítulos
-- Máximo 140 caracteres. Complementar ao título, não repetir
+- Máximo 120 caracteres. Complementar ao título, não repetir
 - Usar quando agrega contexto, delimita escopo ou informa recorte temporal
 
 ### Bullet lists (regras críticas)
@@ -343,7 +344,7 @@ ${audienceGuide}
 - Parágrafos curtos, frases claras, sem excesso de subordinadas
 - Priorizar leitura em tela (não texto de relatório)
 - Evitar blocos densos, repetições e "enchimento"
-- Máximo ~700 caracteres por bloco de texto
+- Máximo ~300 caracteres por bloco de texto
 
 ### Texto de gráficos (chart_text)
 Estrutura obrigatória em 3 partes:
@@ -365,12 +366,12 @@ Estrutura obrigatória em 3 partes:
 - Nunca usar placeholders vagos ([COISA], [INFO])
 
 ## LIMITES DE TEXTO
-- Título: máximo 90 caracteres
-- Subtítulo: máximo 140 caracteres
+- Título: máximo 40 caracteres
+- Subtítulo: máximo 120 caracteres
 - Bullets por lista: máximo 5
-- Cada bullet: máximo 110 caracteres
-- Texto corrido: preferencialmente até 700 caracteres
-- Agenda: 4-8 itens curtos
+- Cada bullet: máximo 100 caracteres
+- Texto corrido: preferencialmente até 300 caracteres
+- Agenda: 4-8 itens curtos, refletindo estrutura do deck e as seções principais.
 
 Se exceder: (1) resumir, (2) dividir em bullets, (3) dividir em dois slides.
 
@@ -398,7 +399,7 @@ Se exceder: (1) resumir, (2) dividir em bullets, (3) dividir em dois slides.
 O campo "layout" é obrigatório para TODOS os slides (incluindo tipos base).
 
 ### Para slides base:
-- cover → layout: { variant: "cover_standard" } → slots: "header" (text_block, tag), "hero_media" (image_block), "meta" (text_block, tag)
+- cover → layout: { variant: "cover_standard" } → slots: "header" (text_block, tag), "meta" (text_block, tag)
 - closing → layout: { variant: "closing_standard" } → slots: "header" (text_block, tag), "main" (text_block, image_block), "contact_area" (contact_block, text_block)
 - section_divider → layout: { variant: "section_divider_standard" } → slots: "divider" (divider_label, text_block), "subtext" (text_block, tag)
 - agenda_light / agenda_dark → layout: { variant: "agenda_standard" } → slots: "header" (text_block, tag), "agenda_items" (agenda_list)
@@ -634,7 +635,7 @@ async function generateSlideImages(ast: DeckAst, briefing: Briefing): Promise<De
         const src = typeof content === "object" ? content?.src : content;
         if (!src || src === "[INSERIR IMAGEM]") {
           const context = `${briefing.title}. ${slide.title || ""}. ${typeof content === "object" && content?.alt ? content.alt : ""}`;
-          const prompt = `Infográfico profissional para apresentação corporativa de consultoria ambiental. Contexto: ${context}. Estilo: limpo, moderno, cores verdes naturais, fundo branco, sem texto, adequado para slide de apresentação. Alta qualidade, design flat.`;
+          const prompt = `Infográfico profissional para apresentação corporativa de empresa com foco em soluções ambientais. Contexto: ${context}. Estilo: limpo, moderno, cores azuis naturais, fundo branco, sem texto, adequado para slide de apresentação. Alta qualidade, design flat.`;
           imagePrompts.push({ slideIndex: si, compIndex: ci, prompt });
         }
       }
