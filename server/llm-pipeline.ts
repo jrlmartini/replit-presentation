@@ -328,7 +328,9 @@ ${audienceGuide}
 - Evitar duas ideias diferentes no mesmo título
 
 ### Subtítulos
-- Máximo 120 caracteres. Complementar ao título, não repetir
+- Máximo 150 caracteres. Complementar ao título, não repetir
+- PREFERIR textos explicativos, mas não super pragmáticos: "Análise de dados de 2023", "Comparativo com benchmarks setoriais"
+- EVITAR: "Abrir o treinamento e situar o público sobre o objetivo da sessão"; "Apresentar os objetivos do projeto"
 - Usar quando agrega contexto, delimita escopo ou informa recorte temporal
 
 ### Bullet lists (regras críticas)
