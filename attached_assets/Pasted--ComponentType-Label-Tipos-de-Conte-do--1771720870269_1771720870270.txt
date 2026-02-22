@@ -1,0 +1,11 @@
+| ComponentType       | Label                          | Tipos de Conteúdo                                                      | Uso                                                    |
+| ------------------- | ------------------------------ | ---------------------------------------------------------------------- | ------------------------------------------------------ |
+| `text_block`        | Bloco de Texto                 | `string`                                                               | Parágrafos, descrições, subtítulos, frases de destaque |
+| `bullet_list`       | Lista                          | `string[]`                                                             | Tópicos, passos, itens resumidos                       |
+| `image_block`       | Imagem                         | `{ src: string, alt: string }`                                         | Fotos, diagramas, ilustrações                          |
+| `agenda_list`       | Lista de Agenda                | `{ label: string, description?: string }[]`                            | Índice da apresentação                                 |
+| `chart_block`       | Gráfico                        | `{ title: string, type: string, data: unknown[] }`                     | Gráficos de dados                                      |
+| `contact_block`     | Contato                        | `{ name: string, email?: string, phone?: string, website?: string }`   | Informações de contato                                 |
+| `tag`               | Tag / Rótulo                   | `string`                                                               | Labels, categorias, pequenos destaques                 |
+| `divider_label`     | Label Divisor                  | `string`                                                               | Título visual de separador de seção                    |
+| `icon_feature_item` | Item de Ícone + Título + Texto | `{ iconSrc?: string, iconName?: string, title: string, text: string }` | Pilares, benefícios, capacidades, features             |
