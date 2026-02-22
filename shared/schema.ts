@@ -41,9 +41,47 @@ export const slideTypeEnum = z.enum([
   "dark_title_text_or_image",
   "dark_two_columns",
   "dark_chart_text",
+  "light_content_layout",
+  "dark_content_layout",
+  "light_icon_features",
+  "dark_icon_features",
 ]);
 
 export type SlideType = z.infer<typeof slideTypeEnum>;
+
+export const layoutVariantEnum = z.enum([
+  "single_col",
+  "two_cols_50_50",
+  "two_cols_60_40",
+  "two_cols_40_60",
+  "three_cols_equal",
+  "three_cols_emphasis_left",
+  "three_cols_emphasis_center",
+  "icons_3_horizontal",
+  "icons_4_horizontal",
+  "icons_3_vertical_with_quote",
+  "chart_left_text_right",
+  "text_left_chart_right",
+]);
+
+export type LayoutVariant = z.infer<typeof layoutVariantEnum>;
+
+export const slotEnum = z.enum([
+  "header",
+  "main",
+  "col_1",
+  "col_2",
+  "col_3",
+  "icon_items",
+  "left_emphasis",
+  "right_icon_items",
+  "chart_area",
+  "text_area",
+  "left",
+  "right",
+]);
+
+export type SlotName = z.infer<typeof slotEnum>;
 
 export const componentTypeEnum = z.enum([
   "text_block",
@@ -54,9 +92,19 @@ export const componentTypeEnum = z.enum([
   "contact_block",
   "tag",
   "divider_label",
+  "icon_feature_item",
 ]);
 
 export type ComponentType = z.infer<typeof componentTypeEnum>;
+
+export const iconFeatureItemSchema = z.object({
+  iconSrc: z.string().optional(),
+  iconName: z.string().optional(),
+  title: z.string(),
+  text: z.string(),
+});
+
+export type IconFeatureItem = z.infer<typeof iconFeatureItemSchema>;
 
 export const slideComponentSchema = z.object({
   id: z.string(),
@@ -68,9 +116,14 @@ export const slideComponentSchema = z.object({
 
 export type SlideComponent = z.infer<typeof slideComponentSchema>;
 
+export const slideLayoutSchema = z.object({
+  variant: layoutVariantEnum,
+}).optional();
+
 export const slideSchema = z.object({
   id: z.string(),
   type: slideTypeEnum,
+  layout: slideLayoutSchema.optional(),
   variant: z.enum(["light", "dark"]).optional(),
   title: z.string().max(90).optional(),
   subtitle: z.string().max(140).optional(),

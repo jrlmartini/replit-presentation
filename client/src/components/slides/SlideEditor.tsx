@@ -74,6 +74,7 @@ export function SlideEditor({
         type === "contact_block" ? { name: "Conatus Ambiental", email: "[INSERIR EMAIL]" } :
         type === "tag" ? "TAG" :
         type === "divider_label" ? "Seção" :
+        type === "icon_feature_item" ? { iconName: "sparkles", title: "Novo Feature", text: "Descrição do feature" } :
         "Texto",
     };
     newSlides[slideIndex] = { ...newSlides[slideIndex], components: [...existingComps, newComp] };
@@ -381,6 +382,46 @@ export function SlideEditor({
         );
       }
 
+      case "icon_feature_item": {
+        const iconContent = typeof comp.content === "object" && comp.content
+          ? comp.content as { iconName?: string; title?: string; text?: string }
+          : { iconName: "", title: "", text: "" };
+        return (
+          <div key={comp.id} className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label className="text-xs" style={{ color: "#a8cfc0" }}>Feature com Ícone</Label>
+              <Button variant="ghost" size="icon" onClick={() => removeComponent(compIndex)} className="h-6 w-6">
+                <Trash2 size={12} style={{ color: "#ef4444" }} />
+              </Button>
+            </div>
+            <Input
+              data-testid={`editor-icon-name-${compIndex}`}
+              value={iconContent.iconName || ""}
+              onChange={(e) => updateComponent(compIndex, { ...iconContent, iconName: e.target.value })}
+              placeholder="Nome do ícone (ex: shield-check, leaf)"
+              className="text-sm h-8"
+              style={{ backgroundColor: "rgba(255,255,255,0.05)", color: "#e8f5f0", borderColor: "rgba(42,90,72,0.4)" }}
+            />
+            <Input
+              data-testid={`editor-icon-title-${compIndex}`}
+              value={iconContent.title || ""}
+              onChange={(e) => updateComponent(compIndex, { ...iconContent, title: e.target.value })}
+              placeholder="Título do feature"
+              className="text-sm h-8"
+              style={{ backgroundColor: "rgba(255,255,255,0.05)", color: "#e8f5f0", borderColor: "rgba(42,90,72,0.4)" }}
+            />
+            <Textarea
+              data-testid={`editor-icon-text-${compIndex}`}
+              value={iconContent.text || ""}
+              onChange={(e) => updateComponent(compIndex, { ...iconContent, text: e.target.value })}
+              placeholder="Descrição do feature"
+              className="min-h-[50px] text-sm"
+              style={{ backgroundColor: "rgba(255,255,255,0.05)", color: "#e8f5f0", borderColor: "rgba(42,90,72,0.4)" }}
+            />
+          </div>
+        );
+      }
+
       case "tag":
       case "divider_label":
         return (
@@ -416,6 +457,7 @@ export function SlideEditor({
     { type: "contact_block", label: "Contato" },
     { type: "chart_block", label: "Gráfico" },
     { type: "tag", label: "Tag" },
+    { type: "icon_feature_item", label: "Feature" },
   ];
 
   return (

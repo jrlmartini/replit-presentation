@@ -102,6 +102,28 @@ export const themeConatus = {
     lightDashedBorder: "rgba(0,0,0,0.12)",
   },
 
+  columnProportions: {
+    "two_cols_50_50": ["1fr", "1fr"],
+    "two_cols_60_40": ["3fr", "2fr"],
+    "two_cols_40_60": ["2fr", "3fr"],
+    "three_cols_equal": ["1fr", "1fr", "1fr"],
+    "three_cols_emphasis_left": ["2fr", "1fr", "1fr"],
+    "three_cols_emphasis_center": ["1fr", "2fr", "1fr"],
+  },
+
+  iconLayout: {
+    iconSize: "2.5rem",
+    iconContainerSize: "4rem",
+    iconGap: "2rem",
+    itemGap: "1rem",
+    titleSize: "1rem",
+    titleWeight: 600,
+    textSize: "0.875rem",
+    quoteSize: "1.5rem",
+    quoteWeight: 500,
+    quoteLineHeight: 1.4,
+  },
+
   slideLayout: {
     cover: {
       titleSize: "3rem",

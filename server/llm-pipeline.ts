@@ -1,23 +1,36 @@
 import OpenAI from "openai";
 import { z } from "zod";
-import type { Briefing, DeckAst, Slide, SlideType } from "@shared/schema";
-import { slideTypeRegistry, SLIDE_TYPES } from "@shared/slide-types";
+import type { Briefing, DeckAst, Slide, SlideType, LayoutVariant } from "@shared/schema";
+import { slideTypeRegistry, SLIDE_TYPES, layoutVariantRegistry, LEGACY_TYPE_MAP } from "@shared/slide-types";
 import { generateImageBuffer } from "./replit_integrations/image/client";
 
 const SLIDE_TYPE_ALIASES: Record<string, SlideType> = {
   agenda: "agenda_light",
   agenda_slide: "agenda_light",
-  content: "light_title_text_or_image",
-  content_light: "light_title_text_or_image",
-  content_dark: "dark_title_text_or_image",
-  title_text: "light_title_text_or_image",
-  title_text_or_image: "light_title_text_or_image",
-  two_columns: "light_two_columns",
+  content: "light_content_layout",
+  content_light: "light_content_layout",
+  content_dark: "dark_content_layout",
+  title_text: "light_content_layout",
+  title_text_or_image: "light_content_layout",
+  two_columns: "light_content_layout",
   chart_text: "light_chart_text",
   divider: "section_divider",
   section: "section_divider",
   close: "closing",
   end: "closing",
+  icon_features: "light_icon_features",
+  icons: "light_icon_features",
+  features: "light_icon_features",
+  light_title_text_or_image: "light_content_layout",
+  dark_title_text_or_image: "dark_content_layout",
+  light_two_columns: "light_content_layout",
+  dark_two_columns: "dark_content_layout",
+};
+
+const LAYOUT_ALIASES: Record<string, { type: SlideType; layout: LayoutVariant }> = {
+  two_columns: { type: "light_content_layout", layout: "two_cols_50_50" },
+  light_two_columns: { type: "light_content_layout", layout: "two_cols_50_50" },
+  dark_two_columns: { type: "dark_content_layout", layout: "two_cols_50_50" },
 };
 
 function normalizeSlideType(raw: string): SlideType {
@@ -32,8 +45,17 @@ function normalizeSlideType(raw: string): SlideType {
     console.warn(`[LLM Pipeline] Tipo de slide normalizado: "${raw}" → "${SLIDE_TYPE_ALIASES[normalized]}"`);
     return SLIDE_TYPE_ALIASES[normalized];
   }
-  console.warn(`[LLM Pipeline] Tipo de slide desconhecido: "${raw}", usando fallback "light_title_text_or_image"`);
-  return "light_title_text_or_image";
+  console.warn(`[LLM Pipeline] Tipo de slide desconhecido: "${raw}", usando fallback "light_content_layout"`);
+  return "light_content_layout";
+}
+
+function normalizeLayoutVariant(raw?: string): LayoutVariant | undefined {
+  if (!raw) return undefined;
+  const normalized = raw.toLowerCase().trim();
+  if (Object.keys(layoutVariantRegistry).includes(normalized)) {
+    return normalized as LayoutVariant;
+  }
+  return undefined;
 }
 
 async function withRetry<T>(fn: () => Promise<T>, maxRetries = 3): Promise<T> {
@@ -57,8 +79,15 @@ const openai = new OpenAI({
   baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
 });
 
-const SLIDE_TYPES_INFO = Object.entries(slideTypeRegistry)
-  .map(([key, meta]) => `- ${key}: ${meta.label} (${meta.variant}) - ${meta.description}`)
+const CONTENT_TYPES_INFO = Object.entries(slideTypeRegistry)
+  .filter(([_, meta]) => !meta.name.includes("title_text_or_image") && !meta.name.includes("two_columns") || meta.name.includes("content_layout") || meta.name.includes("icon_features"))
+  .map(([key, meta]) => {
+    let info = `- ${key}: ${meta.label} (${meta.variant}) - ${meta.description}`;
+    if (meta.allowedLayouts && meta.allowedLayouts.length > 0) {
+      info += `\n  Layout variants: ${meta.allowedLayouts.join(", ")}`;
+    }
+    return info;
+  })
   .join("\n");
 
 const deckPlanSchema = z.object({
@@ -67,6 +96,7 @@ const deckPlanSchema = z.object({
   slides: z.array(
     z.object({
       slideType: z.string(),
+      layoutVariant: z.string().optional(),
       title: z.string(),
       intent: z.string(),
       keyPoints: z.array(z.string()),
@@ -116,6 +146,36 @@ Se houver conflito entre "ficar bonito" e "ficar claro", priorizar clareza.
 - Nunca exponha informação sensível/confidencial
 - Se o briefing for insuficiente, gere versão conservadora com placeholders
 
+## SISTEMA DE TIPOS DE SLIDE
+
+### Tipos base (sem layout variant):
+- cover: Capa da apresentação
+- closing: Slide de encerramento com contato
+- section_divider: Separador de seção
+- agenda_light / agenda_dark: Índice da apresentação
+
+### Tipos de conteúdo com layout variant:
+- light_content_layout / dark_content_layout: Layout flexível de conteúdo
+  Variants possíveis:
+  - single_col: coluna única com texto/bullets/imagem
+  - two_cols_50_50: duas colunas iguais
+  - two_cols_60_40: ênfase na esquerda
+  - two_cols_40_60: ênfase na direita
+  - three_cols_equal: três colunas iguais
+  - three_cols_emphasis_left: ênfase na primeira coluna (50/25/25)
+  - three_cols_emphasis_center: ênfase na central (25/50/25)
+
+- light_icon_features / dark_icon_features: Features com ícones
+  Variants possíveis:
+  - icons_3_horizontal: 3 ícones lado a lado
+  - icons_4_horizontal: 4 ícones lado a lado
+  - icons_3_vertical_with_quote: 3 ícones à direita + frase destaque à esquerda
+
+- light_chart_text / dark_chart_text: Gráfico + texto interpretativo
+  Variants possíveis:
+  - chart_left_text_right: gráfico à esquerda, texto à direita
+  - text_left_chart_right: texto à esquerda, gráfico à direita
+
 ## GUIA DE SELEÇÃO DE SLIDES
 Antes de escolher cada slide, pergunte: "Qual é a função deste slide na narrativa?"
 
@@ -123,14 +183,17 @@ SELEÇÃO POR INTENÇÃO:
 - Abrir → cover
 - Orientar o público → agenda_light / agenda_dark
 - Separar blocos → section_divider
-- Explicar uma ideia → *_title_text_or_image
-- Comparar ou combinar duas coisas → *_two_columns
+- Explicar uma ideia → *_content_layout (single_col ou two_cols)
+- Listar benefícios/features → *_icon_features
+- Comparar ou combinar duas coisas → *_content_layout (two_cols_*)
+- Apresentar 3 pilares/áreas → *_content_layout (three_cols_*)
 - Mostrar dado + interpretar → *_chart_text (SOMENTE se houver dados explícitos)
 - Encerrar / contato → closing
 
 QUANDO INCLUIR AGENDA: decks com 4+ tópicos OU 8+ slides. Omitir em decks curtos (até 5 slides).
 QUANDO USAR SECTION_DIVIDER: transição clara de assunto em decks longos. Evitar excesso.
 CHART_TEXT: SOMENTE quando houver dados explícitos no briefing. Nunca usar com dados inventados.
+ICON_FEATURES: ideal para listar benefícios, pilares, diferenciais de serviço.
 
 LIGHT vs DARK:
 - Light: melhor para leitura, análise, didática
@@ -145,16 +208,14 @@ SEQUÊNCIAS RECOMENDADAS:
 - Projeto: cover → agenda → contexto/problema → objetivo/escopo → execução/etapas → resultados → encaminhamentos → closing
 
 ANTI-PADRÕES A EVITAR:
-- Usar *_title_text_or_image para tudo (monotonia)
-- Usar *_two_columns sem duas partes reais
+- Usar *_content_layout + single_col para tudo (monotonia)
+- Usar two_cols sem duas partes reais
 - Usar *_chart_text sem dados explícitos
 - Excesso de section_divider
 - Agenda em deck muito curto
+- Não variar layoutVariant entre slides de conteúdo
 
 ## ${audienceGuide}
-
-TIPOS DE SLIDES DISPONÍVEIS:
-${SLIDE_TYPES_INFO}
 
 TIPO DE DECK: ${briefing.deckType}
 TOM: ${briefing.tone}
@@ -168,6 +229,7 @@ Responda APENAS com JSON válido no formato:
   "slides": [
     {
       "slideType": "tipo_do_slide",
+      "layoutVariant": "variant (opcional, apenas para tipos com layout)",
       "title": "título do slide",
       "intent": "propósito em 1 frase",
       "keyPoints": ["ponto 1", "ponto 2"]
@@ -309,8 +371,65 @@ Se exceder: (1) resumir, (2) dividir em bullets, (3) dividir em dois slides.
 - contact_block: { content: { name: "Conatus Ambiental", email: "[INSERIR EMAIL]", phone: "[INSERIR TELEFONE]", website: "[INSERIR SITE]" } }
 - tag: { content: "TAG" }
 - divider_label: { content: "RÓTULO" }
+- icon_feature_item: { content: { iconName: "nome-do-icone-lucide", title: "Título do Feature", text: "Descrição breve" } }
 
-Para slides two_columns, use slot: "left" ou slot: "right" nos componentes.
+## SISTEMA DE LAYOUT E SLOTS
+
+### Para slides *_content_layout:
+O campo "layout" é obrigatório e define a disposição dos componentes.
+Layout variants e seus slots:
+- single_col → slots: "header" (tag opcional), "main" (text_block, bullet_list, image_block)
+- two_cols_50_50 / two_cols_60_40 / two_cols_40_60 → slots: "header", "col_1", "col_2"
+- three_cols_equal / three_cols_emphasis_left / three_cols_emphasis_center → slots: "header", "col_1", "col_2", "col_3"
+
+### Para slides *_icon_features:
+- icons_3_horizontal / icons_4_horizontal → slots: "header" (tag opcional), "icon_items" (icon_feature_item)
+- icons_3_vertical_with_quote → slots: "header", "left_emphasis" (text_block), "right_icon_items" (icon_feature_item)
+
+### Para slides *_chart_text:
+- chart_left_text_right / text_left_chart_right → slots: "header", "chart_area" (chart_block), "text_area" (text_block, bullet_list)
+
+## EXEMPLOS DE ESTRUTURA
+
+### Exemplo: light_content_layout com two_cols_60_40
+{
+  "id": "slide-3",
+  "type": "light_content_layout",
+  "layout": { "variant": "two_cols_60_40" },
+  "title": "Diagnóstico e proposta de ação",
+  "components": [
+    { "id": "comp-3-1", "componentType": "tag", "slot": "header", "content": "DIAGNÓSTICO" },
+    { "id": "comp-3-2", "componentType": "text_block", "slot": "col_1", "content": "Descrição da situação..." },
+    { "id": "comp-3-3", "componentType": "bullet_list", "slot": "col_2", "content": ["Ação 1", "Ação 2", "Ação 3"] }
+  ]
+}
+
+### Exemplo: dark_icon_features com icons_3_horizontal
+{
+  "id": "slide-5",
+  "type": "dark_icon_features",
+  "layout": { "variant": "icons_3_horizontal" },
+  "title": "Nossos diferenciais",
+  "components": [
+    { "id": "comp-5-1", "componentType": "tag", "slot": "header", "content": "DIFERENCIAIS" },
+    { "id": "comp-5-2", "componentType": "icon_feature_item", "slot": "icon_items", "content": { "iconName": "shield-check", "title": "Segurança", "text": "Protocolos rigorosos de segurança em campo" } },
+    { "id": "comp-5-3", "componentType": "icon_feature_item", "slot": "icon_items", "content": { "iconName": "leaf", "title": "Sustentabilidade", "text": "Compromisso com práticas sustentáveis" } },
+    { "id": "comp-5-4", "componentType": "icon_feature_item", "slot": "icon_items", "content": { "iconName": "bar-chart-2", "title": "Dados", "text": "Decisões baseadas em evidências e dados" } }
+  ]
+}
+
+### Exemplo: light_chart_text com chart_left_text_right
+{
+  "id": "slide-7",
+  "type": "light_chart_text",
+  "layout": { "variant": "chart_left_text_right" },
+  "title": "Evolução dos indicadores ambientais",
+  "components": [
+    { "id": "comp-7-1", "componentType": "chart_block", "slot": "chart_area", "content": { "chartType": "bar", "title": "Índice de conformidade", "data": [{"name":"2021","value":0},{"name":"2022","value":0},{"name":"2023","value":0}] } },
+    { "id": "comp-7-2", "componentType": "text_block", "slot": "text_area", "content": "[INSERIR DADO]: observação sobre tendência..." },
+    { "id": "comp-7-3", "componentType": "bullet_list", "slot": "text_area", "content": ["Conformidade crescente no período", "Meta atingida em [INSERIR DADO]"] }
+  ]
+}
 
 Responda APENAS com JSON válido no formato DeckAst:
 {
@@ -329,6 +448,7 @@ Responda APENAS com JSON válido no formato DeckAst:
     {
       "id": "slide-N",
       "type": "slide_type",
+      "layout": { "variant": "layout_variant" },
       "title": "string",
       "subtitle": "string (opcional)",
       "notes": "string (opcional)",
@@ -336,7 +456,7 @@ Responda APENAS com JSON válido no formato DeckAst:
         {
           "id": "comp-N",
           "componentType": "tipo",
-          "slot": "string (opcional)",
+          "slot": "slot_name",
           "content": "depende do tipo"
         }
       ]
@@ -388,19 +508,41 @@ Gere o deck_ast completo em JSON.`;
     parsed.deckId = "generated";
   }
 
-  parsed.slides = (parsed.slides || []).map((slide: any, i: number) => ({
-    id: slide.id || `slide-${i + 1}`,
-    type: normalizeSlideType(slide.type || "light_title_text_or_image"),
-    title: slide.title || "",
-    subtitle: slide.subtitle || "",
-    notes: slide.notes || "",
-    components: (slide.components || []).map((comp: any, j: number) => ({
-      id: comp.id || `comp-${i + 1}-${j + 1}`,
-      componentType: comp.componentType || "text_block",
-      slot: comp.slot,
-      content: comp.content || "",
-    })),
-  }));
+  parsed.slides = (parsed.slides || []).map((slide: any, i: number) => {
+    const normalizedType = normalizeSlideType(slide.type || "light_content_layout");
+
+    const layoutAlias = LAYOUT_ALIASES[slide.type?.toLowerCase?.()];
+    let layoutVariant = normalizeLayoutVariant(slide.layout?.variant || slide.layoutVariant);
+
+    if (!layoutVariant && layoutAlias) {
+      layoutVariant = layoutAlias.layout;
+    }
+
+    const legacy = LEGACY_TYPE_MAP[slide.type];
+    if (!layoutVariant && legacy) {
+      layoutVariant = legacy.layout as LayoutVariant;
+    }
+
+    const meta = slideTypeRegistry[normalizedType];
+    if (!layoutVariant && meta?.defaultLayout) {
+      layoutVariant = meta.defaultLayout;
+    }
+
+    return {
+      id: slide.id || `slide-${i + 1}`,
+      type: normalizedType,
+      layout: layoutVariant ? { variant: layoutVariant } : undefined,
+      title: slide.title || "",
+      subtitle: slide.subtitle || "",
+      notes: slide.notes || "",
+      components: (slide.components || []).map((comp: any, j: number) => ({
+        id: comp.id || `comp-${i + 1}-${j + 1}`,
+        componentType: comp.componentType || "text_block",
+        slot: comp.slot,
+        content: comp.content || "",
+      })),
+    };
+  });
 
   return parsed as DeckAst;
 }
