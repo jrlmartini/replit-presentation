@@ -1,0 +1,305 @@
+Implemente uma evolução do design system de slides do meu sistema de apresentações (Conatus Presentation System) para suportar layout variants escaláveis com slots, mantendo controle por schema + registry + validator.
+
+Objetivo
+
+Atualmente o sistema já gera apresentações e possui slide types/componentes básicos. Quero evoluir a diagramação para suportar:
+
+slides claros e escuros
+
+layouts com 1, 2 e 3 colunas
+
+layouts com ícones (3 horizontal, 4 horizontal, 3 vertical com frase de destaque)
+
+conteúdo em colunas com texto, bullets, imagens e ícones
+
+seleção robusta de layouts pela LLM sem perder consistência visual
+
+Requisitos de arquitetura (obrigatórios)
+1) Não explodir o número de slide types
+
+Usar:
+
+slideType semântico
+
+layoutVariant geométrico
+
+slots de layout
+
+Ou seja:
+
+slide.type define a intenção semântica (conteúdo, ícones, gráfico)
+
+slide.layout.name (ou layoutVariant) define a geometria
+
+components[].slot define onde cada componente entra
+
+2) Criar regras por slideType + layoutVariant + slot
+
+Refatorar o registry/validator para validar:
+
+layout variants permitidos por slide type
+
+slots permitidos por variant
+
+componentes permitidos por slot
+
+quantidade min/max por slot
+
+regras obrigatórias (ex.: chart + texto em chart slides)
+
+3) Adicionar componente composto para layouts de ícones
+
+Criar novo componente:
+
+icon_feature_item
+
+Conteúdo esperado:
+
+iconSrc?: string
+
+iconName?: string
+
+title: string
+
+text: string
+
+Esse componente será usado nos layouts:
+
+icons_3_horizontal
+
+icons_4_horizontal
+
+icons_3_vertical_with_quote
+
+4) Manter compatibilidade com o pipeline atual
+
+Não quebrar renderização atual
+
+Se possível, adicionar suporte incremental
+
+Viewer continua renderizando a partir de deck_ast validado
+
+Components já existentes continuam funcionando
+
+Slide types semânticos (novos / consolidados)
+
+Implementar (ou mapear) estes slide types:
+
+Base (já existentes)
+
+cover
+
+closing
+
+section_divider
+
+agenda_light
+
+agenda_dark
+
+Conteúdo genérico
+
+light_content_layout
+
+dark_content_layout
+
+Ícones / features
+
+light_icon_features
+
+dark_icon_features
+
+Gráfico + interpretação
+
+light_chart_text
+
+dark_chart_text
+
+Observação: se existirem tipos antigos como light_two_columns e light_title_text_or_image, manter compatibilidade. Pode mapear internamente para light_content_layout + layoutVariant.
+
+Layout variants (geométricos) a implementar
+Para light_content_layout e dark_content_layout
+
+single_col
+
+two_cols_50_50
+
+two_cols_60_40
+
+two_cols_40_60
+
+three_cols_equal
+
+three_cols_emphasis_left // 50/25/25
+
+three_cols_emphasis_center // 25/50/25
+
+Para light_icon_features e dark_icon_features
+
+icons_3_horizontal
+
+icons_4_horizontal
+
+icons_3_vertical_with_quote
+
+Para light_chart_text e dark_chart_text
+
+chart_left_text_right
+
+text_left_chart_right
+
+Slots por layout variant (obrigatório)
+
+Implementar sistema de slots e validar por variant.
+
+Layouts de conteúdo
+single_col
+
+Slots:
+
+header
+
+main
+
+two_cols_50_50, two_cols_60_40, two_cols_40_60
+
+Slots:
+
+header
+
+col_1
+
+col_2
+
+three_cols_equal, three_cols_emphasis_left, three_cols_emphasis_center
+
+Slots:
+
+header
+
+col_1
+
+col_2
+
+col_3
+
+Layouts de ícones
+icons_3_horizontal
+
+Slots:
+
+header
+
+icon_items (exatamente 3 icon_feature_item)
+
+icons_4_horizontal
+
+Slots:
+
+header
+
+icon_items (exatamente 4 icon_feature_item)
+
+icons_3_vertical_with_quote
+
+Slots:
+
+header
+
+left_emphasis (frase de efeito / destaque)
+
+right_icon_items (exatamente 3 icon_feature_item)
+
+Layouts de gráfico
+chart_left_text_right
+
+Slots:
+
+header
+
+chart_area
+
+text_area
+
+text_left_chart_right
+
+Slots:
+
+header
+
+text_area
+
+chart_area
+
+Componentes existentes (manter)
+
+text_block
+
+bullet_list
+
+image_block
+
+agenda_list
+
+chart_block
+
+contact_block
+
+tag
+
+divider_label
+
+Novo componente (adicionar)
+
+icon_feature_item
+
+Opcional (pode implementar agora ou deixar preparado):
+
+quote_highlight
+
+Regras de composição por tipo/variant/slot (obrigatórias)
+Conteúdo (light_content_layout / dark_content_layout)
+
+header: text_block, tag
+
+main: text_block, bullet_list, image_block, tag
+
+col_1, col_2, col_3: text_block, bullet_list, image_block, tag
+
+max por coluna: 2 componentes (configurável)
+
+max no header: 2 componentes
+
+Ícones (light_icon_features / dark_icon_features)
+
+header: text_block, tag
+
+icon_items: apenas icon_feature_item
+
+left_emphasis: text_block (ou quote_highlight se implementado)
+
+right_icon_items: apenas icon_feature_item
+
+Regras:
+
+icons_3_horizontal: icon_items deve ter exatamente 3
+
+icons_4_horizontal: icon_items deve ter exatamente 4
+
+icons_3_vertical_with_quote: left_emphasis deve ter 1; right_icon_items deve ter exatamente 3
+
+Gráfico (light_chart_text / dark_chart_text)
+
+header: text_block, tag
+
+chart_area: apenas chart_block
+
+text_area: text_block, bullet_list
+
+Regras:
+
+Deve existir exatamente 1 chart_block
+
+Deve existir ao menos 1 componente textual em text_area
+
+Rejeitar slide de gráfico sem texto explicativo
