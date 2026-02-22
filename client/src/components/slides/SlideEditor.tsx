@@ -122,7 +122,7 @@ export function SlideEditor({
               value={typeof comp.content === "string" ? comp.content : ""}
               onChange={(e) => updateComponent(compIndex, e.target.value)}
               className="min-h-[80px] text-sm"
-              style={{ backgroundColor: "rgba(255,255,255,0.05)", color: "#e8f5f0", borderColor: "rgba(42,90,72,0.4)" }}
+              style={{ backgroundColor: "#FFFFFF0D", color: "#e8f5f0", borderColor: "#2A5A4866" }}
             />
           </div>
         );
@@ -152,7 +152,7 @@ export function SlideEditor({
                     updateComponent(compIndex, newItems);
                   }}
                   className="text-sm h-8"
-                  style={{ backgroundColor: "rgba(255,255,255,0.05)", color: "#e8f5f0", borderColor: "rgba(42,90,72,0.4)" }}
+                  style={{ backgroundColor: "#FFFFFF0D", color: "#e8f5f0", borderColor: "#2A5A4866" }}
                 />
                 <Button
                   variant="ghost" size="icon" className="h-6 w-6 flex-shrink-0"
@@ -169,7 +169,7 @@ export function SlideEditor({
               variant="ghost" size="sm"
               onClick={() => updateComponent(compIndex, [...items, "Novo item"])}
               className="w-full h-7 text-xs"
-              style={{ color: "#22a87e", borderColor: "rgba(34,168,126,0.3)", border: "1px dashed" }}
+              style={{ color: "#22a87e", borderColor: "#22A87E4D", border: "1px dashed" }}
             >
               <Plus size={12} className="mr-1" /> Adicionar item
             </Button>
@@ -191,7 +191,7 @@ export function SlideEditor({
               </Button>
             </div>
             {hasImage && (
-              <div className="rounded overflow-hidden" style={{ border: "1px solid rgba(42,90,72,0.3)" }}>
+              <div className="rounded overflow-hidden" style={{ border: "1px solid #2A5A484D" }}>
                 <img src={imgContent.src} alt={imgContent.alt} className="w-full h-24 object-cover" />
               </div>
             )}
@@ -201,7 +201,7 @@ export function SlideEditor({
               onChange={(e) => updateComponent(compIndex, { ...imgContent, alt: e.target.value })}
               placeholder="Descrição da imagem"
               className="text-sm h-8"
-              style={{ backgroundColor: "rgba(255,255,255,0.05)", color: "#e8f5f0", borderColor: "rgba(42,90,72,0.4)" }}
+              style={{ backgroundColor: "#FFFFFF0D", color: "#e8f5f0", borderColor: "#2A5A4866" }}
             />
             <Input
               data-testid={`editor-image-url-${compIndex}`}
@@ -209,7 +209,7 @@ export function SlideEditor({
               onChange={(e) => updateComponent(compIndex, { ...imgContent, src: e.target.value || "[INSERIR IMAGEM]" })}
               placeholder="URL da imagem (ou use IA/upload)"
               className="text-sm h-8"
-              style={{ backgroundColor: "rgba(255,255,255,0.05)", color: "#e8f5f0", borderColor: "rgba(42,90,72,0.4)" }}
+              style={{ backgroundColor: "#FFFFFF0D", color: "#e8f5f0", borderColor: "#2A5A4866" }}
             />
             <div className="flex gap-1">
               <label className="flex-1">
@@ -224,7 +224,7 @@ export function SlideEditor({
                 />
                 <div
                   className="flex items-center justify-center gap-1 h-8 rounded cursor-pointer text-xs transition-colors hover:opacity-80"
-                  style={{ backgroundColor: "rgba(42,90,72,0.3)", color: "#a8cfc0", border: "1px solid rgba(42,90,72,0.4)" }}
+                  style={{ backgroundColor: "#2A5A484D", color: "#a8cfc0", border: "1px solid #2A5A4866" }}
                   data-testid={`editor-image-upload-${compIndex}`}
                 >
                   <Upload size={12} /> Upload
@@ -233,7 +233,7 @@ export function SlideEditor({
               <Button
                 variant="ghost" size="sm"
                 className="flex-1 h-8 text-xs"
-                style={{ backgroundColor: "rgba(34,168,126,0.15)", color: "#22a87e", border: "1px solid rgba(34,168,126,0.3)" }}
+                style={{ backgroundColor: "#22A87E26", color: "#22a87e", border: "1px solid #22A87E4D" }}
                 onClick={() => {
                   setShowImagePrompt(compIndex);
                   setImagePrompt(imgContent.alt || slide.title || "");
@@ -244,14 +244,14 @@ export function SlideEditor({
               </Button>
             </div>
             {showImagePrompt === compIndex && (
-              <div className="space-y-2 p-2 rounded" style={{ backgroundColor: "rgba(34,168,126,0.1)", border: "1px solid rgba(34,168,126,0.2)" }}>
+              <div className="space-y-2 p-2 rounded" style={{ backgroundColor: "#22A87E1A", border: "1px solid #22A87E33" }}>
                 <Textarea
                   data-testid={`editor-image-prompt-${compIndex}`}
                   value={imagePrompt}
                   onChange={(e) => setImagePrompt(e.target.value)}
                   placeholder="Descreva a imagem que deseja gerar..."
                   className="min-h-[60px] text-sm"
-                  style={{ backgroundColor: "rgba(0,0,0,0.2)", color: "#e8f5f0", borderColor: "rgba(34,168,126,0.3)" }}
+                  style={{ backgroundColor: "#00000033", color: "#e8f5f0", borderColor: "#22A87E4D" }}
                 />
                 <div className="flex gap-1">
                   <Button
@@ -307,7 +307,7 @@ export function SlideEditor({
                   value={contact[key] || ""}
                   onChange={(e) => updateComponent(compIndex, { ...contact, [key]: e.target.value })}
                   className="text-sm h-7"
-                  style={{ backgroundColor: "rgba(255,255,255,0.05)", color: "#e8f5f0", borderColor: "rgba(42,90,72,0.4)" }}
+                  style={{ backgroundColor: "#FFFFFF0D", color: "#e8f5f0", borderColor: "#2A5A4866" }}
                 />
               </div>
             ))}
@@ -333,7 +333,7 @@ export function SlideEditor({
               onChange={(e) => updateComponent(compIndex, { ...chartData, title: e.target.value })}
               placeholder="Título do gráfico"
               className="text-sm h-8"
-              style={{ backgroundColor: "rgba(255,255,255,0.05)", color: "#e8f5f0", borderColor: "rgba(42,90,72,0.4)" }}
+              style={{ backgroundColor: "#FFFFFF0D", color: "#e8f5f0", borderColor: "#2A5A4866" }}
             />
             {(chartData.data || []).map((item, i) => (
               <div key={i} className="flex items-center gap-1">
@@ -346,7 +346,7 @@ export function SlideEditor({
                   }}
                   className="text-sm h-7 flex-1"
                   placeholder="Rótulo"
-                  style={{ backgroundColor: "rgba(255,255,255,0.05)", color: "#e8f5f0", borderColor: "rgba(42,90,72,0.4)" }}
+                  style={{ backgroundColor: "#FFFFFF0D", color: "#e8f5f0", borderColor: "#2A5A4866" }}
                 />
                 <Input
                   type="number"
@@ -358,7 +358,7 @@ export function SlideEditor({
                   }}
                   className="text-sm h-7 w-20"
                   placeholder="Valor"
-                  style={{ backgroundColor: "rgba(255,255,255,0.05)", color: "#e8f5f0", borderColor: "rgba(42,90,72,0.4)" }}
+                  style={{ backgroundColor: "#FFFFFF0D", color: "#e8f5f0", borderColor: "#2A5A4866" }}
                 />
                 <Button variant="ghost" size="icon" className="h-6 w-6"
                   onClick={() => {
@@ -374,7 +374,7 @@ export function SlideEditor({
               variant="ghost" size="sm"
               onClick={() => updateComponent(compIndex, { ...chartData, data: [...(chartData.data || []), { name: "Novo", value: 0 }] })}
               className="w-full h-7 text-xs"
-              style={{ color: "#22a87e", borderColor: "rgba(34,168,126,0.3)", border: "1px dashed" }}
+              style={{ color: "#22a87e", borderColor: "#22A87E4D", border: "1px dashed" }}
             >
               <Plus size={12} className="mr-1" /> Adicionar dado
             </Button>
@@ -400,7 +400,7 @@ export function SlideEditor({
               onChange={(e) => updateComponent(compIndex, { ...iconContent, iconName: e.target.value })}
               placeholder="Nome do ícone (ex: shield-check, leaf)"
               className="text-sm h-8"
-              style={{ backgroundColor: "rgba(255,255,255,0.05)", color: "#e8f5f0", borderColor: "rgba(42,90,72,0.4)" }}
+              style={{ backgroundColor: "#FFFFFF0D", color: "#e8f5f0", borderColor: "#2A5A4866" }}
             />
             <Input
               data-testid={`editor-icon-title-${compIndex}`}
@@ -408,7 +408,7 @@ export function SlideEditor({
               onChange={(e) => updateComponent(compIndex, { ...iconContent, title: e.target.value })}
               placeholder="Título do feature"
               className="text-sm h-8"
-              style={{ backgroundColor: "rgba(255,255,255,0.05)", color: "#e8f5f0", borderColor: "rgba(42,90,72,0.4)" }}
+              style={{ backgroundColor: "#FFFFFF0D", color: "#e8f5f0", borderColor: "#2A5A4866" }}
             />
             <Textarea
               data-testid={`editor-icon-text-${compIndex}`}
@@ -416,7 +416,7 @@ export function SlideEditor({
               onChange={(e) => updateComponent(compIndex, { ...iconContent, text: e.target.value })}
               placeholder="Descrição do feature"
               className="min-h-[50px] text-sm"
-              style={{ backgroundColor: "rgba(255,255,255,0.05)", color: "#e8f5f0", borderColor: "rgba(42,90,72,0.4)" }}
+              style={{ backgroundColor: "#FFFFFF0D", color: "#e8f5f0", borderColor: "#2A5A4866" }}
             />
           </div>
         );
@@ -439,7 +439,7 @@ export function SlideEditor({
               value={typeof comp.content === "string" ? comp.content : ""}
               onChange={(e) => updateComponent(compIndex, e.target.value)}
               className="text-sm h-8"
-              style={{ backgroundColor: "rgba(255,255,255,0.05)", color: "#e8f5f0", borderColor: "rgba(42,90,72,0.4)" }}
+              style={{ backgroundColor: "#FFFFFF0D", color: "#e8f5f0", borderColor: "#2A5A4866" }}
             />
           </div>
         );
@@ -465,12 +465,12 @@ export function SlideEditor({
       className="flex flex-col h-full"
       style={{
         backgroundColor: "#0f1f1a",
-        borderLeft: "1px solid rgba(42,90,72,0.4)",
+        borderLeft: "1px solid #2A5A4866",
         width: "360px",
         minWidth: "360px",
       }}
     >
-      <div className="flex items-center justify-between p-3" style={{ borderBottom: "1px solid rgba(42,90,72,0.3)" }}>
+      <div className="flex items-center justify-between p-3" style={{ borderBottom: "1px solid #2A5A484D" }}>
         <h3 style={{ color: "#e8f5f0", fontSize: "0.875rem", fontWeight: 600 }}>
           Editar Slide {slideIndex + 1}
         </h3>
@@ -490,7 +490,7 @@ export function SlideEditor({
             value={slide.title || ""}
             onChange={(e) => updateSlideField("title", e.target.value)}
             className="text-sm"
-            style={{ backgroundColor: "rgba(255,255,255,0.05)", color: "#e8f5f0", borderColor: "rgba(42,90,72,0.4)" }}
+            style={{ backgroundColor: "#FFFFFF0D", color: "#e8f5f0", borderColor: "#2A5A4866" }}
           />
         </div>
 
@@ -501,22 +501,22 @@ export function SlideEditor({
             value={slide.subtitle || ""}
             onChange={(e) => updateSlideField("subtitle", e.target.value)}
             className="text-sm"
-            style={{ backgroundColor: "rgba(255,255,255,0.05)", color: "#e8f5f0", borderColor: "rgba(42,90,72,0.4)" }}
+            style={{ backgroundColor: "#FFFFFF0D", color: "#e8f5f0", borderColor: "#2A5A4866" }}
           />
         </div>
 
-        <div style={{ borderTop: "1px solid rgba(42,90,72,0.2)", paddingTop: "0.75rem" }}>
+        <div style={{ borderTop: "1px solid #2A5A4833", paddingTop: "0.75rem" }}>
           <Label className="text-xs" style={{ color: "#a8cfc0", marginBottom: "0.5rem", display: "block" }}>
             Componentes ({slide.components.length})
           </Label>
           <div className="space-y-3">
             {slide.components.map((comp, i) => (
-              <div key={comp.id} className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.03)", border: "1px solid rgba(42,90,72,0.2)" }}>
+              <div key={comp.id} className="p-2 rounded" style={{ backgroundColor: "#FFFFFF08", border: "1px solid #2A5A4833" }}>
                 {comp.slot && (
                   <div className="mb-1">
                     <span
                       className="text-[9px] px-1.5 py-0.5 rounded"
-                      style={{ backgroundColor: "rgba(34,168,126,0.15)", color: "#6b9e8c", border: "1px solid rgba(34,168,126,0.2)" }}
+                      style={{ backgroundColor: "#22A87E26", color: "#6b9e8c", border: "1px solid #22A87E33" }}
                     >
                       slot: {comp.slot}
                     </span>
@@ -528,7 +528,7 @@ export function SlideEditor({
           </div>
         </div>
 
-        <div style={{ borderTop: "1px solid rgba(42,90,72,0.2)", paddingTop: "0.75rem" }}>
+        <div style={{ borderTop: "1px solid #2A5A4833", paddingTop: "0.75rem" }}>
           <Label className="text-xs" style={{ color: "#6b9e8c", marginBottom: "0.5rem", display: "block" }}>
             Adicionar Componente
           </Label>
@@ -539,7 +539,7 @@ export function SlideEditor({
                 variant="ghost" size="sm"
                 onClick={() => addComponent(type)}
                 className="h-7 text-xs"
-                style={{ color: "#22a87e", border: "1px solid rgba(34,168,126,0.2)" }}
+                style={{ color: "#22a87e", border: "1px solid #22A87E33" }}
                 data-testid={`editor-add-${type}`}
               >
                 <Plus size={10} className="mr-1" /> {label}
@@ -556,7 +556,7 @@ export function SlideEditor({
             onChange={(e) => updateSlideField("notes", e.target.value)}
             placeholder="Notas de apresentação (não visíveis no slide)"
             className="min-h-[60px] text-sm"
-            style={{ backgroundColor: "rgba(255,255,255,0.05)", color: "#e8f5f0", borderColor: "rgba(42,90,72,0.4)" }}
+            style={{ backgroundColor: "#FFFFFF0D", color: "#e8f5f0", borderColor: "#2A5A4866" }}
           />
         </div>
       </div>
