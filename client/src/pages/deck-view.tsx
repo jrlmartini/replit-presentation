@@ -230,10 +230,10 @@ export default function DeckView() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0f1f1a" }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#03131e" }}>
         <div className="animate-pulse text-center">
-          <Layers size={40} style={{ color: "#22a87e", margin: "0 auto 1rem" }} />
-          <p style={{ color: "#a8cfc0", fontSize: "0.875rem" }}>Carregando apresentação...</p>
+          <Layers size={40} style={{ color: "#3b5e73", margin: "0 auto 1rem" }} />
+          <p style={{ color: "#8fa8b8", fontSize: "0.875rem" }}>Carregando apresentação...</p>
         </div>
       </div>
     );
@@ -241,19 +241,19 @@ export default function DeckView() {
 
   if (error || !deck || !deckAst || totalSlides === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0f1f1a" }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#03131e" }}>
         <div className="text-center">
-          <p style={{ color: "#e8f5f0", fontSize: "1.125rem", fontWeight: 600 }}>
+          <p style={{ color: "#f2f2f2", fontSize: "1.125rem", fontWeight: 600 }}>
             {error ? "Erro ao carregar" : "Nenhum slide encontrado"}
           </p>
-          <p style={{ color: "#6b9e8c", fontSize: "0.875rem", marginTop: "0.5rem" }}>
+          <p style={{ color: "#6889a0", fontSize: "0.875rem", marginTop: "0.5rem" }}>
             {error?.message || "Esta apresentação pode estar vazia."}
           </p>
           <Button
             variant="ghost"
             onClick={() => navigate("/")}
             className="mt-4"
-            style={{ color: "#22a87e" }}
+            style={{ color: "#3b5e73" }}
             data-testid="button-error-back-home"
           >
             <Home size={16} className="mr-2" /> Voltar ao menu
@@ -265,9 +265,9 @@ export default function DeckView() {
 
   if (showGrid) {
     return (
-      <div className="min-h-screen" style={{ background: "#0f1f1a" }}>
-        <div className="flex items-center justify-between p-4" style={{ borderBottom: "1px solid #2a5a48" }}>
-          <h2 style={{ fontFamily: "'Outfit', sans-serif", color: "#e8f5f0", fontWeight: 600 }}>
+      <div className="min-h-screen" style={{ background: "#03131e" }}>
+        <div className="flex items-center justify-between p-4" style={{ borderBottom: "1px solid #2a4459" }}>
+          <h2 style={{ fontFamily: "'Outfit', sans-serif", color: "#f2f2f2", fontWeight: 600 }}>
             {deckAst.meta.title} — Visão Geral
           </h2>
           <div className="flex items-center gap-1">
@@ -278,7 +278,7 @@ export default function DeckView() {
               data-testid="button-grid-back-home"
               title="Voltar ao menu"
             >
-              <Home size={18} style={{ color: "#a8cfc0" }} />
+              <Home size={18} style={{ color: "#8fa8b8" }} />
             </Button>
             <Button
               variant="ghost"
@@ -286,7 +286,7 @@ export default function DeckView() {
               onClick={() => setShowGrid(false)}
               data-testid="button-close-grid"
             >
-              <X size={18} style={{ color: "#a8cfc0" }} />
+              <X size={18} style={{ color: "#8fa8b8" }} />
             </Button>
           </div>
         </div>
@@ -298,7 +298,7 @@ export default function DeckView() {
               onClick={() => goToSlide(i)}
               className="relative group rounded overflow-hidden transition-all duration-200"
               style={{
-                border: i === currentSlide ? "2px solid #22a87e" : "2px solid transparent",
+                border: i === currentSlide ? "2px solid #3b5e73" : "2px solid transparent",
                 aspectRatio: "16/9",
               }}
             >
@@ -309,10 +309,10 @@ export default function DeckView() {
                 className="absolute bottom-0 left-0 right-0 p-2 flex items-center justify-between"
                 style={{ backgroundColor: "rgba(0,0,0,0.6)" }}
               >
-                <span style={{ color: "#a8cfc0", fontSize: "0.6875rem" }}>
+                <span style={{ color: "#8fa8b8", fontSize: "0.6875rem" }}>
                   {i + 1}/{totalSlides}
                 </span>
-                <span style={{ color: "#e8f5f0", fontSize: "0.6875rem", fontWeight: 500 }}>
+                <span style={{ color: "#f2f2f2", fontSize: "0.6875rem", fontWeight: 500 }}>
                   {slide.title?.slice(0, 30) || slide.type}
                 </span>
               </div>
@@ -326,7 +326,7 @@ export default function DeckView() {
   return (
     <div
       className="h-screen flex flex-col"
-      style={{ background: "#0a1612" }}
+      style={{ background: "#020e16" }}
     >
       <div className="flex-1 flex" style={{ overflow: "hidden" }}>
         <div className="flex-1 flex items-center justify-center relative" style={{ overflow: "hidden" }}>
@@ -398,8 +398,8 @@ export default function DeckView() {
       <div
         className="flex items-center justify-between px-6 py-3"
         style={{
-          borderTop: "1px solid rgba(42, 90, 72, 0.3)",
-          backgroundColor: "rgba(10, 22, 18, 0.9)",
+          borderTop: "1px solid #2a445966",
+          backgroundColor: "#020e16E6",
         }}
       >
         <div className="flex items-center gap-3">
@@ -409,12 +409,12 @@ export default function DeckView() {
             onClick={() => navigate("/")}
             data-testid="button-back-home"
             title="Voltar ao menu"
-            style={{ color: "#6b9e8c" }}
+            style={{ color: "#6889a0" }}
           >
             <Home size={16} />
           </Button>
-          <Layers size={14} style={{ color: "#6b9e8c" }} />
-          <span style={{ color: "#6b9e8c", fontSize: "0.75rem", fontWeight: 500 }}>
+          <Layers size={14} style={{ color: "#6889a0" }} />
+          <span style={{ color: "#6889a0", fontSize: "0.75rem", fontWeight: 500 }}>
             {deckAst.meta.title}
           </span>
         </div>
@@ -424,9 +424,9 @@ export default function DeckView() {
             style={{
               padding: "0.25rem 0.75rem",
               borderRadius: "0.25rem",
-              backgroundColor: "rgba(34, 168, 126, 0.1)",
-              border: "1px solid rgba(34, 168, 126, 0.2)",
-              color: "#22a87e",
+              backgroundColor: "#3b5e731A",
+              border: "1px solid #3b5e7333",
+              color: "#3b5e73",
               fontSize: "0.8125rem",
               fontWeight: 600,
               fontFamily: "'JetBrains Mono', monospace",
@@ -445,7 +445,7 @@ export default function DeckView() {
               disabled={saveMutation.isPending}
               data-testid="button-save"
               title="Salvar agora"
-              style={{ color: "#22a87e" }}
+              style={{ color: "#3b5e73" }}
             >
               <Save size={16} />
             </Button>
@@ -456,7 +456,7 @@ export default function DeckView() {
             onClick={toggleEditing}
             data-testid="button-edit-toggle"
             title={isEditing ? "Fechar editor" : "Editar slide"}
-            style={{ color: isEditing ? "#22a87e" : "#6b9e8c" }}
+            style={{ color: isEditing ? "#3b5e73" : "#6889a0" }}
           >
             {isEditing ? <Check size={16} /> : <Pencil size={16} />}
           </Button>
@@ -465,7 +465,7 @@ export default function DeckView() {
             size="icon"
             onClick={() => setShowGrid(true)}
             data-testid="button-grid-view"
-            style={{ color: "#6b9e8c" }}
+            style={{ color: "#6889a0" }}
           >
             <Grid size={16} />
           </Button>
@@ -474,19 +474,19 @@ export default function DeckView() {
             size="icon"
             onClick={toggleFullscreen}
             data-testid="button-fullscreen"
-            style={{ color: "#6b9e8c" }}
+            style={{ color: "#6889a0" }}
           >
             {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
           </Button>
         </div>
       </div>
 
-      <div className="h-1" style={{ backgroundColor: "rgba(42, 90, 72, 0.2)" }}>
+      <div className="h-1" style={{ backgroundColor: "#2a445933" }}>
         <div
           className="h-full transition-all duration-300"
           style={{
             width: `${((currentSlide + 1) / totalSlides) * 100}%`,
-            background: "linear-gradient(90deg, #1a7a5c, #22a87e)",
+            background: "linear-gradient(90deg, #214059, #3b5e73)",
           }}
         />
       </div>
